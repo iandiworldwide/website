@@ -232,27 +232,10 @@ export const placementCategories: { value: PlacementCategory | "all"; label: str
   { value: "mixed-media", label: "Mixed media" },
 ];
 
-// Works shown on the Placements page. The home page shows the first eight that have an image.
+// Works shown on the Placements page. The home page shows the first few that
+// have an image, set by placementsContent.previewCount.
 // Order here is the order on the page. Image files live in public/placements/.
 export const placements: Placement[] = [
-  {
-    id: 1,
-    artist: "Nick Irzyk",
-    title: "Dancer",
-    year: 2023,
-    medium: "Oil on canvas",
-    category: "painting",
-    image: "/placements/nick-irzyk-dancer.jpg",
-  },
-  {
-    id: 2,
-    artist: "Brandon Morris",
-    title: "Untitled",
-    year: 2022,
-    medium: "Leather, wood, polystyrene, and nylon",
-    category: "sculpture",
-    image: "/placements/brandon-morris-untitled.jpg",
-  },
   {
     id: 3,
     artist: "Muzae Sesay",
@@ -261,15 +244,6 @@ export const placements: Placement[] = [
     medium: "Oil pastel on canvas",
     category: "painting",
     image: "/placements/muzae-sesay-neighborhood.jpg",
-  },
-  {
-    id: 4,
-    artist: "Ellex Swavoni",
-    title: "Genesis",
-    year: 2023,
-    medium: "Acrylic on canvas",
-    category: "painting",
-    image: "/placements/ellex-swavoni-genesis.jpg",
   },
   {
     id: 5,
@@ -335,15 +309,6 @@ export const placements: Placement[] = [
     image: "/placements/jacob-littlejohn-burial.jpg",
   },
   {
-    id: 12,
-    artist: "Claudia Alarcón & Silät",
-    title: "Opak / My Voice",
-    year: 2025,
-    medium: "Hand-spun and woven chaguar fiber, natural and industrial dyes",
-    category: "textile",
-    image: "/placements/claudia-alarcon-silat-opak.jpg",
-  },
-  {
     id: 13,
     artist: "Antonio Tarsis",
     title: "Untitled",
@@ -380,15 +345,6 @@ export const placements: Placement[] = [
     image: "/placements/nnena-kalu-vortex-drawing-49.jpg",
   },
   {
-    id: 17,
-    artist: "Saj Issa",
-    title: "Majnoona",
-    year: 2025,
-    medium: "Oil on canvas",
-    category: "painting",
-    image: "/placements/saj-issa-majnoona.jpg",
-  },
-  {
     id: 18,
     artist: "Kelsey Isaacs",
     title: "classical detail twin",
@@ -414,15 +370,6 @@ export const placements: Placement[] = [
     medium: "Oil, acrylic, paper, tape on canvas in artist's frame",
     category: "mixed-media",
     image: "/placements/molly-rose-lieberman-embedded.jpg",
-  },
-  {
-    id: 21,
-    artist: "Autumn Ramsey",
-    title: "The Light",
-    year: 2024,
-    medium: "Oil on canvas",
-    category: "painting",
-    image: "/placements/autumn-ramsey-the-light.jpg",
   },
   {
     id: 22,

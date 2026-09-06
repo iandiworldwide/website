@@ -10,6 +10,13 @@ import {
   type PlacementCategory,
 } from "@/lib/content";
 
+// Only offer a filter that has work behind it, so removing the last piece in
+// a category quietly drops its filter and adding one brings it back.
+const available = placementCategories.filter(
+  (category) =>
+    category.value === "all" || placements.some((work) => work.category === category.value),
+);
+
 export default function PlacementsSection() {
   const [selected, setSelected] = useState<PlacementCategory | "all">("all");
 
@@ -28,7 +35,7 @@ export default function PlacementsSection() {
         aria-label={placementsContent.filterLabel}
         className="mt-lg flex flex-wrap gap-md px-xs md:px-md"
       >
-        {placementCategories.map((category) => (
+        {available.map((category) => (
           <li key={category.value}>
             <button
               type="button"
