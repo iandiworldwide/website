@@ -1,7 +1,19 @@
 "use client";
 
 import { useState } from "react";
-import { blogContent, blogPosts } from "@/lib/content";
+import { blogContent, blogPosts, type BlogPost } from "@/lib/content";
+
+// A post title links out to Substack when the entry carries a url.
+function PostTitle({ post }: { post: BlogPost }) {
+  if (!post.url) return <h3>{post.title}</h3>;
+  return (
+    <h3>
+      <a href={post.url} target="_blank" rel="noopener noreferrer" className="link-sweep">
+        {post.title}
+      </a>
+    </h3>
+  );
+}
 
 export default function BlogSection() {
   const [selected, setSelected] = useState(blogContent.allLabel);
@@ -41,30 +53,24 @@ export default function BlogSection() {
             <span className="text-caption">{post.date}</span>
             <span className="text-caption">{post.category}</span>
             <div className="md:col-span-2">
-              <h3>{post.title}</h3>
+              <PostTitle post={post} />
               <p>{post.excerpt}</p>
+              {post.author && <p className="mt-xs text-caption">{post.author}</p>}
             </div>
           </li>
         ))}
       </ul>
 
-      <div data-reveal className="mt-lg grid gap-md md:grid-cols-4">
-        <h3>{blogContent.newsletterLabel}</h3>
-        <form className="flex items-end gap-md md:col-span-2">
-          <label className="flex-1">
-            <span className="block text-caption">{blogContent.newsletterFieldLabel}</span>
-            <input
-              type="email"
-              name="email"
-              placeholder={blogContent.newsletterPlaceholder}
-              required
-            />
-          </label>
-          <button type="submit" className="cta">
-            {blogContent.newsletterButton}
-          </button>
-        </form>
-      </div>
+      <p data-reveal className="mt-lg">
+        <a
+          href={blogContent.archiveUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="cta"
+        >
+          {blogContent.archiveCta}
+        </a>
+      </p>
     </section>
   );
 }

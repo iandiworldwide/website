@@ -13,7 +13,7 @@ export const siteConfig = {
   // Browser tab title and search-engine description
   metaTitle: "I&I Worldwide - Independent Art Advisory",
   metaDescription:
-    "Independent art advisory specializing in emerging to mid-career artists of the Americas. Making art accessible to everyone.",
+    "Guiding next-gen collectors on building personal and purposeful art collections. A London-based independent art advisory led by Talia Pockhai.",
 };
 
 // Two kinds of entry. An href starting with "#" scrolls to a section on the
@@ -25,11 +25,11 @@ export const navigation = [
   { name: "Founder", href: "#founder" },
   { name: "Placements", href: "/placements" },
   { name: "Visual Diary", href: "/visual-diary" },
-  { name: "Blog", href: "/blog" },
+  { name: "Notes", href: "/blog" },
 ];
 
 export const footerContent = {
-  copyright: "© 2024 I&I Worldwide",
+  copyright: "© 2026 I&I Worldwide",
   socials: [
     { name: "Instagram", url: "https://www.instagram.com/i.and.i.worldwide" },
     { name: "Substack", url: "https://iandiworldwide.substack.com" },
@@ -43,9 +43,9 @@ export const footerContent = {
 // The opening screen: a small line above, a large statement, one sentence.
 // It sits full height over the moving gradient, so keep it short.
 export const homeContent = {
-  eyebrow: "Independent Art Advisory — London & Miami",
-  headline: "Making art accessible to everyone.",
-  lede: "I&I Worldwide specializes in emerging to mid-career artists of the Americas.",
+  eyebrow: "I&I Worldwide — By Talia Pockhai",
+  headline: "Guiding next-gen collectors on building personal and purposeful art collections.",
+  lede: "A London-based independent art advisory, working with emerging to mid-career artists.",
   testimonialsLabel: "Clients",
   ctaLabel: "Begin",
   cta: "Book a free consultation",
@@ -474,74 +474,97 @@ export interface BlogPost {
   category: string;
   author?: string;
   content?: string;
+  /** Optional Substack link. With it, the title becomes a link. */
+  url?: string;
 }
 
 export const blogContent = {
-  title: "Blog",
-  intro: "Insights on contemporary art, collecting, and the global art market.",
+  title: "Notes",
+  intro: "Catalogues and notes from the fairs, the studios and the galleries. Published on Substack.",
   filterLabel: "Filter by category",
   allLabel: "All", // the filter that shows every post
-  categories: ["Market Insights", "Collecting Guide", "Artist Spotlight", "Events"],
-  newsletterLabel: "Newsletter",
-  newsletterFieldLabel: "Email",
-  newsletterPlaceholder: "your@email.com",
-  newsletterButton: "Subscribe",
+  categories: ["Catalogue", "Notes"],
+  archiveCta: "Read everything on Substack",
+  archiveUrl: "https://iandiworldwide.substack.com",
 };
 
-// To add a post, copy one of these blocks and change the text.
+// The Substack archive. To add a post, copy a block and change the text.
+// `url` is optional: paste the post's Substack link and the title becomes a
+// link to it; leave it out and the title is plain text.
 export const blogPosts: BlogPost[] = [
   {
     id: 1,
-    title: "The Future of Emerging Art Markets",
-    slug: "future-emerging-art-markets",
+    title: "Catalogue 09: Summer Steals",
+    slug: "catalogue-09-summer-steals",
     excerpt:
-      "Exploring trends in contemporary art collecting and what collectors should watch for in 2024.",
-    date: "January 15, 2024",
-    category: "Market Insights",
+      "Five selections that I've been thinking about all summer and one new discovery, all under $10K. Plus, introducing Market Notes for paid subscribers.",
+    date: "31 August 2026",
+    category: "Catalogue",
     author: "Talia Pockhai",
   },
   {
     id: 2,
-    title: "Understanding Artist Provenance",
-    slug: "understanding-artist-provenance",
+    title: "Could restaurants be the new artist residencies?",
+    slug: "restaurants-artist-residencies",
     excerpt:
-      "A deep dive into why provenance matters and how it affects both value and authenticity.",
-    date: "January 8, 2024",
-    category: "Collecting Guide",
+      "Exploring Zoli's eerie aquariums, Bistrot Ha's mosaics and the new Frenchette Bakery's terrazzo flooring, and what these collaborations mean.",
+    date: "1 August 2026",
+    category: "Notes",
+    author: "Talia Pockhai",
   },
   {
     id: 3,
-    title: "Latin American Contemporary Art: A Golden Age",
-    slug: "latin-american-contemporary-art",
-    excerpt:
-      "Why Latin American artists are gaining critical recognition and market momentum globally.",
-    date: "December 28, 2023",
-    category: "Artist Spotlight",
+    title: "Catalogue 08: 5 under 5 is back.",
+    slug: "catalogue-08-5-under-5",
+    excerpt: "Queer art. Religious art. Textile, collage and assemblage. All within reach.",
+    date: "30 June 2026",
+    category: "Catalogue",
+    author: "Talia Pockhai",
   },
   {
     id: 4,
-    title: "Building Your First Art Collection",
-    slug: "building-first-art-collection",
-    excerpt:
-      "Essential tips for new collectors: budget considerations, sourcing, and authentication.",
-    date: "December 20, 2023",
-    category: "Collecting Guide",
+    title: "Catalogue 07: Affordable Art from NYC Fairs",
+    slug: "catalogue-07-nyc-fairs",
+    excerpt: "Emerging art, institutional validation, accessible prices.",
+    date: "19 May 2026",
+    category: "Catalogue",
+    author: "Talia Pockhai",
   },
   {
     id: 5,
-    title: "The Art Fair Calendar: What Not to Miss",
-    slug: "art-fair-calendar-guide",
-    excerpt: "A comprehensive guide to the global art fair circuit and which ones matter most.",
-    date: "December 10, 2023",
-    category: "Events",
+    title: "Fair Notes: Milan",
+    slug: "fair-notes-milan",
+    excerpt: "A gamble that paid off.",
+    date: "23 April 2026",
+    category: "Notes",
+    author: "Talia Pockhai",
   },
   {
     id: 6,
-    title: "Women Artists Reshaping Contemporary Discourse",
-    slug: "women-artists-contemporary",
-    excerpt: "Celebrating emerging and mid-career women artists redefining contemporary art.",
-    date: "November 30, 2023",
-    category: "Artist Spotlight",
+    title: "Catalogue 06: A Case Study with Cottage Noir",
+    slug: "catalogue-06-cottage-noir",
+    excerpt: "A selection of artworks for this iconic North London home under £10K.",
+    date: "11 April 2026",
+    category: "Catalogue",
+    author: "Talia Pockhai and Kemide Lawson",
+  },
+  {
+    id: 7,
+    title: "Catalogue 05: That Spring Feeling",
+    slug: "catalogue-05-that-spring-feeling",
+    excerpt: "Bringing you a selection of artworks between $1–10K.",
+    date: "31 March 2026",
+    category: "Catalogue",
+    author: "Talia Pockhai",
+  },
+  {
+    id: 8,
+    title: "As the art world prepares for Venice, I went to Kochi instead.",
+    slug: "kochi-muziris-biennale",
+    excerpt: "Highlights from Kochi-Muziris, the Peoples' Biennale.",
+    date: "11 March 2026",
+    category: "Notes",
+    author: "Talia Pockhai",
   },
 ];
 

@@ -83,8 +83,8 @@
   --text-caption: var(--size-caption);
   --text-caption--line-height: 1.35;
   /* The opening statement and the founder quote carry their own scale. */
-  --text-hero: clamp(2.5rem, 6vw, 5rem);
-  --text-hero--line-height: 1.02;
+  --text-hero: clamp(1.875rem, 4vw, 3.25rem);
+  --text-hero--line-height: 1.08;
   --text-hero-sm: clamp(1.5rem, 2.6vw, 2.25rem);
   --text-hero-sm--line-height: 1.15;
 
@@ -301,13 +301,15 @@
   pointer-events: none;
 }
 
-/* Radial blooms rather than circles, so the system keeps its zero radii. */
+/* Radial blooms rather than circles, so the system keeps its zero radii.
+   Smaller and less blurred than the ground they sit on, so their movement
+   actually reads. */
 .fluid-bloom {
   position: absolute;
-  width: 85vmax;
-  height: 85vmax;
-  filter: blur(60px);
-  will-change: transform;
+  width: 62vmax;
+  height: 62vmax;
+  filter: blur(48px);
+  will-change: transform, opacity;
 }
 
 .fluid-bloom-1 {
@@ -432,48 +434,91 @@
     opacity: 0.82;
   }
 
-  /* The colour field drifts. Long, offset, alternating loops mean the
-     blooms never return to the same arrangement twice in a viewing. */
+  /* The colour field flows. Each bloom travels a closed loop of its own at
+     its own tempo, swelling and fading as it goes, so the field keeps
+     moving and the arrangement never quite repeats. */
   .fluid-bloom-1 {
-    animation: drift-a 34s var(--ease) infinite alternate;
+    animation: flow-a 19s linear infinite;
   }
   .fluid-bloom-2 {
-    animation: drift-b 43s var(--ease) infinite alternate;
+    animation: flow-b 23s linear infinite;
   }
   .fluid-bloom-3 {
-    animation: drift-c 51s var(--ease) infinite alternate;
+    animation: flow-c 17s linear infinite;
   }
   .fluid-bloom-4 {
-    animation: drift-b 61s var(--ease) infinite alternate-reverse;
+    animation: flow-b 29s linear infinite reverse;
   }
   .fluid-bloom-5 {
-    animation: drift-a 47s var(--ease) infinite alternate-reverse;
+    animation: flow-a 26s linear infinite reverse;
   }
 
-  @keyframes drift-a {
-    from {
+  @keyframes flow-a {
+    0% {
       transform: translate3d(0, 0, 0) scale(1);
+      opacity: 0.85;
     }
-    to {
-      transform: translate3d(18vw, 12vh, 0) scale(1.25);
+    25% {
+      transform: translate3d(26vw, 14vh, 0) scale(1.3);
+      opacity: 1;
+    }
+    50% {
+      transform: translate3d(34vw, 38vh, 0) scale(0.95);
+      opacity: 0.7;
+    }
+    75% {
+      transform: translate3d(10vw, 24vh, 0) scale(1.15);
+      opacity: 0.95;
+    }
+    100% {
+      transform: translate3d(0, 0, 0) scale(1);
+      opacity: 0.85;
     }
   }
 
-  @keyframes drift-b {
-    from {
-      transform: translate3d(0, 0, 0) scale(1.15);
+  @keyframes flow-b {
+    0% {
+      transform: translate3d(0, 0, 0) scale(1.1);
+      opacity: 0.75;
     }
-    to {
-      transform: translate3d(-22vw, 16vh, 0) scale(0.9);
+    25% {
+      transform: translate3d(-28vw, 20vh, 0) scale(0.9);
+      opacity: 1;
+    }
+    50% {
+      transform: translate3d(-14vw, 44vh, 0) scale(1.35);
+      opacity: 0.8;
+    }
+    75% {
+      transform: translate3d(-32vw, 16vh, 0) scale(1);
+      opacity: 0.9;
+    }
+    100% {
+      transform: translate3d(0, 0, 0) scale(1.1);
+      opacity: 0.75;
     }
   }
 
-  @keyframes drift-c {
-    from {
+  @keyframes flow-c {
+    0% {
       transform: translate3d(0, 0, 0) scale(0.95);
+      opacity: 0.8;
     }
-    to {
-      transform: translate3d(14vw, -18vh, 0) scale(1.3);
+    25% {
+      transform: translate3d(20vw, -22vh, 0) scale(1.25);
+      opacity: 0.95;
+    }
+    50% {
+      transform: translate3d(-16vw, -30vh, 0) scale(1.05);
+      opacity: 1;
+    }
+    75% {
+      transform: translate3d(-24vw, -8vh, 0) scale(0.9);
+      opacity: 0.75;
+    }
+    100% {
+      transform: translate3d(0, 0, 0) scale(0.95);
+      opacity: 0.8;
     }
   }
 }

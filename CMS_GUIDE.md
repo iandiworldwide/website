@@ -45,6 +45,12 @@ scrolls to a screen on the home page and must match that screen's id; an
 `href` starting with `/` opens a page. If you rename an id, change it in both
 the navigation list and the matching file in `components/sections/`.
 
+### Notes (the Substack archive)
+
+`blogPosts` mirrors the Substack. Each entry takes an optional `url`: paste a
+post's Substack link and its title becomes a link to it; leave it out and the
+title stays plain text. `blogContent.archiveUrl` is the link at the foot.
+
 ### Placements on the home page
 
 `placementsContent.previewCount` sets how many works the home page shows
