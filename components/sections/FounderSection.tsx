@@ -25,9 +25,6 @@ export default function FounderSection() {
           </div>
         </div>
 
-        <blockquote data-reveal className="mt-lg max-w-[38ch] md:ml-[25%]">
-          <p className="text-hero-sm">“{aboutContent.founderQuote}”</p>
-        </blockquote>
       </div>
     </section>
   );

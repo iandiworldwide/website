@@ -3,6 +3,7 @@ import AboutSection from "@/components/sections/AboutSection";
 import ServicesSection from "@/components/sections/ServicesSection";
 import PlacementsPreview from "@/components/sections/PlacementsPreview";
 import FounderSection from "@/components/sections/FounderSection";
+import QuoteSection from "@/components/sections/QuoteSection";
 import SubscribeSection from "@/components/sections/SubscribeSection";
 
 /*
@@ -21,6 +22,7 @@ export default function Home() {
       <ServicesSection />
       <PlacementsPreview />
       <FounderSection />
+      <QuoteSection />
       <SubscribeSection />
     </>
   );

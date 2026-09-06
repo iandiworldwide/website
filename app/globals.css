@@ -55,7 +55,7 @@
   /* Heading scale. Headings are the only type larger than the body size. */
   --size-h1: clamp(1.625rem, 3vw, 2.25rem);
   --size-h2: clamp(1rem, 1.3vw, 1.25rem);
-  --size-wordmark: clamp(1.125rem, 1.6vw, 1.5rem);
+  --size-wordmark: clamp(1rem, 1.5vw, 1.375rem);
 
   /* The wordmark cycles through these. Medium tones from the brand palette. */
   --mark-r: #c22e44;
@@ -264,16 +264,23 @@
    artwork rather than UI text. */
 .wordmark {
   display: inline-flex;
-  font-family: var(--font-display);
-  font-size: var(--size-wordmark);
-  font-weight: 600;
-  line-height: 1.24;
-  letter-spacing: normal;
-  white-space: nowrap;
+  align-items: center;
 }
 
-.wordmark span {
-  color: var(--ink);
+/* Without mask support the file simply shows as a black background image. */
+.wordmark-mark {
+  display: block;
+  height: var(--size-wordmark);
+  aspect-ratio: 556 / 68;
+  background: url("/logo-iandi-worldwide.png") center / contain no-repeat;
+}
+
+@supports (mask-image: url("/logo-iandi-worldwide.png")) {
+  .wordmark-mark {
+    background: var(--ink);
+    -webkit-mask: url("/logo-iandi-worldwide.png") center / contain no-repeat;
+    mask: url("/logo-iandi-worldwide.png") center / contain no-repeat;
+  }
 }
 
 /* ------------------------------------------------------------------ */
@@ -377,6 +384,31 @@
 }
 
 /* ------------------------------------------------------------------ */
+/* Colour in the type                                                  */
+/* ------------------------------------------------------------------ */
+
+/* The quote screen carries the palette in the letters rather than behind
+   them. The two lightest colours are deepened towards ink so the words stay
+   readable on white. Guarded, so unsupported browsers keep solid ink. */
+@supports ((background-clip: text) or (-webkit-background-clip: text)) {
+  .quote-flow {
+    background-image: linear-gradient(
+      100deg,
+      var(--spruce),
+      var(--slate-blue),
+      color-mix(in srgb, var(--olive) 72%, var(--ink)),
+      var(--forest),
+      color-mix(in srgb, var(--periwinkle) 78%, var(--ink)),
+      var(--spruce)
+    );
+    background-size: 300% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+}
+
+/* ------------------------------------------------------------------ */
 /* Links                                                               */
 /* ------------------------------------------------------------------ */
 
@@ -453,41 +485,53 @@
     transform: translateY(-5px);
   }
 
-  /* A band of colour travels through the wordmark, each letter picking up
-     the cycle a beat after the one before it. Hovering freezes it. */
-  .wordmark span {
-    animation: mark-cycle 11s linear infinite;
-    animation-delay: calc(var(--i) * -0.62s);
+  /* The colour drifts across the quote. */
+  .quote-flow {
+    animation: quote-drift 26s linear infinite;
   }
 
-  .wordmark:hover span {
+  @keyframes quote-drift {
+    from {
+      background-position: 0% 50%;
+    }
+    to {
+      background-position: -300% 50%;
+    }
+  }
+
+  /* The logotype drifts through the palette. Hovering holds it. */
+  .wordmark-mark {
+    animation: mark-cycle 24s linear infinite;
+  }
+
+  .wordmark:hover .wordmark-mark {
     animation-play-state: paused;
   }
 
   @keyframes mark-cycle {
     0% {
-      color: var(--mark-r);
+      background-color: var(--ink);
     }
     14% {
-      color: var(--mark-o);
+      background-color: var(--mark-r);
     }
     28% {
-      color: var(--mark-y);
+      background-color: var(--mark-o);
     }
     43% {
-      color: var(--mark-g);
+      background-color: var(--mark-g);
     }
     57% {
-      color: var(--mark-b);
+      background-color: var(--mark-b);
     }
     71% {
-      color: var(--mark-i);
+      background-color: var(--mark-i);
     }
     86% {
-      color: var(--mark-v);
+      background-color: var(--mark-v);
     }
     100% {
-      color: var(--mark-r);
+      background-color: var(--ink);
     }
   }
 
