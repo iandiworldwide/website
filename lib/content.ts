@@ -136,8 +136,6 @@ export const aboutContent = {
 
 export const servicesContent = {
   title: "Services",
-  headline:
-    "Whether collecting for your home, diversifying an existing collection, or assembling a corporate collection, I&I Worldwide understands the needs of each of our clients.",
   intro:
     "We offer new and established collectors alike unique acquisition experiences, customized to suit each of their individual interests, aesthetic preferences, budgets and goals.",
   services: [
