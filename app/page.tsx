@@ -8,7 +8,7 @@ import SubscribeSection from "@/components/sections/SubscribeSection";
 
 /*
   Each screen is full height, and the order tells a story:
-  what we stand for, what the practice is, what we do, what we have placed,
+  what we stand for, what the practice is, what we have placed, what we do,
   who is behind it, then how to stay close.
 
   Placements, Visual Diary, Blog and Contact carry on as their own pages.
@@ -19,8 +19,8 @@ export default function Home() {
     <>
       <HeroSection />
       <AboutSection />
-      <ServicesSection />
       <PlacementsPreview />
+      <ServicesSection />
       <FounderSection />
       <QuoteSection />
       <SubscribeSection />

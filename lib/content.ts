@@ -43,7 +43,6 @@ export const footerContent = {
 // The opening screen: a small line above, a large statement, one sentence.
 // It sits full height over the moving gradient, so keep it short.
 export const homeContent = {
-  eyebrow: "I&I Worldwide — By Talia Pockhai",
   headline: "Guiding next-gen collectors on building personal and purposeful art collections.",
   lede: "A London-based independent art advisory, working with emerging to mid-career artists.",
   testimonialsLabel: "Clients",
@@ -77,6 +76,9 @@ export const subscribeContent = {
   lede: "Notes from the fairs, the studios and the rooms where early decisions get made.",
   cta: "Subscribe on Substack",
   ctaLink: "https://iandiworldwide.substack.com",
+  // The most recent posts, listed alongside. They come from blogPosts.
+  latestLabel: "Latest",
+  latestCount: 4,
 };
 
 export const testimonials = [
@@ -136,8 +138,6 @@ export const aboutContent = {
 
 export const servicesContent = {
   title: "Services",
-  intro:
-    "We offer new and established collectors alike unique acquisition experiences, customized to suit each of their individual interests, aesthetic preferences, budgets and goals.",
   services: [
     {
       title: "Acquisition Planning",
@@ -214,8 +214,8 @@ export const placementsContent = {
   intro: "A curated selection of works placed with our clients.",
   filterLabel: "Filter by category",
   gridLabel: "Placed works",
-  // The home page shows this many works, then this link to the full page.
-  previewCount: 4,
+  // The home page holds this many works in its row, four in view at a time.
+  previewCount: 7,
   previewCta: "View all placements",
   previewCtaLink: "/placements",
   ctaLabel: "Enquire",

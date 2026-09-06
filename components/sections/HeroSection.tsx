@@ -8,8 +8,7 @@ export default function HeroSection() {
     <section id="top" className="section-full overflow-hidden">
       <FluidBackground />
       <div className="fluid-over px-xs md:px-md">
-        <p className="text-caption">{homeContent.eyebrow}</p>
-        <h1 className="mt-sm max-w-[22ch] text-hero">{homeContent.headline}</h1>
+        <h1 className="max-w-[22ch] text-hero">{homeContent.headline}</h1>
         <p className="mt-md max-w-[46ch]">{homeContent.lede}</p>
       </div>
     </section>
