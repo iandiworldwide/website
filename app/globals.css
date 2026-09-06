@@ -1,26 +1,336 @@
 @import "tailwindcss";
 
+/*
+  CO,MA design system
+  ------------------------------------------------------------------
+  Ink on a white surface, no shadows, no radii, 63px header and footer.
+  Body copy is one serif at one size and weight. Headings use a display
+  face at a larger scale. A four-colour accent palette is used lightly
+  for labels, states and the tree animations. Motion is slow and small,
+  and every animation is switched off under prefers-reduced-motion.
+*/
+
+/* ABC Camera is a licensed typeface from ABC Dinamo and is not bundled.
+   Drop ABCCamera-Regular.woff2 into public/fonts/ and it is picked up
+   automatically; until then the stack falls through to the substitute. */
+@font-face {
+  font-family: "ABC Camera";
+  src: url("/fonts/ABCCamera-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --ink: #1d1d1b;
+  --surface: #ffffff;
+
+  /* Accent palette. Used sparingly: labels, hover and focus states,
+     hairlines, placeholder grounds and the tree animations. Never for body copy. */
+  --indigo: #30396f; /* twilight indigo */
+  --ash: #aec0a1; /* ash grey */
+  --slate: #a7a8b3; /* pale slate */
+  --alice: #e2effe; /* alice blue */
+
+  --space-xs: 14.4px;
+  --space-sm: 18.72px;
+  --space-md: 28.8px;
+  --space-lg: 43.2px;
+  --header-height: 63px;
+
+  --type-size: 14.4px;
+  --type-leading: 1.4;
+
+  /* Heading scale. Headings are the only type larger than the body size. */
+  --size-h1: clamp(1.625rem, 3vw, 2.25rem);
+  --size-h2: clamp(1rem, 1.3vw, 1.25rem);
+  --size-wordmark: clamp(1.25rem, 1.8vw, 1.5rem);
+
+  /* Motion */
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /* Colours: wipe Tailwind's palette so a third hue cannot be reached. */
+  --color-*: initial;
+  --color-ink: var(--ink);
+  --color-surface: var(--surface);
+  --color-indigo: var(--indigo);
+  --color-ash: var(--ash);
+  --color-slate: var(--slate);
+  --color-alice: var(--alice);
+
+  /* Type. Editorial New and ABC Camera are both proprietary; Fraunces and
+     Bricolage Grotesque (self-hosted by next/font) stand in until licensed. */
+  --font-*: initial;
+  --font-editorial: "Editorial New", var(--font-fraunces), "PT Serif", Georgia, serif;
+  --font-display: "ABC Camera", var(--font-bricolage), "Helvetica Neue", Arial, sans-serif;
+
+  --text-*: initial;
+  --text-body: var(--type-size);
+  --text-body--line-height: var(--type-leading);
+
+  --font-weight-*: initial;
+  --font-weight-regular: 400;
+
+  /* Spacing: arithmetic scale off a 14.4px base plus the chrome height. */
+  --spacing-xs: var(--space-xs);
+  --spacing-sm: var(--space-sm);
+  --spacing-md: var(--space-md);
+  --spacing-lg: var(--space-lg);
+  --spacing-header: var(--header-height);
+
+  /* Zero elevation, hard edges. */
+  --shadow-*: initial;
+  --inset-shadow-*: initial;
+  --drop-shadow-*: initial;
+  --radius-*: initial;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  html {
+    background: var(--surface);
+  }
+
+  body {
+    background: var(--surface);
+    color: var(--ink);
+    font-family: "Editorial New", var(--font-fraunces), "PT Serif", Georgia, serif;
+    font-size: var(--type-size);
+    font-weight: 400;
+    line-height: var(--type-leading);
+    letter-spacing: normal;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Headings: the display face, a step up in size, in ink. */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: 400;
+    color: var(--ink);
+    text-wrap: balance;
+  }
+
+  h1 {
+    font-size: var(--size-h1);
+    line-height: 1.02;
+  }
+
+  h2 {
+    font-size: var(--size-h2);
+    line-height: 1.12;
+  }
+
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-size: var(--type-size);
+    line-height: var(--type-leading);
+  }
+
+  /* Titles that hold a link keep the ink so the link reads as a link. */
+  h1 a,
+  h2 a,
+  h3 a {
+    color: var(--ink);
+  }
+
+  p,
+  ul,
+  ol,
+  figure,
+  blockquote {
+    margin: 0;
+  }
+
+  ul,
+  ol {
+    list-style: none;
+    padding: 0;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+    text-decoration-color: var(--indigo);
+    text-underline-offset: 4px;
+    transition: color 0.3s var(--ease);
+  }
+
+  /* Hover and active states take the indigo accent. */
+  a:hover,
+  button:hover {
+    color: var(--indigo);
+  }
+
+  button {
+    font: inherit;
+    color: inherit;
+    background: none;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+    transition: color 0.3s var(--ease);
+  }
+
+  /* Forms are not in the captured evidence. The single hairline beneath
+     an input is the minimum affordance a field needs on a white ground. */
+  input,
+  textarea {
+    font: inherit;
+    color: inherit;
+    background: transparent;
+    border: 0;
+    border-bottom: 1px solid var(--slate);
+    border-radius: 0;
+    padding: 0.3em 0;
+    width: 100%;
+    outline: none;
+    transition: border-color 0.35s var(--ease);
+  }
+
+  input:focus,
+  textarea:focus {
+    border-bottom-color: var(--indigo);
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    color: var(--slate);
+    opacity: 1;
+  }
+
+  textarea {
+    resize: vertical;
+  }
+
+  :focus-visible {
+    outline: 1px solid var(--indigo);
+    outline-offset: 3px;
+  }
+
+  img {
+    display: block;
+    max-width: 100%;
+  }
+
+  ::selection {
+    background: var(--alice);
+    color: var(--indigo);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* ------------------------------------------------------------------ */
+/* The oversized logotype                                              */
+/* ------------------------------------------------------------------ */
+
+/* Pinned in the top-left corner of the sticky header on every page.
+   Content, not UI: swap this text for the hand-lettered artwork when supplied.
+   The only 700 weight in the system, because a logotype is artwork. */
+.wordmark {
+  display: inline-block;
+  font-family: var(--font-display);
+  font-size: var(--size-wordmark);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: normal;
+  color: var(--ink);
+}
+
+.wordmark:hover {
+  color: var(--indigo);
+}
+
+/* ------------------------------------------------------------------ */
+/* Links                                                               */
+/* ------------------------------------------------------------------ */
+
+/* A rule that draws itself in from the left on hover, and stays put on
+   the current page or the active filter. Used for nav and filters. */
+.link-sweep {
+  background-image: linear-gradient(var(--indigo), var(--indigo));
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0 1px;
+  padding-bottom: 3px;
+  transition:
+    background-size 0.45s var(--ease),
+    color 0.3s var(--ease);
+}
+
+.link-sweep:hover,
+.link-sweep:focus-visible,
+.link-sweep[aria-current="page"],
+.link-sweep[aria-pressed="true"] {
+  background-size: 100% 1px;
+}
+
+/* A call to action: underlined, with an arrow that steps forward on hover. */
+.cta {
+  text-decoration: underline;
+  text-decoration-color: var(--indigo);
+}
+
+.cta::after {
+  content: "\2192";
+  display: inline-block;
+  margin-left: 0.45em;
+  text-decoration: none;
+  transition: transform 0.4s var(--ease);
+}
+
+.cta:hover::after,
+.cta:focus-visible::after {
+  transform: translateX(0.35em);
+}
+
+/* ------------------------------------------------------------------ */
+/* Motion                                                              */
+/* ------------------------------------------------------------------ */
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Elements marked data-reveal rise into place as they enter the viewport.
+     The .reveal-ready class is added by script, so with no JavaScript
+     everything simply renders in place. */
+  .reveal-ready [data-reveal] {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+
+  .reveal-ready [data-reveal][data-revealed] {
+    opacity: 1;
+    transform: none;
+    transition:
+      opacity 0.85s var(--ease) var(--reveal-delay, 0ms),
+      transform 0.85s var(--ease) var(--reveal-delay, 0ms);
+  }
+
+  /* Artwork lifts a hair on hover. No shadow, no scale, no crop. */
+  .lift {
+    transition: transform 0.55s var(--ease);
+  }
+
+  .group:hover .lift {
+    transform: translateY(-5px);
+  }
+
+  /* Diary images settle back slightly under the pointer. */
+  .dim {
+    transition: opacity 0.5s var(--ease);
+  }
+
+  .dim:hover {
+    opacity: 0.82;
+  }
 }
