@@ -7,7 +7,7 @@ export const metadata: Metadata = { title: "Placements — I&I Worldwide" };
 
 export default function PlacementsPage() {
   return (
-    <div className="pt-header">
+    <div>
       <PlacementsSection />
       <section className="section px-xs md:px-md">
         <div data-reveal className="grid gap-md md:grid-cols-4">

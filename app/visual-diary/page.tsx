@@ -5,7 +5,7 @@ export const metadata: Metadata = { title: "Visual Diary — I&I Worldwide" };
 
 export default function VisualDiaryPage() {
   return (
-    <div className="pt-header">
+    <div>
       <DiarySection />
     </div>
   );

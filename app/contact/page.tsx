@@ -5,7 +5,7 @@ export const metadata: Metadata = { title: "Contact — I&I Worldwide" };
 
 export default function ContactPage() {
   return (
-    <div className="pt-header">
+    <div>
       <ContactSection />
     </div>
   );

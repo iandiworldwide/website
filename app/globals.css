@@ -291,7 +291,7 @@
    scroll-margin keeps anchors clear of the fixed header. */
 .section {
   padding-block: calc(var(--space-lg) * 2);
-  scroll-margin-top: var(--header-height);
+  scroll-margin-top: var(--space-md);
 }
 
 /* A screen of its own. Content sits centred with air above and below. */
@@ -301,8 +301,8 @@
   flex-direction: column;
   justify-content: center;
   min-height: 100svh;
-  padding-block: calc(var(--header-height) + var(--space-lg)) calc(var(--space-lg) * 2);
-  scroll-margin-top: var(--header-height);
+  padding-block: calc(var(--header-height) + var(--space-lg)) calc(var(--header-height) + var(--space-lg));
+  scroll-margin-top: var(--space-md);
 }
 
 /* ------------------------------------------------------------------ */
@@ -652,4 +652,67 @@
       opacity: 0.8;
     }
   }
+}
+
+/* ------------------------------------------------------------------ */
+/* Opening flicker                                                     */
+/* ------------------------------------------------------------------ */
+
+.intro {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  background: var(--surface);
+  opacity: 1;
+  transition: opacity 0.9s var(--ease);
+}
+
+.intro[data-out] {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.intro-mark {
+  font-family: var(--font-display);
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1;
+}
+
+.intro-hint {
+  margin-top: var(--space-md);
+  color: var(--slate);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .intro-hint {
+    animation: hint-in 1.2s var(--ease) 1.4s both;
+  }
+
+  @keyframes hint-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Bottom navigation                                                   */
+/* ------------------------------------------------------------------ */
+
+/* The bar itself has no fill. A soft fade to the page ground sits behind
+   it so the links stay readable where artwork runs to the bottom edge. */
+.nav-bottom::before {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  height: calc(var(--header-height) + var(--space-lg));
+  background: linear-gradient(to top, var(--surface) 42%, transparent);
+  pointer-events: none;
 }

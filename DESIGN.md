@@ -132,7 +132,10 @@ Motion is slow, small and optional. Blocks and grid cells fade up 8px over 1.4s 
 ### Structure (I&I addition)
 The home page is a sequence of full-height screens: opening statement, four placements, services, about, founder, subscribe. Each fills `100svh` with its content centred and the remaining space left empty. Placements, Visual Diary, Blog and Contact continue as pages of their own, linked from the nav.
 
-The header is `position: fixed` and fully transparent, so screens pass beneath it. The footer sits at the foot of the document rather than pinned, so it never floats over a screen.
+The chrome sits in two places. The logotype is fixed top left; the navigation is fixed along the bottom. Both are transparent, so the screens pass beneath them. A soft fade to the page ground sits behind the bottom bar so the links stay readable where artwork runs to the edge. The footer sits at the foot of the document, clear of the bar.
+
+### Opening flicker (I&I addition)
+The home page opens with a full-screen white overlay cycling ways of writing "i and i" — the ampersand, the plus, the Tironian et, the logical and, and a pair of eyes. It fades out on the first sign of intent: a mouse move, a scroll, a tap or a keystroke. A short grace period stops an already-moving pointer skipping it, a safety timer dismisses it regardless, and a `noscript` rule removes it when JavaScript is unavailable. It plays once per visit, on the home page only, and holds a single frame under `prefers-reduced-motion`.
 
 ### Fluid background (I&I addition)
 The opening screen and the founder screen carry a slowly moving colour field: five blurred radial blooms on a lavender ground, each on its own long alternating loop, so the arrangement never repeats within a visit. It is decorative, hidden from screen readers, and holds still under `prefers-reduced-motion`.

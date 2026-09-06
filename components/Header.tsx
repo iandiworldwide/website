@@ -6,12 +6,8 @@ import NavLink from "@/components/NavLink";
 import Wordmark from "@/components/Wordmark";
 import { navigation } from "@/lib/content";
 
-// The first three links sit centre, the rest right.
-const centre = navigation.slice(0, 3);
+const left = navigation.slice(0, 3);
 const right = navigation.slice(3);
-// On mobile the last link joins the wordmark on the top row.
-const mobileTop = navigation[navigation.length - 1];
-const mobileRow = navigation.slice(0, -1);
 
 const anchors = navigation.filter((item) => item.href.startsWith("#"));
 
@@ -45,7 +41,7 @@ function useActiveSection(enabled: boolean) {
         }
         setActive(bestRatio > 0 ? best : "");
       },
-      { threshold: [0, 0.25, 0.5, 0.75, 1], rootMargin: "-63px 0px 0px 0px" },
+      { threshold: [0, 0.25, 0.5, 0.75, 1] },
     );
 
     sections.forEach((section) => observer.observe(section));
@@ -55,6 +51,11 @@ function useActiveSection(enabled: boolean) {
   return active;
 }
 
+/*
+  The chrome sits in two places: the logotype pinned top left, and the
+  navigation pinned along the bottom. Both are fixed and fully transparent,
+  so the screens pass beneath them.
+*/
 export default function Header() {
   const pathname = usePathname();
   const onHome = pathname === "/";
@@ -67,54 +68,36 @@ export default function Header() {
   // Anchors only work on the home page, so from elsewhere they point back to it.
   const resolve = (href: string) => (href.startsWith("#") && !onHome ? `/${href}` : href);
 
+  const item = (entry: (typeof navigation)[number]) => (
+    <li key={entry.href}>
+      <NavLink href={resolve(entry.href)} current={isCurrent(entry.href)}>
+        {entry.name}
+      </NavLink>
+    </li>
+  );
+
   return (
-    <header className="fixed inset-x-0 top-0 z-50 h-header bg-transparent text-ink">
-      {/* Desktop: wordmark left, links centred and right. No rule, no fill. */}
+    <>
+      <div className="fixed left-0 top-0 z-50 flex h-header items-center px-xs md:px-md">
+        <Wordmark />
+      </div>
+
       <nav
         aria-label="Primary"
-        className="hidden h-full md:grid md:grid-cols-3 md:items-center md:px-md"
+        className="nav-bottom fixed inset-x-0 bottom-0 z-50 text-ink"
       >
-        <div className="justify-self-start">
-          <Wordmark />
+        {/* Desktop: one row, the two groups pushed to opposite edges. */}
+        <div className="relative hidden h-header items-center justify-between px-md md:flex">
+          <ul className="flex gap-md">{left.map(item)}</ul>
+          <ul className="flex gap-md">{right.map(item)}</ul>
         </div>
-        <ul className="flex justify-center gap-md">
-          {centre.map((item) => (
-            <li key={item.href}>
-              <NavLink href={resolve(item.href)} current={isCurrent(item.href)}>
-                {item.name}
-              </NavLink>
-            </li>
-          ))}
-        </ul>
-        <ul className="flex justify-end gap-md">
-          {right.map((item) => (
-            <li key={item.href}>
-              <NavLink href={resolve(item.href)} current={isCurrent(item.href)}>
-                {item.name}
-              </NavLink>
-            </li>
-          ))}
-        </ul>
-      </nav>
 
-      {/* Mobile: a top pair plus a bottom row. No hamburger. */}
-      <nav aria-label="Primary" className="flex h-full flex-col justify-center px-xs md:hidden">
-        <div className="flex items-center justify-between">
-          <Wordmark />
-          <NavLink href={resolve(mobileTop.href)} current={isCurrent(mobileTop.href)}>
-            {mobileTop.name}
-          </NavLink>
+        {/* Mobile: two rows of three. No hamburger. */}
+        <div className="relative flex h-header flex-col justify-center px-xs md:hidden">
+          <ul className="flex justify-between">{left.map(item)}</ul>
+          <ul className="flex justify-between">{right.map(item)}</ul>
         </div>
-        <ul className="flex justify-between">
-          {mobileRow.map((item) => (
-            <li key={item.href}>
-              <NavLink href={resolve(item.href)} current={isCurrent(item.href)}>
-                {item.name}
-              </NavLink>
-            </li>
-          ))}
-        </ul>
       </nav>
-    </header>
+    </>
   );
 }

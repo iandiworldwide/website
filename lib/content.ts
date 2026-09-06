@@ -52,6 +52,18 @@ export const homeContent = {
   ctaLink: "/contact",
 };
 
+// The opening flicker, shown once over the whole screen. It cycles these
+// until the visitor moves the mouse, scrolls, taps or types, then fades.
+// Every variant is a way of writing "i and i": the ampersand, the plus, the
+// Tironian et (a medieval shorthand that genuinely means "and"), the logical
+// and, and a pair of eyes for the two i's.
+export const introContent = {
+  variants: ["i&i", "i+i", "👁&👁", "i⁊i", "👀+👀", "i∧i"],
+  // A discreet line beneath, mainly for touch where there is no pointer to move.
+  // Empty it to show nothing at all.
+  hint: "scroll to enter",
+};
+
 // The full-height subscribe screen near the foot of the home page.
 // It sends people to the Substack rather than to a form that goes nowhere.
 export const subscribeContent = {

@@ -5,7 +5,7 @@ export const metadata: Metadata = { title: "Blog — I&I Worldwide" };
 
 export default function BlogPage() {
   return (
-    <div className="pt-header">
+    <div>
       <BlogSection />
     </div>
   );

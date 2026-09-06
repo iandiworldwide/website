@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Bricolage_Grotesque, Fraunces } from "next/font/google";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import Intro from "@/components/Intro";
 import RevealObserver from "@/components/RevealObserver";
 import { siteConfig } from "@/lib/content";
 import "./globals.css";
@@ -33,10 +34,11 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className={`${fraunces.variable} ${bricolage.variable}`}>
-      <body className="min-h-screen bg-surface font-editorial text-body text-ink">
+      {/* Bottom padding clears the fixed navigation bar. */}
+      <body className="min-h-screen bg-surface pb-header font-editorial text-body text-ink">
+        <Intro />
         <RevealObserver />
         <Header />
-        {/* Bottom padding clears the fixed 63px footer. */}
         <main>{children}</main>
         <Footer />
       </body>
