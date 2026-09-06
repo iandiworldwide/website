@@ -32,6 +32,15 @@
   --slate: #a7a8b3; /* pale slate */
   --alice: #e2effe; /* alice blue */
 
+  /* The fluid palette. Used only by the moving background behind the
+     opening screen and the founder screen. Never for text. */
+  --slate-blue: #816de6;
+  --olive: #a6b45d;
+  --spruce: #0e5302;
+  --periwinkle: #9e99e7;
+  --lavender: #dbe4fa;
+  --forest: #134d11;
+
   --space-xs: 14.4px;
   --space-sm: 18.72px;
   --space-md: 28.8px;
@@ -73,6 +82,11 @@
   --text-body--line-height: var(--type-leading);
   --text-caption: var(--size-caption);
   --text-caption--line-height: 1.35;
+  /* The opening statement and the founder quote carry their own scale. */
+  --text-hero: clamp(2.5rem, 6vw, 5rem);
+  --text-hero--line-height: 1.02;
+  --text-hero-sm: clamp(1.5rem, 2.6vw, 2.25rem);
+  --text-hero-sm--line-height: 1.15;
 
   --font-weight-*: initial;
   --font-weight-regular: 400;
@@ -256,16 +270,80 @@
 /* Sections                                                            */
 /* ------------------------------------------------------------------ */
 
-/* The site is one page. Sections are separated by generous space rather
-   than by rules, and scroll-margin keeps anchors clear of the sticky header. */
+/* Sections are separated by generous space rather than by rules, and
+   scroll-margin keeps anchors clear of the fixed header. */
 .section {
   padding-block: calc(var(--space-lg) * 2);
   scroll-margin-top: var(--header-height);
 }
 
-.section-first {
-  padding-block: calc(var(--space-lg) * 2.5) calc(var(--space-lg) * 2);
+/* A screen of its own. Content sits centred with air above and below. */
+.section-full {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 100svh;
+  padding-block: calc(var(--header-height) + var(--space-lg)) calc(var(--space-lg) * 2);
   scroll-margin-top: var(--header-height);
+}
+
+/* ------------------------------------------------------------------ */
+/* Fluid background                                                    */
+/* ------------------------------------------------------------------ */
+
+.fluid {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  background: var(--lavender);
+  pointer-events: none;
+}
+
+/* Radial blooms rather than circles, so the system keeps its zero radii. */
+.fluid-bloom {
+  position: absolute;
+  width: 85vmax;
+  height: 85vmax;
+  filter: blur(60px);
+  will-change: transform;
+}
+
+.fluid-bloom-1 {
+  background: radial-gradient(closest-side, color-mix(in srgb, var(--slate-blue) 70%, transparent), transparent 70%);
+  top: -30%;
+  left: -20%;
+}
+
+.fluid-bloom-2 {
+  background: radial-gradient(closest-side, color-mix(in srgb, var(--periwinkle) 75%, transparent), transparent 70%);
+  top: 10%;
+  right: -25%;
+}
+
+.fluid-bloom-3 {
+  background: radial-gradient(closest-side, color-mix(in srgb, var(--olive) 55%, transparent), transparent 70%);
+  bottom: -35%;
+  left: 15%;
+}
+
+.fluid-bloom-4 {
+  background: radial-gradient(closest-side, color-mix(in srgb, var(--spruce) 30%, transparent), transparent 70%);
+  bottom: -20%;
+  right: 5%;
+}
+
+.fluid-bloom-5 {
+  background: radial-gradient(closest-side, color-mix(in srgb, var(--forest) 26%, transparent), transparent 70%);
+  top: 25%;
+  left: 30%;
+}
+
+/* Content above the field. */
+.fluid-over {
+  position: relative;
+  z-index: 1;
 }
 
 /* ------------------------------------------------------------------ */
@@ -352,5 +430,50 @@
 
   .dim:hover {
     opacity: 0.82;
+  }
+
+  /* The colour field drifts. Long, offset, alternating loops mean the
+     blooms never return to the same arrangement twice in a viewing. */
+  .fluid-bloom-1 {
+    animation: drift-a 34s var(--ease) infinite alternate;
+  }
+  .fluid-bloom-2 {
+    animation: drift-b 43s var(--ease) infinite alternate;
+  }
+  .fluid-bloom-3 {
+    animation: drift-c 51s var(--ease) infinite alternate;
+  }
+  .fluid-bloom-4 {
+    animation: drift-b 61s var(--ease) infinite alternate-reverse;
+  }
+  .fluid-bloom-5 {
+    animation: drift-a 47s var(--ease) infinite alternate-reverse;
+  }
+
+  @keyframes drift-a {
+    from {
+      transform: translate3d(0, 0, 0) scale(1);
+    }
+    to {
+      transform: translate3d(18vw, 12vh, 0) scale(1.25);
+    }
+  }
+
+  @keyframes drift-b {
+    from {
+      transform: translate3d(0, 0, 0) scale(1.15);
+    }
+    to {
+      transform: translate3d(-22vw, 16vh, 0) scale(0.9);
+    }
+  }
+
+  @keyframes drift-c {
+    from {
+      transform: translate3d(0, 0, 0) scale(0.95);
+    }
+    to {
+      transform: translate3d(14vw, -18vh, 0) scale(1.3);
+    }
   }
 }

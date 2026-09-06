@@ -130,7 +130,23 @@ Until ABC Camera is licensed, headings and the wordmark fall back to **Bricolage
 Motion is slow, small and optional. Blocks and grid cells fade up 8px over 1.4s as they enter the viewport, staggered across a row, so sections dissolve into one another rather than snapping in. Nav links and filters draw an indigo rule in from the left on hover, and the rule stays drawn on whichever section is on screen. Calls to action carry an arrow that steps forward. Artwork lifts 5px under the pointer, with no shadow and no crop. Every animation is disabled under `prefers-reduced-motion`, and nothing is hidden without JavaScript. There are no decorative canvas animations.
 
 ### Structure (I&I addition)
-The site is a single scrolling page. The menu is anchor links, each section carries the id its anchor points at, and `scroll-margin-top` holds anchors clear of the 63px header. Sections are separated by whitespace of `2 × {spacing.lg}`, never by rules.
+The home page is a sequence of full-height screens: opening statement, four placements, services, about, founder, subscribe. Each fills `100svh` with its content centred and the remaining space left empty. Placements, Visual Diary, Blog and Contact continue as pages of their own, linked from the nav.
+
+The header is `position: fixed` and fully transparent, so screens pass beneath it. The footer sits at the foot of the document rather than pinned, so it never floats over a screen.
+
+### Fluid background (I&I addition)
+The opening screen and the founder screen carry a slowly moving colour field: five blurred radial blooms on a lavender ground, each on its own long alternating loop, so the arrangement never repeats within a visit. It is decorative, hidden from screen readers, and holds still under `prefers-reduced-motion`.
+
+| Token | Hex |
+|---|---|
+| Medium Slate Blue | #816DE6 |
+| Muted Olive | #A6B45D |
+| Dark Spruce | #0E5302 |
+| Soft Periwinkle | #9E99E7 |
+| Lavender | #DBE4FA |
+| Black Forest | #134D11 |
+
+The greens sit at low opacity so the field stays light enough for ink text to stay readable across it. These six are used by the background only, never for type.
 
 ### Captions (I&I addition)
 Artwork captions are one line at 11.5px: artist, title, year. Medium is recorded in the data but not shown.

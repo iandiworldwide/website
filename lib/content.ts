@@ -16,16 +16,16 @@ export const siteConfig = {
     "Independent art advisory specializing in emerging to mid-career artists of the Americas. Making art accessible to everyone.",
 };
 
-// The site is a single page. Every nav item is an anchor to a section on it,
-// and the id must match the section's id. The first three sit centre in the
-// header, the rest right.
+// Two kinds of entry. An href starting with "#" scrolls to a section on the
+// home page and its id must match that section. An href starting with "/" is
+// its own page. The first three sit centre in the header, the rest right.
 export const navigation = [
-  { name: "About", href: "#about" },
   { name: "Services", href: "#services" },
-  { name: "Placements", href: "#placements" },
-  { name: "Visual Diary", href: "#visual-diary" },
-  { name: "Blog", href: "#blog" },
-  { name: "Contact", href: "#contact" },
+  { name: "About", href: "#about" },
+  { name: "Founder", href: "#founder" },
+  { name: "Placements", href: "/placements" },
+  { name: "Visual Diary", href: "/visual-diary" },
+  { name: "Blog", href: "/blog" },
 ];
 
 export const footerContent = {
@@ -40,16 +40,26 @@ export const footerContent = {
 /* Home                                                                */
 /* ------------------------------------------------------------------ */
 
-// The opening of the page: a small line above, a statement, then two sentences.
-// Nothing else. Keep the lede to two sentences.
+// The opening screen: a small line above, a large statement, one sentence.
+// It sits full height over the moving gradient, so keep it short.
 export const homeContent = {
   eyebrow: "Independent Art Advisory — London & Miami",
-  headline: "We advise on significance, not speculation.",
-  lede: "I&I Worldwide is an independent art advisory specializing in emerging to mid-career artists of the Americas. Our mission is to make art accessible to everyone.",
+  headline: "Making art accessible to everyone.",
+  lede: "I&I Worldwide specializes in emerging to mid-career artists of the Americas.",
   testimonialsLabel: "Clients",
   ctaLabel: "Begin",
   cta: "Book a free consultation",
-  ctaLink: "#contact",
+  ctaLink: "/contact",
+};
+
+// The full-height subscribe screen near the foot of the home page.
+// It sends people to the Substack rather than to a form that goes nowhere.
+export const subscribeContent = {
+  eyebrow: "Substack",
+  headline: "Letters on collecting, sent now and then.",
+  lede: "Notes from the fairs, the studios and the rooms where early decisions get made.",
+  cta: "Subscribe on Substack",
+  ctaLink: "https://iandiworldwide.substack.com",
 };
 
 export const testimonials = [
@@ -100,7 +110,7 @@ export const aboutContent = {
     "Every recommendation I make is rooted in deep research — into the artists I source as much as into my clients. I spend time understanding who you are and what's important to you before I bring a single work to your attention. The result is a collection that is a true reflection of you and your journey.",
   ctaLabel: "Begin",
   cta: "Book a free consultation",
-  ctaLink: "#contact",
+  ctaLink: "/contact",
 };
 
 /* ------------------------------------------------------------------ */
@@ -159,7 +169,7 @@ export const servicesContent = {
   ],
   ctaLabel: "Begin",
   cta: "Schedule a consultation",
-  ctaLink: "#contact",
+  ctaLink: "/contact",
 };
 
 /* ------------------------------------------------------------------ */
@@ -189,9 +199,13 @@ export const placementsContent = {
   intro: "A curated selection of works placed with our clients.",
   filterLabel: "Filter by category",
   gridLabel: "Placed works",
+  // The home page shows this many works, then this link to the full page.
+  previewCount: 4,
+  previewCta: "View all placements",
+  previewCtaLink: "/placements",
   ctaLabel: "Enquire",
   cta: "Contact us about upcoming placements",
-  ctaLink: "#contact",
+  ctaLink: "/contact",
 };
 
 export const placementCategories: { value: PlacementCategory | "all"; label: string }[] = [

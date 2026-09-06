@@ -37,7 +37,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <RevealObserver />
         <Header />
         {/* Bottom padding clears the fixed 63px footer. */}
-        <main className="pb-header">{children}</main>
+        <main>{children}</main>
         <Footer />
       </body>
     </html>

@@ -8,8 +8,9 @@ All website copy is in ONE file: **`lib/content.ts`**
 
 ### Finding What You Need
 
-The site is a **single page**. Every menu item is an anchor that scrolls to a
-section further down, and each section has its own content object below.
+The home page is a sequence of full-height screens. Some menu items scroll to
+a screen on it, others open a page of their own. Each has its own content
+object below.
 
 | Section | Content Object | File |
 |------|----------------|------|
@@ -26,17 +27,28 @@ section further down, and each section has its own content object below.
 
 Section labels ("Practice", "Begin", "Newsletter" and so on), link text, form labels, and placeholder text are all in these objects too. Nothing visible on the site is written inside the page files.
 
-### The opening statement
+### The opening screen
 
-`homeContent` holds the three lines at the top of the page and nothing else:
-`eyebrow` (the small line above), `headline` (the statement), and `lede`
-(keep it to two sentences).
+`homeContent` holds the three lines over the moving gradient and nothing
+else: `eyebrow` (the small line above), `headline` (the large statement), and
+`lede` (one sentence). Keep them short — they sit alone on a full screen.
+
+### The subscribe screen
+
+`subscribeContent` holds the last screen of the home page. Its `ctaLink`
+points at the Substack.
 
 ### The menu
 
-Each entry in `navigation` is `{ name, href }` where `href` is `#` plus the
-id of the section it scrolls to. If you rename an id, change it in both the
-navigation list and the matching file in `components/sections/`.
+Each entry in `navigation` is `{ name, href }`. An `href` starting with `#`
+scrolls to a screen on the home page and must match that screen's id; an
+`href` starting with `/` opens a page. If you rename an id, change it in both
+the navigation list and the matching file in `components/sections/`.
+
+### Placements on the home page
+
+`placementsContent.previewCount` sets how many works the home page shows
+before the link through to the full Placements page.
 
 ### Artwork captions
 
