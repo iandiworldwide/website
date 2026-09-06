@@ -3,7 +3,7 @@
 import { FormEvent, useState } from "react";
 import { contactContent } from "@/lib/content";
 
-export default function Contact() {
+export default function ContactSection() {
   const [formData, setFormData] = useState({ name: "", email: "", message: "" });
   const [submitted, setSubmitted] = useState(false);
   const { form } = contactContent;
@@ -22,14 +22,14 @@ export default function Contact() {
   };
 
   return (
-    <article className="px-xs py-lg md:px-md">
-      <section data-reveal className="grid gap-md md:grid-cols-4">
-        <h1>{contactContent.title}</h1>
+    <section id="contact" aria-labelledby="contact-heading" className="section px-xs md:px-md">
+      <div data-reveal className="grid gap-md md:grid-cols-4">
+        <h2 id="contact-heading">{contactContent.title}</h2>
         <p className="md:col-span-2">{contactContent.description}</p>
-      </section>
+      </div>
 
-      <section data-reveal className="mt-lg grid gap-md md:grid-cols-4">
-        <h2>{contactContent.detailsLabel}</h2>
+      <div data-reveal className="mt-lg grid gap-md md:grid-cols-4">
+        <h3>{contactContent.detailsLabel}</h3>
         <ul className="md:col-span-2">
           <li>{contactContent.address}</li>
           <li>
@@ -39,13 +39,13 @@ export default function Contact() {
             <a href={`tel:${contactContent.phone}`}>{contactContent.phone}</a>
           </li>
         </ul>
-      </section>
+      </div>
 
-      <section data-reveal className="mt-lg grid gap-md md:grid-cols-4">
-        <h2>{contactContent.formLabel}</h2>
+      <div data-reveal className="mt-lg grid gap-md md:grid-cols-4">
+        <h3>{contactContent.formLabel}</h3>
         <form onSubmit={handleSubmit} className="space-y-md md:col-span-2">
           <label className="block">
-            <span className="block">{form.nameLabel}</span>
+            <span className="block text-caption">{form.nameLabel}</span>
             <input
               type="text"
               name="name"
@@ -57,7 +57,7 @@ export default function Contact() {
           </label>
 
           <label className="block">
-            <span className="block">{form.emailLabel}</span>
+            <span className="block text-caption">{form.emailLabel}</span>
             <input
               type="email"
               name="email"
@@ -69,7 +69,7 @@ export default function Contact() {
           </label>
 
           <label className="block">
-            <span className="block">{form.messageLabel}</span>
+            <span className="block text-caption">{form.messageLabel}</span>
             <textarea
               name="message"
               value={formData.message}
@@ -86,16 +86,16 @@ export default function Contact() {
 
           {submitted && <p role="status">{form.success}</p>}
         </form>
-      </section>
+      </div>
 
-      <section data-reveal className="mt-lg grid gap-md md:grid-cols-4">
-        <h2>{contactContent.expectLabel}</h2>
+      <div data-reveal className="mt-lg grid gap-md md:grid-cols-4">
+        <h3>{contactContent.expectLabel}</h3>
         <div className="space-y-xs md:col-span-2">
           {contactContent.expect.map((paragraph) => (
             <p key={paragraph}>{paragraph}</p>
           ))}
         </div>
-      </section>
-    </article>
+      </div>
+    </section>
   );
 }

@@ -127,7 +127,13 @@ The wordmark is pinned top left inside the sticky header on every page, and is t
 Until ABC Camera is licensed, headings and the wordmark fall back to **Bricolage Grotesque**, a free grotesque with ink traps that echo ABC Camera's light traps. See `public/fonts/README.md`.
 
 ### Motion (I&I addition)
-Motion is slow, small and optional. Sections and grid cells rise 14px into place as they enter the viewport, staggered across a row. Nav links and filters draw an indigo rule in from the left on hover. Calls to action carry an arrow that steps forward. Artwork lifts 5px under the pointer, with no shadow and no crop. Every animation is disabled under `prefers-reduced-motion`, and nothing is hidden without JavaScript.
+Motion is slow, small and optional. Blocks and grid cells fade up 8px over 1.4s as they enter the viewport, staggered across a row, so sections dissolve into one another rather than snapping in. Nav links and filters draw an indigo rule in from the left on hover, and the rule stays drawn on whichever section is on screen. Calls to action carry an arrow that steps forward. Artwork lifts 5px under the pointer, with no shadow and no crop. Every animation is disabled under `prefers-reduced-motion`, and nothing is hidden without JavaScript. There are no decorative canvas animations.
+
+### Structure (I&I addition)
+The site is a single scrolling page. The menu is anchor links, each section carries the id its anchor points at, and `scroll-margin-top` holds anchors clear of the 63px header. Sections are separated by whitespace of `2 × {spacing.lg}`, never by rules.
+
+### Captions (I&I addition)
+Artwork captions are one line at 11.5px: artist, title, year. Medium is recorded in the data but not shown.
 
 ### Principles
 - **One size, one weight, everywhere.** All three typographic roles resolve to the identical 14.4px/400/1.4 setting — this system does not use size or weight to build hierarchy; that job is delegated entirely to the oversized logo artwork and the image grid's layout scale.

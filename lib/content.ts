@@ -16,22 +16,23 @@ export const siteConfig = {
     "Independent art advisory specializing in emerging to mid-career artists of the Americas. Making art accessible to everyone.",
 };
 
-// Order matters: the first three sit centre in the header, the rest right.
+// The site is a single page. Every nav item is an anchor to a section on it,
+// and the id must match the section's id. The first three sit centre in the
+// header, the rest right.
 export const navigation = [
-  { name: "Home", href: "/" },
-  { name: "About", href: "/about" },
-  { name: "Services", href: "/services" },
-  { name: "Placements", href: "/placements" },
-  { name: "Visual Diary", href: "/visual-diary" },
-  { name: "Blog", href: "/blog" },
-  { name: "Contact", href: "/contact" },
+  { name: "About", href: "#about" },
+  { name: "Services", href: "#services" },
+  { name: "Placements", href: "#placements" },
+  { name: "Visual Diary", href: "#visual-diary" },
+  { name: "Blog", href: "#blog" },
+  { name: "Contact", href: "#contact" },
 ];
 
 export const footerContent = {
   copyright: "© 2024 I&I Worldwide",
   socials: [
-    { name: "Instagram", url: "https://instagram.com" },
-    { name: "LinkedIn", url: "https://linkedin.com" },
+    { name: "Instagram", url: "https://www.instagram.com/i.and.i.worldwide" },
+    { name: "Substack", url: "https://iandiworldwide.substack.com" },
   ],
 };
 
@@ -39,14 +40,16 @@ export const footerContent = {
 /* Home                                                                */
 /* ------------------------------------------------------------------ */
 
+// The opening of the page: a small line above, a statement, then two sentences.
+// Nothing else. Keep the lede to two sentences.
 export const homeContent = {
-  title: "I&I Worldwide",
-  subtitle: "Independent Art Advisory",
-  gridLabel: "Selected placements", // screen-reader name for the image grid
+  eyebrow: "Independent Art Advisory — London & Miami",
+  headline: "We advise on significance, not speculation.",
+  lede: "I&I Worldwide is an independent art advisory specializing in emerging to mid-career artists of the Americas. Our mission is to make art accessible to everyone.",
   testimonialsLabel: "Clients",
   ctaLabel: "Begin",
   cta: "Book a free consultation",
-  ctaLink: "/contact",
+  ctaLink: "#contact",
 };
 
 export const testimonials = [
@@ -70,9 +73,6 @@ export const testimonials = [
 
 export const aboutContent = {
   title: "About",
-  headline:
-    "I&I Worldwide is an independent art advisory specializing in emerging to mid-career artists of the Americas. Our mission is to make art accessible to everyone.",
-  practiceLabel: "Practice",
   intro:
     "With a discerning eye and deep knowledge of the contemporary art landscape, we work closely with private clients, corporations, and institutions—whether you're acquiring your first piece or building upon an established collection.",
   approach:
@@ -100,7 +100,7 @@ export const aboutContent = {
     "Every recommendation I make is rooted in deep research — into the artists I source as much as into my clients. I spend time understanding who you are and what's important to you before I bring a single work to your attention. The result is a collection that is a true reflection of you and your journey.",
   ctaLabel: "Begin",
   cta: "Book a free consultation",
-  ctaLink: "/contact",
+  ctaLink: "#contact",
 };
 
 /* ------------------------------------------------------------------ */
@@ -159,7 +159,7 @@ export const servicesContent = {
   ],
   ctaLabel: "Begin",
   cta: "Schedule a consultation",
-  ctaLink: "/contact",
+  ctaLink: "#contact",
 };
 
 /* ------------------------------------------------------------------ */
@@ -191,7 +191,7 @@ export const placementsContent = {
   gridLabel: "Placed works",
   ctaLabel: "Enquire",
   cta: "Contact us about upcoming placements",
-  ctaLink: "/contact",
+  ctaLink: "#contact",
 };
 
 export const placementCategories: { value: PlacementCategory | "all"; label: string }[] = [

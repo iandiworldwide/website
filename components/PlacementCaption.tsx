@@ -1,14 +1,11 @@
 import type { Placement } from "@/lib/content";
 
-// Catalogue caption: artist / title, year / medium.
+// Deliberately discreet: one line, small, artist and title and year only.
+// The medium is held in the data but not shown.
 export default function PlacementCaption({ work }: { work: Placement }) {
   return (
     <>
-      {work.artist}
-      <br />
-      {work.title}, {work.year}
-      <br />
-      <span className="text-slate">{work.medium}</span>
+      {work.artist}, {work.title}, {work.year}
     </>
   );
 }

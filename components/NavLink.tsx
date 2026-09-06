@@ -1,24 +1,20 @@
-"use client";
-
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 
 interface NavLinkProps {
   href: string;
   children: React.ReactNode;
+  /** True when this link's section is the one on screen. */
+  current?: boolean;
   className?: string;
 }
 
 // The rule under a nav link draws in from the left on hover, and stays
-// drawn on the current page.
-export default function NavLink({ href, children, className = "" }: NavLinkProps) {
-  const pathname = usePathname();
-  const current = href === "/" ? pathname === "/" : pathname.startsWith(href);
-
+// drawn while its section is the one you are reading.
+export default function NavLink({ href, children, current, className = "" }: NavLinkProps) {
   return (
     <Link
       href={href}
-      aria-current={current ? "page" : undefined}
+      aria-current={current ? "true" : undefined}
       className={`link-sweep whitespace-nowrap ${className}`}
     >
       {children}

@@ -8,12 +8,15 @@ All website copy is in ONE file: **`lib/content.ts`**
 
 ### Finding What You Need
 
-| Page | Content Object | File |
+The site is a **single page**. Every menu item is an anchor that scrolls to a
+section further down, and each section has its own content object below.
+
+| Section | Content Object | File |
 |------|----------------|------|
 | Site name, wordmark, browser title | `siteConfig` | `lib/content.ts` |
-| Navigation | `navigation` | `lib/content.ts` |
+| Menu (anchors) | `navigation` | `lib/content.ts` |
 | Footer | `footerContent` | `lib/content.ts` |
-| Home | `homeContent`, `testimonials`, `placements` | `lib/content.ts` |
+| Opening statement | `homeContent`, `testimonials` | `lib/content.ts` |
 | About | `aboutContent` | `lib/content.ts` |
 | Services | `servicesContent` | `lib/content.ts` |
 | Placements | `placementsContent`, `placementCategories`, `placements` | `lib/content.ts` |
@@ -22,6 +25,23 @@ All website copy is in ONE file: **`lib/content.ts`**
 | Contact (details, form, what to expect) | `contactContent` | `lib/content.ts` |
 
 Section labels ("Practice", "Begin", "Newsletter" and so on), link text, form labels, and placeholder text are all in these objects too. Nothing visible on the site is written inside the page files.
+
+### The opening statement
+
+`homeContent` holds the three lines at the top of the page and nothing else:
+`eyebrow` (the small line above), `headline` (the statement), and `lede`
+(keep it to two sentences).
+
+### The menu
+
+Each entry in `navigation` is `{ name, href }` where `href` is `#` plus the
+id of the section it scrolls to. If you rename an id, change it in both the
+navigation list and the matching file in `components/sections/`.
+
+### Artwork captions
+
+Captions show artist, title and year on one small line. The `medium` field is
+still kept on each placement but is not displayed.
 
 ### Adding images
 

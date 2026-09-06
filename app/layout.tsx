@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Bricolage_Grotesque, Fraunces } from "next/font/google";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import GenerativeTree from "@/components/GenerativeTree";
 import RevealObserver from "@/components/RevealObserver";
 import { siteConfig } from "@/lib/content";
 import "./globals.css";
@@ -39,8 +38,6 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <Header />
         {/* Bottom padding clears the fixed 63px footer. */}
         <main className="pb-header">{children}</main>
-        {/* Small looping tree pinned above the footer, bottom right. */}
-        <GenerativeTree />
         <Footer />
       </body>
     </html>

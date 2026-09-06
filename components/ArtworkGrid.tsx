@@ -40,7 +40,7 @@ export default function ArtworkGrid({ items, label }: ArtworkGridProps) {
                 />
               )}
             </div>
-            <figcaption className="mt-xs px-xs">{item.caption}</figcaption>
+            <figcaption className="mt-xs px-xs text-caption">{item.caption}</figcaption>
           </figure>
         </li>
       ))}

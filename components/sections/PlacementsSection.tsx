@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import ArtworkGrid from "@/components/ArtworkGrid";
 import PlacementCaption from "@/components/PlacementCaption";
 import {
@@ -11,20 +10,20 @@ import {
   type PlacementCategory,
 } from "@/lib/content";
 
-export default function Placements() {
+export default function PlacementsSection() {
   const [selected, setSelected] = useState<PlacementCategory | "all">("all");
 
   const filtered =
     selected === "all" ? placements : placements.filter((work) => work.category === selected);
 
   return (
-    <article className="py-lg">
-      <section className="grid gap-md px-xs md:grid-cols-4 md:px-md">
-        <h1>{placementsContent.title}</h1>
+    <section id="placements" aria-labelledby="placements-heading" className="section">
+      <div data-reveal className="grid gap-md px-xs md:grid-cols-4 md:px-md">
+        <h2 id="placements-heading">{placementsContent.title}</h2>
         <p className="md:col-span-2">{placementsContent.intro}</p>
-      </section>
+      </div>
 
-      {/* Filters are plain text; the active one is underlined. */}
+      {/* Filters are plain text; the active one keeps its rule. */}
       <ul
         aria-label={placementsContent.filterLabel}
         className="mt-lg flex flex-wrap gap-md px-xs md:px-md"
@@ -43,7 +42,7 @@ export default function Placements() {
         ))}
       </ul>
 
-      <section className="mt-md">
+      <div className="mt-md">
         <ArtworkGrid
           label={placementsContent.gridLabel}
           items={filtered.map((work) => ({
@@ -53,16 +52,7 @@ export default function Placements() {
             caption: <PlacementCaption work={work} />,
           }))}
         />
-      </section>
-
-      <section data-reveal className="mt-lg grid gap-md px-xs md:grid-cols-4 md:px-md">
-        <h2>{placementsContent.ctaLabel}</h2>
-        <p className="md:col-span-2">
-          <Link href={placementsContent.ctaLink} className="cta">
-            {placementsContent.cta}
-          </Link>
-        </p>
-      </section>
-    </article>
+      </div>
+    </section>
   );
 }

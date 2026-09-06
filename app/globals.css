@@ -40,6 +40,8 @@
 
   --type-size: 14.4px;
   --type-leading: 1.4;
+  /* Captions, eyebrows and metadata: deliberately discreet. */
+  --size-caption: 11.5px;
 
   /* Heading scale. Headings are the only type larger than the body size. */
   --size-h1: clamp(1.625rem, 3vw, 2.25rem);
@@ -69,6 +71,8 @@
   --text-*: initial;
   --text-body: var(--type-size);
   --text-body--line-height: var(--type-leading);
+  --text-caption: var(--size-caption);
+  --text-caption--line-height: 1.35;
 
   --font-weight-*: initial;
   --font-weight-regular: 400;
@@ -249,6 +253,22 @@
 }
 
 /* ------------------------------------------------------------------ */
+/* Sections                                                            */
+/* ------------------------------------------------------------------ */
+
+/* The site is one page. Sections are separated by generous space rather
+   than by rules, and scroll-margin keeps anchors clear of the sticky header. */
+.section {
+  padding-block: calc(var(--space-lg) * 2);
+  scroll-margin-top: var(--header-height);
+}
+
+.section-first {
+  padding-block: calc(var(--space-lg) * 2.5) calc(var(--space-lg) * 2);
+  scroll-margin-top: var(--header-height);
+}
+
+/* ------------------------------------------------------------------ */
 /* Links                                                               */
 /* ------------------------------------------------------------------ */
 
@@ -267,7 +287,7 @@
 
 .link-sweep:hover,
 .link-sweep:focus-visible,
-.link-sweep[aria-current="page"],
+.link-sweep[aria-current],
 .link-sweep[aria-pressed="true"] {
   background-size: 100% 1px;
 }
@@ -305,15 +325,15 @@
      everything simply renders in place. */
   .reveal-ready [data-reveal] {
     opacity: 0;
-    transform: translateY(14px);
+    transform: translateY(8px);
   }
 
   .reveal-ready [data-reveal][data-revealed] {
     opacity: 1;
     transform: none;
     transition:
-      opacity 0.85s var(--ease) var(--reveal-delay, 0ms),
-      transform 0.85s var(--ease) var(--reveal-delay, 0ms);
+      opacity 1.4s var(--ease) var(--reveal-delay, 0ms),
+      transform 1.4s var(--ease) var(--reveal-delay, 0ms);
   }
 
   /* Artwork lifts a hair on hover. No shadow, no scale, no crop. */
