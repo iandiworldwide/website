@@ -1,10 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
 import { usePathname } from "next/navigation";
 import NavLink from "@/components/NavLink";
-import { navigation, siteConfig } from "@/lib/content";
+import Wordmark from "@/components/Wordmark";
+import { navigation } from "@/lib/content";
 
 // The first three links sit centre, the rest right.
 const centre = navigation.slice(0, 3);
@@ -75,9 +75,7 @@ export default function Header() {
         className="hidden h-full md:grid md:grid-cols-3 md:items-center md:px-md"
       >
         <div className="justify-self-start">
-          <Link href="/" aria-label={siteConfig.name} className="wordmark">
-            {siteConfig.logo}
-          </Link>
+          <Wordmark />
         </div>
         <ul className="flex justify-center gap-md">
           {centre.map((item) => (
@@ -102,9 +100,7 @@ export default function Header() {
       {/* Mobile: a top pair plus a bottom row. No hamburger. */}
       <nav aria-label="Primary" className="flex h-full flex-col justify-center px-xs md:hidden">
         <div className="flex items-center justify-between">
-          <Link href="/" aria-label={siteConfig.name} className="wordmark">
-            {siteConfig.logo}
-          </Link>
+          <Wordmark />
           <NavLink href={resolve(mobileTop.href)} current={isCurrent(mobileTop.href)}>
             {mobileTop.name}
           </NavLink>

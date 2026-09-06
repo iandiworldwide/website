@@ -55,7 +55,16 @@
   /* Heading scale. Headings are the only type larger than the body size. */
   --size-h1: clamp(1.625rem, 3vw, 2.25rem);
   --size-h2: clamp(1rem, 1.3vw, 1.25rem);
-  --size-wordmark: clamp(1.25rem, 1.8vw, 1.5rem);
+  --size-wordmark: clamp(1.125rem, 1.6vw, 1.5rem);
+
+  /* The wordmark cycles through these. Medium tones from the brand palette. */
+  --mark-r: #c22e44;
+  --mark-o: #d16239;
+  --mark-y: #fdc300;
+  --mark-g: #9c9532;
+  --mark-b: #287ec9;
+  --mark-i: #7965a7;
+  --mark-v: #e476a0;
 
   /* Motion */
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
@@ -249,21 +258,22 @@
 /* The oversized logotype                                              */
 /* ------------------------------------------------------------------ */
 
-/* Pinned in the top-left corner of the sticky header on every page.
-   Content, not UI: swap this text for the hand-lettered artwork when supplied.
-   The only 700 weight in the system, because a logotype is artwork. */
+/* Pinned in the top-left corner of the header on every page. Content, not
+   UI: swap this text for the hand-lettered artwork when supplied. The one
+   place the system uses a weight other than 400, because a logotype is
+   artwork rather than UI text. */
 .wordmark {
-  display: inline-block;
+  display: inline-flex;
   font-family: var(--font-display);
   font-size: var(--size-wordmark);
-  font-weight: 700;
-  line-height: 1;
+  font-weight: 600;
+  line-height: 1.24;
   letter-spacing: normal;
-  color: var(--ink);
+  white-space: nowrap;
 }
 
-.wordmark:hover {
-  color: var(--indigo);
+.wordmark span {
+  color: var(--ink);
 }
 
 /* ------------------------------------------------------------------ */
@@ -301,45 +311,63 @@
   pointer-events: none;
 }
 
+/* Oversized and inset, so the swirl never brings an edge into view. */
+.fluid-swirl {
+  position: absolute;
+  inset: -22%;
+  will-change: transform;
+}
+
 /* Radial blooms rather than circles, so the system keeps its zero radii.
-   Smaller and less blurred than the ground they sit on, so their movement
-   actually reads. */
+   Small and lightly blurred, so their movement actually reads. */
 .fluid-bloom {
   position: absolute;
-  width: 62vmax;
-  height: 62vmax;
-  filter: blur(48px);
+  width: 58vmax;
+  height: 58vmax;
+  filter: blur(44px);
   will-change: transform, opacity;
 }
 
 .fluid-bloom-1 {
-  background: radial-gradient(closest-side, color-mix(in srgb, var(--slate-blue) 70%, transparent), transparent 70%);
+  background: radial-gradient(closest-side, color-mix(in srgb, var(--slate-blue) 85%, transparent), transparent 70%);
   top: -30%;
   left: -20%;
 }
 
 .fluid-bloom-2 {
-  background: radial-gradient(closest-side, color-mix(in srgb, var(--periwinkle) 75%, transparent), transparent 70%);
+  background: radial-gradient(closest-side, color-mix(in srgb, var(--periwinkle) 88%, transparent), transparent 70%);
   top: 10%;
   right: -25%;
 }
 
 .fluid-bloom-3 {
-  background: radial-gradient(closest-side, color-mix(in srgb, var(--olive) 55%, transparent), transparent 70%);
+  background: radial-gradient(closest-side, color-mix(in srgb, var(--olive) 70%, transparent), transparent 70%);
   bottom: -35%;
   left: 15%;
 }
 
 .fluid-bloom-4 {
-  background: radial-gradient(closest-side, color-mix(in srgb, var(--spruce) 30%, transparent), transparent 70%);
+  background: radial-gradient(closest-side, color-mix(in srgb, var(--spruce) 40%, transparent), transparent 70%);
   bottom: -20%;
   right: 5%;
 }
 
 .fluid-bloom-5 {
-  background: radial-gradient(closest-side, color-mix(in srgb, var(--forest) 26%, transparent), transparent 70%);
+  background: radial-gradient(closest-side, color-mix(in srgb, var(--forest) 40%, transparent), transparent 70%);
   top: 25%;
   left: 30%;
+}
+
+.fluid-bloom-6 {
+  background: radial-gradient(closest-side, color-mix(in srgb, var(--slate-blue) 78%, transparent), transparent 70%);
+  bottom: 5%;
+  left: 45%;
+}
+
+.fluid-bloom-7 {
+  background: radial-gradient(closest-side, color-mix(in srgb, var(--olive) 66%, transparent), transparent 70%);
+  top: 5%;
+  left: 8%;
 }
 
 /* Content above the field. */
@@ -425,6 +453,44 @@
     transform: translateY(-5px);
   }
 
+  /* A band of colour travels through the wordmark, each letter picking up
+     the cycle a beat after the one before it. Hovering freezes it. */
+  .wordmark span {
+    animation: mark-cycle 11s linear infinite;
+    animation-delay: calc(var(--i) * -0.62s);
+  }
+
+  .wordmark:hover span {
+    animation-play-state: paused;
+  }
+
+  @keyframes mark-cycle {
+    0% {
+      color: var(--mark-r);
+    }
+    14% {
+      color: var(--mark-o);
+    }
+    28% {
+      color: var(--mark-y);
+    }
+    43% {
+      color: var(--mark-g);
+    }
+    57% {
+      color: var(--mark-b);
+    }
+    71% {
+      color: var(--mark-i);
+    }
+    86% {
+      color: var(--mark-v);
+    }
+    100% {
+      color: var(--mark-r);
+    }
+  }
+
   /* Diary images settle back slightly under the pointer. */
   .dim {
     transition: opacity 0.5s var(--ease);
@@ -435,22 +501,43 @@
   }
 
   /* The colour field flows. Each bloom travels a closed loop of its own at
-     its own tempo, swelling and fading as it goes, so the field keeps
-     moving and the arrangement never quite repeats. */
+     its own tempo, swelling and fading as it goes, and the whole set is
+     carried round by a slow counter-swirl, so the field is always visibly
+     moving without ever hurrying. */
+  .fluid-swirl {
+    animation: swirl 48s linear infinite;
+  }
+
   .fluid-bloom-1 {
-    animation: flow-a 19s linear infinite;
+    animation: flow-a 13s linear infinite;
   }
   .fluid-bloom-2 {
-    animation: flow-b 23s linear infinite;
+    animation: flow-b 16s linear infinite;
   }
   .fluid-bloom-3 {
-    animation: flow-c 17s linear infinite;
+    animation: flow-c 11s linear infinite;
   }
   .fluid-bloom-4 {
-    animation: flow-b 29s linear infinite reverse;
+    animation: flow-b 19s linear infinite reverse;
   }
   .fluid-bloom-5 {
-    animation: flow-a 26s linear infinite reverse;
+    animation: flow-a 17s linear infinite reverse;
+  }
+  .fluid-bloom-6 {
+    animation: flow-c 21s linear infinite reverse;
+  }
+  .fluid-bloom-7 {
+    animation: flow-a 15s linear infinite;
+    animation-delay: -7s;
+  }
+
+  @keyframes swirl {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
   }
 
   @keyframes flow-a {
@@ -459,15 +546,15 @@
       opacity: 0.85;
     }
     25% {
-      transform: translate3d(26vw, 14vh, 0) scale(1.3);
+      transform: translate3d(38vw, 22vh, 0) scale(1.45);
       opacity: 1;
     }
     50% {
-      transform: translate3d(34vw, 38vh, 0) scale(0.95);
+      transform: translate3d(48vw, 52vh, 0) scale(0.85);
       opacity: 0.7;
     }
     75% {
-      transform: translate3d(10vw, 24vh, 0) scale(1.15);
+      transform: translate3d(16vw, 36vh, 0) scale(1.25);
       opacity: 0.95;
     }
     100% {
@@ -482,15 +569,15 @@
       opacity: 0.75;
     }
     25% {
-      transform: translate3d(-28vw, 20vh, 0) scale(0.9);
+      transform: translate3d(-40vw, 28vh, 0) scale(0.85);
       opacity: 1;
     }
     50% {
-      transform: translate3d(-14vw, 44vh, 0) scale(1.35);
+      transform: translate3d(-20vw, 58vh, 0) scale(1.5);
       opacity: 0.8;
     }
     75% {
-      transform: translate3d(-32vw, 16vh, 0) scale(1);
+      transform: translate3d(-46vw, 22vh, 0) scale(1);
       opacity: 0.9;
     }
     100% {
@@ -505,15 +592,15 @@
       opacity: 0.8;
     }
     25% {
-      transform: translate3d(20vw, -22vh, 0) scale(1.25);
+      transform: translate3d(30vw, -32vh, 0) scale(1.4);
       opacity: 0.95;
     }
     50% {
-      transform: translate3d(-16vw, -30vh, 0) scale(1.05);
+      transform: translate3d(-24vw, -44vh, 0) scale(1.05);
       opacity: 1;
     }
     75% {
-      transform: translate3d(-24vw, -8vh, 0) scale(0.9);
+      transform: translate3d(-36vw, -12vh, 0) scale(0.82);
       opacity: 0.75;
     }
     100% {

@@ -21,7 +21,7 @@ const fraunces = Fraunces({
 const bricolage = Bricolage_Grotesque({
   variable: "--font-bricolage",
   subsets: ["latin"],
-  weight: ["400", "700"],
+  weight: ["400", "600"],
   display: "swap",
 });
 

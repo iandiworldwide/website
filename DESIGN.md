@@ -122,7 +122,7 @@ Headings use **ABC Camera** (ABC Dinamo, licensed) at 400, one step up from the 
 | h3–h6, body, nav, captions | 14.4px |
 | Wordmark | clamp(1.25rem, 1.8vw, 1.5rem) at 700 |
 
-The wordmark is pinned top left inside the sticky header on every page, and is the one place a weight other than 400 is used, because a logotype is artwork rather than UI text.
+The wordmark reads **I&I Worldwide** in full, pinned top left inside the fixed header on every page, set in the display face at 600 — the one place a weight other than 400 is used, because a logotype is artwork rather than UI text. Each letter runs the same seven-colour cycle offset from its neighbour, so a band of colour travels through the word; hovering freezes it, and it holds still under `prefers-reduced-motion`. The cycle uses the medium tones of the brand palette: #c22e44, #d16239, #fdc300, #9c9532, #287ec9, #7965a7, #e476a0.
 
 Until ABC Camera is licensed, headings and the wordmark fall back to **Bricolage Grotesque**, a free grotesque with ink traps that echo ABC Camera's light traps. See `public/fonts/README.md`.
 
