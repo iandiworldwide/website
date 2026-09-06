@@ -4,19 +4,37 @@ import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { introContent } from "@/lib/content";
 
-const VARIANTS = introContent.variants;
 const GRACE_MS = 700; // long enough to see it flicker before it can be dismissed
+const HOLD_MS = 420; // how long the real mark holds before the screen goes
 const FADE_MS = 900;
-const SAFETY_MS = 8000; // nobody is ever stuck here
+const SAFETY_MS = 9000; // nobody is ever stuck here
+
+// Every combination of a mark and a conjunction, minus the real one, which
+// is held back to open and close the sequence.
+const COMBINATIONS = introContent.marks
+  .flatMap((mark) => introContent.ands.map((and) => `${mark}${and}${mark}`))
+  .filter((variant) => variant !== introContent.final);
+
+// Index 0 is always the real mark, so the server and the first client render
+// agree and the screen opens on it. The rest are shuffled on the client.
+function buildSequence() {
+  const rest = [...COMBINATIONS];
+  for (let i = rest.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [rest[i], rest[j]] = [rest[j], rest[i]];
+  }
+  return [introContent.final, ...rest];
+}
 
 // Set on the client after the first play, so returning to the home page
 // during the same visit does not replay it. A fresh load starts over.
 let hasPlayed = false;
 
 /*
-  The opening screen, on the home page only. It flickers through ways of
-  writing "i and i" until the visitor moves, scrolls, taps or types, then
-  fades out and is removed.
+  The opening screen, on the home page only. It opens on i&i, flickers through
+  every other way of writing "i and i", and always lands back on i&i before it
+  fades. It leaves on the first sign of intent: a mouse move, a scroll, a tap
+  or a keystroke.
 
   It is rendered on the server so there is no flash of the site beforehand,
   and a noscript rule hides it when JavaScript is unavailable, so it can
@@ -24,8 +42,10 @@ let hasPlayed = false;
 */
 export default function Intro() {
   const pathname = usePathname();
+  const [sequence] = useState(buildSequence);
   const [frame, setFrame] = useState(0);
   const [armed, setArmed] = useState(false);
+  const [landed, setLanded] = useState(false);
   const [out, setOut] = useState(false);
   // Reads false on the server and on the very first client render, so the
   // markup matches; true on any later visit to the home page.
@@ -33,18 +53,18 @@ export default function Intro() {
 
   const showing = pathname === "/" && !gone;
 
-  // Flicker.
+  // Flicker through the sequence in order, so every variation gets a turn.
   useEffect(() => {
-    if (!showing || out) return;
+    if (!showing || landed) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     let timer = 0;
     const tick = () => {
-      setFrame((current) => (current + 1) % VARIANTS.length);
-      timer = window.setTimeout(tick, 200 + Math.random() * 320);
+      setFrame((current) => (current + 1) % sequence.length);
+      timer = window.setTimeout(tick, 150 + Math.random() * 210);
     };
-    timer = window.setTimeout(tick, 300);
+    timer = window.setTimeout(tick, 320);
     return () => window.clearTimeout(timer);
-  }, [showing, out]);
+  }, [showing, landed, sequence.length]);
 
   // Hold the page still underneath, and let it go again on the way out.
   useEffect(() => {
@@ -64,10 +84,13 @@ export default function Intro() {
     return () => window.clearTimeout(timer);
   }, [showing]);
 
-  // Dismiss on any sign of intent.
+  // Any sign of intent snaps back to the real mark and stops the flicker.
   useEffect(() => {
-    if (!showing || !armed) return;
-    const leave = () => setOut(true);
+    if (!showing || !armed || landed) return;
+    const leave = () => {
+      setFrame(0);
+      setLanded(true);
+    };
     const passive = { passive: true } as const;
     window.addEventListener("mousemove", leave, passive);
     window.addEventListener("wheel", leave, passive);
@@ -85,7 +108,14 @@ export default function Intro() {
       window.removeEventListener("click", leave);
       window.clearTimeout(safety);
     };
-  }, [showing, armed]);
+  }, [showing, armed, landed]);
+
+  // Hold on the real mark, then fade.
+  useEffect(() => {
+    if (!landed) return;
+    const timer = window.setTimeout(() => setOut(true), HOLD_MS);
+    return () => window.clearTimeout(timer);
+  }, [landed]);
 
   // Take it out of the document once it has faded.
   useEffect(() => {
@@ -103,7 +133,7 @@ export default function Intro() {
         <style>{`.intro{display:none}`}</style>
       </noscript>
       <div className="text-center">
-        <p className="intro-mark text-hero-sm">{VARIANTS[frame]}</p>
+        <p className="intro-mark text-hero-sm">{sequence[frame]}</p>
         {introContent.hint && <p className="intro-hint text-caption">{introContent.hint}</p>}
       </div>
     </div>
