@@ -716,3 +716,63 @@
   background: linear-gradient(to top, var(--surface) 42%, transparent);
   pointer-events: none;
 }
+
+/* ------------------------------------------------------------------ */
+/* Artwork behind the quote                                            */
+/* ------------------------------------------------------------------ */
+
+/* Hovering a word in the founder quote brings up a work whose title carries
+   that word. It sits behind the type, held well inside the screen edges and
+   kept faint enough that the words stay readable over it. */
+.quote-art {
+  position: absolute;
+  inset: 10% 6%;
+  z-index: 0;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.quote-art[data-on] {
+  opacity: 0.32;
+}
+
+@media (min-width: 768px) {
+  .quote-art {
+    inset: 8% 18%;
+  }
+}
+
+.quote-word {
+  color: inherit;
+}
+
+.quote-credit {
+  position: absolute;
+  inset-inline: var(--space-xs);
+  bottom: calc(var(--header-height) + var(--space-md));
+  z-index: 10;
+  color: var(--slate);
+  opacity: 0;
+  min-height: 1.4em;
+  pointer-events: none;
+}
+
+.quote-credit[data-on] {
+  opacity: 1;
+}
+
+@media (min-width: 768px) {
+  .quote-credit {
+    inset-inline: var(--space-md);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .quote-art,
+  .quote-credit {
+    transition: opacity 0.7s var(--ease);
+  }
+}

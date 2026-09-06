@@ -151,6 +151,9 @@ The opening screen and the founder screen carry a slowly moving colour field: fi
 
 The greens sit at low opacity so the field stays light enough for ink text to stay readable across it. These six are used by the background only, never for type.
 
+### Artwork on hover (I&I addition)
+On the founder quote, hovering a word brings up an open-access work from the Cleveland Museum of Art whose title carries that word, behind the type at 32% opacity, with a credit line at the foot. A different work each time, picked at random from everything that matched. Words shorter than four letters and a short list of function words are skipped. The collection's API sends no CORS headers, so requests pass through the site's own `/api/artwork` route, which caches each word for a day. A failed lookup shows nothing; it never interrupts the page.
+
 ### Captions (I&I addition)
 Artwork captions are one line at 11.5px: artist, title, year. Medium is recorded in the data but not shown.
 
