@@ -1,7 +1,7 @@
 /*
   Finds an artwork whose title carries a word, through this site's own
   /api/artwork route. That route talks to the Cleveland Museum of Art, which
-  sends no CORS headers of its own.
+  sends no CORS headers of its own, and matches strictly on title.
 
   Results are cached per word for the life of the page, so hovering the same
   word again costs nothing and simply picks a different work from the set.
@@ -10,7 +10,10 @@
 export interface Artwork {
   image: string;
   title: string;
+  /** The word inside the title that matched. */
+  match: string;
   artist: string;
+  url: string;
 }
 
 // Words too short or too ordinary to be worth a lookup.

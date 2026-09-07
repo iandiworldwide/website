@@ -15,16 +15,21 @@ export interface GalleryWork {
   height: number;
 }
 
-// The wall, in world units.
-const SPACING = 45; // between works
-const HEIGHT = 18; // tall side of every work
 const CAMERA_Z = 30;
+const FOV = 45;
+const HALF_TAN = Math.tan(((FOV / 2) * Math.PI) / 180);
 const WALL_ANGLE = -0.25; // radians the wall turns away from the viewer
 const GROUND = "#ffffff";
 const EASE = 0.08;
-// The shadow each work casts on the wall: down and to the right, just behind.
-const SHADOW_X = 0.8;
-const SHADOW_Y = -0.8;
+const NARROW = 768;
+const PER_VIEW_WIDE = 4;
+const PER_VIEW_NARROW = 2.5;
+// How much of its slot a work fills across, and the most of the screen's
+// height it may take before it is reined in.
+const FILL = 0.8;
+const TALLEST = 0.85;
+// The shadow each work casts, as a fraction of its own height.
+const SHADOW_OFFSET = 0.045;
 const SHADOW_Z = -0.5;
 const SHADOW_OPACITY = 0.15;
 
@@ -41,6 +46,10 @@ function canUseWebGL() {
   The works hang along a wall that turns away from you, and scrolling walks
   the camera down it. The page keeps scrolling normally: the screen sticks
   while its extra height is used up, so nothing is hijacked.
+
+  How many works are in view is the fixed thing — four on a wide screen, two
+  and a half on a narrow one — and the spacing between them follows from that
+  and the size of the screen, so the wall reads the same anywhere.
 
   Where WebGL is unavailable, or motion is unwanted, the same works fall back
   to a plain sideways row. The list is always in the document for readers,
@@ -93,7 +102,7 @@ export default function PlacementsGallery({
         scene.background = new THREE.Color(GROUND);
         scene.fog = new THREE.Fog(GROUND, 20, 130);
 
-        const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 1000);
+        const camera = new THREE.PerspectiveCamera(FOV, 1, 0.1, 1000);
         camera.position.set(0, 0, CAMERA_Z);
 
         const renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -104,67 +113,55 @@ export default function PlacementsGallery({
         wall.rotation.y = WALL_ANGLE;
         scene.add(wall);
 
+        // Everything is built at unit size and scaled into place, so the wall
+        // can be laid out again on resize without rebuilding any geometry.
+        const unit = new THREE.PlaneGeometry(1, 1);
+        const unitEdges = new THREE.EdgesGeometry(unit);
+        const outlineMaterial = new THREE.LineBasicMaterial({ color: 0x1d1d1b });
+        const shadowMaterial = new THREE.MeshBasicMaterial({
+          color: 0x000000,
+          transparent: true,
+          opacity: SHADOW_OPACITY,
+        });
+
         const loader = new THREE.TextureLoader();
-        const disposables: { dispose: () => void }[] = [];
+        const disposables: { dispose: () => void }[] = [
+          unit,
+          unitEdges,
+          outlineMaterial,
+          shadowMaterial,
+        ];
 
-        works.forEach((work, index) => {
-          // Keep every work the same height and let its own proportions set
-          // the width, so nothing is cropped or stretched.
-          const wide = HEIGHT * (work.width / work.height);
-          const geometry = new THREE.PlaneGeometry(wide, HEIGHT);
-
-          // A shadow on the wall behind, so each work sits off it rather than
-          // printed on it. Part of the scene, not the interface.
-          const shadowGeometry = new THREE.PlaneGeometry(wide, HEIGHT);
-          const shadowMaterial = new THREE.MeshBasicMaterial({
-            color: 0x000000,
-            transparent: true,
-            opacity: SHADOW_OPACITY,
-          });
-          const shadow = new THREE.Mesh(shadowGeometry, shadowMaterial);
-          shadow.position.set(index * SPACING + SHADOW_X, SHADOW_Y, SHADOW_Z);
-
+        const pieces = works.map((work) => {
           const texture = loader.load(work.image);
           texture.colorSpace = THREE.SRGBColorSpace;
           const material = new THREE.MeshBasicMaterial({ map: texture });
-          const mesh = new THREE.Mesh(geometry, material);
-          mesh.position.set(index * SPACING, 0, 0);
-
-          const edges = new THREE.EdgesGeometry(geometry);
-          const outline = new THREE.LineSegments(
-            edges,
-            new THREE.LineBasicMaterial({ color: 0x1d1d1b }),
-          );
-          outline.position.copy(mesh.position);
-
+          const mesh = new THREE.Mesh(unit, material);
+          const outline = new THREE.LineSegments(unitEdges, outlineMaterial);
+          const shadow = new THREE.Mesh(unit, shadowMaterial);
           wall.add(shadow, mesh, outline);
-          disposables.push(geometry, material, texture, edges, shadowGeometry, shadowMaterial);
+          disposables.push(material, texture);
+          return { mesh, outline, shadow, ratio: work.width / work.height };
         });
 
-        // The two hairlines that run the length of the wall, above and below.
-        const run = works.length * SPACING;
+        // The two hairlines running the length of the wall, above and below.
         const railGeometry = new THREE.BufferGeometry().setFromPoints([
-          new THREE.Vector3(-SPACING, HEIGHT, -1),
-          new THREE.Vector3(run, HEIGHT, -1),
-          new THREE.Vector3(-SPACING, -HEIGHT, -1),
-          new THREE.Vector3(run, -HEIGHT, -1),
+          new THREE.Vector3(0, 1, -1),
+          new THREE.Vector3(1, 1, -1),
+          new THREE.Vector3(0, -1, -1),
+          new THREE.Vector3(1, -1, -1),
         ]);
         const railMaterial = new THREE.LineBasicMaterial({ color: 0xdddddd });
-        wall.add(new THREE.LineSegments(railGeometry, railMaterial));
+        const rails = new THREE.LineSegments(railGeometry, railMaterial);
+        wall.add(rails);
         disposables.push(railGeometry, railMaterial);
 
+        const last = works.length - 1;
+
+        let spacing = 1;
         let along = 0; // where the camera is along the wall
         let target = 0;
         const pointer = { x: 0, y: 0 };
-        const last = works.length - 1;
-
-        const resize = () => {
-          const { clientWidth, clientHeight } = host;
-          if (!clientWidth || !clientHeight) return;
-          camera.aspect = clientWidth / clientHeight;
-          camera.updateProjectionMatrix();
-          renderer.setSize(clientWidth, clientHeight, false);
-        };
 
         const readScroll = () => {
           const outer = sectionRef.current;
@@ -173,7 +170,60 @@ export default function PlacementsGallery({
           if (runway <= 0) return;
           const travelled = -outer.getBoundingClientRect().top;
           const progress = Math.min(1, Math.max(0, travelled / runway));
-          target = progress * last * SPACING;
+          target = progress * last * spacing;
+        };
+
+        const layout = () => {
+          const { clientWidth, clientHeight } = host;
+          if (!clientWidth || !clientHeight) return;
+
+          const aspect = clientWidth / clientHeight;
+          camera.aspect = aspect;
+          camera.updateProjectionMatrix();
+          renderer.setSize(clientWidth, clientHeight, false);
+
+          // Hold the number of works in view steady; the spacing follows.
+          const perView = clientWidth < NARROW ? PER_VIEW_NARROW : PER_VIEW_WIDE;
+          const visibleHeight = 2 * CAMERA_Z * HALF_TAN;
+          const visibleWidth = visibleHeight * aspect;
+          const wasFraction = spacing > 1 ? along / spacing : 0;
+          spacing = visibleWidth / perView;
+
+          // Every work fills the width of its slot, and its own proportions
+          // set how tall it stands. A very tall one is reined in to fit.
+          const slot = spacing * FILL;
+          const ceiling = visibleHeight * TALLEST;
+          let tallest = 0;
+
+          pieces.forEach((piece, index) => {
+            let high = slot / piece.ratio;
+            let wide = slot;
+            if (high > ceiling) {
+              high = ceiling;
+              wide = ceiling * piece.ratio;
+            }
+            tallest = Math.max(tallest, high);
+
+            const x = index * spacing;
+            piece.mesh.scale.set(wide, high, 1);
+            piece.mesh.position.set(x, 0, 0);
+            piece.outline.scale.set(wide, high, 1);
+            piece.outline.position.set(x, 0, 0);
+            piece.shadow.scale.set(wide, high, 1);
+            piece.shadow.position.set(x + high * SHADOW_OFFSET, -high * SHADOW_OFFSET, SHADOW_Z);
+          });
+
+          // A picture rail above and below, clear of the tallest work.
+          rails.scale.set(works.length * spacing + spacing, tallest * 0.68, 1);
+          rails.position.set(-spacing, 0, 0);
+
+          // Sit the first work near the left edge, so the whole width is used
+          // rather than starting from the middle of the screen.
+          wall.position.x = -visibleWidth / 2 + spacing / 2;
+
+          // Hold the same place on the wall across a resize.
+          along = wasFraction * spacing;
+          readScroll();
         };
 
         const onPointer = (event: MouseEvent) => {
@@ -191,16 +241,15 @@ export default function PlacementsGallery({
           camera.rotation.x = pointer.y * 0.04;
           camera.rotation.y = -pointer.x * 0.04;
 
-          const index = Math.min(last, Math.max(0, Math.round(along / SPACING)));
+          const index = Math.min(last, Math.max(0, Math.round(along / spacing)));
           setCurrent((shown) => (shown === index ? shown : index));
 
           renderer.render(scene, camera);
         };
 
-        const observer = new ResizeObserver(resize);
+        const observer = new ResizeObserver(layout);
         observer.observe(host);
-        resize();
-        readScroll();
+        layout();
         along = target;
         tick();
 
@@ -246,25 +295,25 @@ export default function PlacementsGallery({
 
   const row = (
     <div className="row-view mt-lg px-xs md:px-md">
-        <ul aria-label={label} className="row-track">
-          {works.map((work) => (
-            <li key={work.id} className="group">
-              <figure className="lift">
-                <div className="relative aspect-[4/5]">
-                  <Image
-                    src={work.image}
-                    alt={`${work.title} by ${work.artist}`}
-                    fill
-                    sizes="(min-width: 768px) 25vw, 50vw"
-                    className="object-contain"
-                  />
-                </div>
-                <figcaption className="mt-xs text-caption">
-                  {work.artist}, {work.title}, {work.year}
-                </figcaption>
-              </figure>
-            </li>
-          ))}
+      <ul aria-label={label} className="row-track">
+        {works.map((work) => (
+          <li key={work.id} className="group">
+            <figure className="lift">
+              <div className="relative aspect-[4/5]">
+                <Image
+                  src={work.image}
+                  alt={`${work.title} by ${work.artist}`}
+                  fill
+                  sizes="(min-width: 768px) 25vw, 40vw"
+                  className="object-contain"
+                />
+              </div>
+              <figcaption className="mt-xs text-caption">
+                {work.artist}, {work.title}, {work.year}
+              </figcaption>
+            </figure>
+          </li>
+        ))}
       </ul>
     </div>
   );

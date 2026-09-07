@@ -800,7 +800,7 @@
 }
 
 .row-view {
-  --per-view: 2;
+  --per-view: 2.5;
   --row-gap: var(--space-md);
   overflow: hidden;
 }
@@ -917,4 +917,14 @@
       color: var(--slate-blue);
     }
   }
+}
+
+/* The word shared between the quote and the work's title, picked out. */
+.credit-hit {
+  color: var(--spruce);
+}
+
+/* A word only takes a pointer once it has a work behind it. */
+.quote-word[href] {
+  cursor: pointer;
 }
