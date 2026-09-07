@@ -154,8 +154,12 @@ The greens sit at low opacity so the field stays light enough for ink text to st
 ### Plus bullets (I&I addition)
 Service items are marked with a plus in Twilight Indigo, hung outside the text so wrapped lines stay aligned. The plus is one of the marks the site uses for "and", so a list reads as things adding up. Applied with `.list-plus`; every other list stays unmarked.
 
-### Sideways row (I&I addition)
-The placements screen holds seven works with four in view. Its section is twice the viewport tall, the content sticks to the top, and the scrolling between walks the row sideways until the last work arrives. Under `prefers-reduced-motion` the screen does not hold and the row becomes an ordinary sideways scroller, so every work stays reachable.
+### The gallery wall (I&I addition, home page only)
+On the home page the placements screen hangs seven works along a wall that turns away from the viewer, drawn with WebGL. Its section is twice the viewport tall and its content sticks to the top, so the scrolling between walks the camera down the wall; the page itself is never hijacked. Every work keeps its own proportions, read from the file at build time, so nothing is cropped. The caption beneath names whichever work is in front of you, and the pointer tips the camera very slightly.
+
+Where WebGL is missing or motion is unwanted, the same works fall back to a plain sideways row. The list of works is in the document either way, so it is always readable.
+
+The dedicated Placements page is untouched: a filtered grid of everything.
 
 ### Artwork on hover (I&I addition)
 On the founder quote, hovering a word brings up an open-access work from the Cleveland Museum of Art whose title carries that word, behind the type at 32% opacity, with a credit line at the foot. A different work each time, picked at random from everything that matched. Words shorter than four letters and a short list of function words are skipped. The collection's API sends no CORS headers, so requests pass through the site's own `/api/artwork` route, which caches each word for a day. A failed lookup shows nothing; it never interrupts the page.
