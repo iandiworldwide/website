@@ -151,6 +151,9 @@ The opening screen and the founder screen carry a slowly moving colour field: fi
 
 The greens sit at low opacity so the field stays light enough for ink text to stay readable across it. These six are used by the background only, never for type.
 
+### Plus bullets (I&I addition)
+Service items are marked with a plus in Twilight Indigo, hung outside the text so wrapped lines stay aligned. The plus is one of the marks the site uses for "and", so a list reads as things adding up. Applied with `.list-plus`; every other list stays unmarked.
+
 ### Sideways row (I&I addition)
 The placements screen holds seven works with four in view. Its section is twice the viewport tall, the content sticks to the top, and the scrolling between walks the row sideways until the last work arrives. Under `prefers-reduced-motion` the screen does not hold and the row becomes an ordinary sideways scroller, so every work stays reachable.
 

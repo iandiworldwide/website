@@ -1,9 +1,9 @@
-import { blogPosts, subscribeContent } from "@/lib/content";
+import Script from "next/script";
+import { subscribeContent } from "@/lib/content";
 
-const LATEST = blogPosts.slice(0, subscribeContent.latestCount);
-
-// A screen of its own: the invitation on the left, the most recent letters
-// on the right, and a link out to the Substack.
+// A screen of its own: the invitation on the left, the live Substack feed on
+// the right, and a link out. The feed is drawn by Supascribe, which loads
+// after the page is interactive so it never holds up the first paint.
 export default function SubscribeSection() {
   return (
     <section
@@ -32,27 +32,15 @@ export default function SubscribeSection() {
 
         <div data-reveal>
           <h3 className="text-caption">{subscribeContent.latestLabel}</h3>
-          <ul className="mt-md space-y-md">
-            {LATEST.map((post) => (
-              <li key={post.id}>
-                <p className="text-caption">{post.date}</p>
-                {post.url ? (
-                  <a
-                    href={post.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="link-sweep"
-                  >
-                    {post.title}
-                  </a>
-                ) : (
-                  post.title
-                )}
-              </li>
-            ))}
-          </ul>
+          <div
+            className="mt-md"
+            data-supascribe-embed-id={subscribeContent.feedEmbedId}
+            data-supascribe-feed=""
+          />
         </div>
       </div>
+
+      <Script src={subscribeContent.feedScript} strategy="lazyOnload" />
     </section>
   );
 }

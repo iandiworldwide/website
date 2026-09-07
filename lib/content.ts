@@ -76,9 +76,10 @@ export const subscribeContent = {
   lede: "Notes from the fairs, the studios and the rooms where early decisions get made.",
   cta: "Subscribe on Substack",
   ctaLink: "https://iandiworldwide.substack.com",
-  // The most recent posts, listed alongside. They come from blogPosts.
   latestLabel: "Latest",
-  latestCount: 4,
+  // The live feed, from the embed code on the Supascribe dashboard.
+  feedEmbedId: "543939391025",
+  feedScript: "https://js.supascribe.com/v1/loader/FdOEwJV3RqVXdrxASCGs23qYf3h1.js",
 };
 
 export const testimonials = [

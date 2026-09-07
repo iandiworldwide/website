@@ -837,3 +837,28 @@
     overflow-x: auto;
   }
 }
+
+/* ------------------------------------------------------------------ */
+/* Plus bullets                                                        */
+/* ------------------------------------------------------------------ */
+
+/* A plus marks each item, hung outside the text so wrapped lines stay
+   aligned. The plus is one of the marks the site uses for "and", so the
+   list reads as things adding up. */
+.list-plus > li {
+  position: relative;
+  padding-left: 1.4em;
+}
+
+.list-plus > li + li {
+  margin-top: 0.4em;
+}
+
+.list-plus > li::before {
+  content: "+";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: var(--font-display);
+  color: var(--indigo);
+}

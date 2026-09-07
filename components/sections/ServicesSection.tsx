@@ -11,7 +11,7 @@ export default function ServicesSection() {
         {servicesContent.services.map((service) => (
           <div key={service.title} data-reveal className="space-y-xs">
             <h3>{service.title}</h3>
-            <ul className="max-w-[46ch]">
+            <ul role="list" className="list-plus max-w-[46ch]">
               {service.items.map((item) => (
                 <li key={item}>{item}</li>
               ))}
