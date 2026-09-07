@@ -55,6 +55,10 @@ function useActiveSection(enabled: boolean) {
   The chrome sits in two places: the logotype pinned top left, and the
   navigation pinned along the bottom. Both are fixed and fully transparent,
   so the screens pass beneath them.
+
+  On a phone the bottom holds only the three home-page sections, as tabs,
+  and the three pages move up beside the logotype, small, so neither edge
+  carries more than one row.
 */
 export default function Header() {
   const pathname = usePathname();
@@ -78,8 +82,20 @@ export default function Header() {
 
   return (
     <>
-      <div className="fixed left-0 top-0 z-50 flex h-header items-center px-xs md:px-md">
-        <Wordmark />
+      {/* The band itself lets clicks through; only what sits in it is live. */}
+      <div className="pointer-events-none fixed inset-x-0 top-0 z-50 flex h-header items-center justify-between px-xs md:px-md">
+        <div className="pointer-events-auto">
+          <Wordmark />
+        </div>
+
+        {/* Mobile only: the pages, small, beside the logotype. On the very
+            narrowest screens they wrap to a second short line rather than
+            run into it. */}
+        <nav aria-label="Pages" className="pointer-events-auto min-w-0 md:hidden">
+          <ul className="flex flex-wrap justify-end gap-x-sm gap-y-0 text-caption">
+            {right.map(item)}
+          </ul>
+        </nav>
       </div>
 
       <nav
@@ -92,10 +108,9 @@ export default function Header() {
           <ul className="flex gap-md">{right.map(item)}</ul>
         </div>
 
-        {/* Mobile: two rows of three. No hamburger. */}
-        <div className="relative flex h-header flex-col justify-center px-xs md:hidden">
-          <ul className="flex justify-between">{left.map(item)}</ul>
-          <ul className="flex justify-between">{right.map(item)}</ul>
+        {/* Mobile: one row of the three sections, spread as tabs. */}
+        <div className="relative flex h-header items-center px-xs md:hidden">
+          <ul className="flex w-full justify-between">{left.map(item)}</ul>
         </div>
       </nav>
     </>
