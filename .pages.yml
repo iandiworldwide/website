@@ -5,8 +5,18 @@
 # appears as a form. Saving writes to the repo and the site redeploys.
 
 media:
-  - name: images
-    label: Images
+  - name: placements
+    label: Placement images
+    input: public/placements
+    output: /placements
+    extensions: [jpg, jpeg, png, webp]
+  - name: diary
+    label: Visual Diary images
+    input: public/visual-diary
+    output: /visual-diary
+    extensions: [jpg, jpeg, png, webp]
+  - name: general
+    label: Other images
     input: public
     output: /
     extensions: [jpg, jpeg, png, webp, svg]
@@ -109,12 +119,6 @@ content:
       - { name: intro, label: First paragraph, type: text }
       - { name: approach, label: Second paragraph, type: text }
       - { name: closing, label: Third paragraph, type: text }
-      - { name: servicesLabel, label: Services heading, type: string }
-      - name: services
-        label: Services summary
-        type: string
-        list: true
-        description: Not currently shown on the site.
       - { name: founderTitle, label: Founder heading, type: string }
       - { name: founderName, label: Founder name, type: string }
       - { name: founderBio, label: Biography, type: text }
@@ -156,6 +160,7 @@ content:
         label: Page wording
         type: object
         fields:
+          - { name: metaTitle, label: Browser tab title, type: string }
           - { name: title, label: Heading, type: string }
           - { name: intro, label: Sentence beneath, type: text }
           - { name: filterLabel, label: Filter label, type: string }
@@ -179,7 +184,10 @@ content:
         type: object
         list: true
         fields:
-          - { name: image, label: Image, type: image }
+          - name: image
+            label: Image
+            type: image
+            options: { media: placements }
           - { name: artist, label: Artist, type: string }
           - { name: title, label: Title, type: string }
           - { name: year, label: Year, type: number }
@@ -201,6 +209,7 @@ content:
         label: Page wording
         type: object
         fields:
+          - { name: metaTitle, label: Browser tab title, type: string }
           - { name: title, label: Heading, type: string }
           - { name: intro, label: Sentence beneath, type: text }
           - { name: feedLabel, label: Feed label, type: string }
@@ -214,7 +223,10 @@ content:
         type: object
         list: true
         fields:
-          - { name: image, label: Image, type: image }
+          - name: image
+            label: Image
+            type: image
+            options: { media: diary }
           - { name: alt, label: Description, type: string, description: For screen readers. Not shown on the page. }
           - { name: caption, label: Caption, type: string, description: Optional. Shown beneath the image. }
           - { name: link, label: Link, type: string, description: Optional. Makes the image clickable. }
@@ -235,6 +247,7 @@ content:
         label: Page wording
         type: object
         fields:
+          - { name: metaTitle, label: Browser tab title, type: string }
           - { name: title, label: Heading, type: string }
           - { name: intro, label: Sentence beneath, type: text }
           - { name: filterLabel, label: Filter label, type: string }
@@ -280,9 +293,3 @@ content:
           - { name: messagePlaceholder, label: Message placeholder, type: string }
           - { name: submit, label: Button, type: string }
           - { name: success, label: Thank you message, type: string }
-      - { name: expectLabel, label: What to expect heading, type: string, description: Not currently shown on the site. }
-      - name: expect
-        label: What to expect
-        type: text
-        list: true
-        description: Not currently shown on the site.

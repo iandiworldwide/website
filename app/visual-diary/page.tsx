@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
+import { visualDiaryContent } from "@/lib/content";
 import DiarySection from "@/components/sections/DiarySection";
 
-export const metadata: Metadata = { title: "Visual Diary — I&I Worldwide" };
+export const metadata: Metadata = { title: visualDiaryContent.metaTitle };
 
 export default function VisualDiaryPage() {
   return (

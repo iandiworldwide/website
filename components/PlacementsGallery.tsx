@@ -281,12 +281,12 @@ export default function PlacementsGallery({
     <>
       <div ref={stage} className="gallery-stage mt-md" aria-hidden="true" />
       <p className="mt-xs px-xs text-caption md:px-md" aria-hidden="true">
-        {shown ? `${shown.artist}, ${shown.title}, ${shown.year}` : ""}
+        {shown ? [shown.artist, shown.title, shown.year].filter(Boolean).join(", ") : ""}
       </p>
       {/* The works stay in the document for anyone who cannot see the wall. */}
       <ul aria-label={label} className="sr-only">
         {works.map((work) => (
-          <li key={work.image}>{`${work.artist}, ${work.title}, ${work.year}`}</li>
+          <li key={work.image}>{[work.artist, work.title, work.year].filter(Boolean).join(", ")}</li>
         ))}
       </ul>
     </>
@@ -308,7 +308,7 @@ export default function PlacementsGallery({
                 />
               </div>
               <figcaption className="mt-xs text-caption">
-                {work.artist}, {work.title}, {work.year}
+                {[work.artist, work.title, work.year].filter(Boolean).join(", ")}
               </figcaption>
             </figure>
           </li>

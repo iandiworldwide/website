@@ -28,8 +28,16 @@ Everything on the site, grouped the way the site is:
 | Notes | The Substack posts listed on the Notes page |
 | Contact | Details and the wording of the form |
 
-Images are uploaded through the same screens. Pick **Image** on any work or
-diary entry and either choose one already there or upload a new one.
+## Adding an image
+
+Pick **Image** on any work or diary entry. You can choose one already there
+or upload a new one from your computer. Placement images and Visual Diary
+images have their own folders, so you only ever see the relevant pictures
+and new uploads land in the right place on their own.
+
+A Visual Diary entry needs a picture and a short description. The caption
+and link are optional: add a caption and it appears beneath the image, add
+a link and the image becomes clickable.
 
 ## Saving
 
@@ -50,6 +58,11 @@ copy of its own.
 
 - **A placement needs an image** to appear on the home page wall. Works
   without one still show on the Placements page.
+- **Half-finished entries are safe.** A diary entry with no picture yet is
+  skipped rather than breaking the site, and a work with no year simply
+  leaves the year off its caption.
+- **Browser tab titles** for Placements, Visual Diary and Notes are under
+  each section's own "Page wording".
 - **A filter only appears** if there is work in that category.
 - **Notes posts need a different slug each.** It is only used behind the
   scenes, so anything short with dashes is fine.

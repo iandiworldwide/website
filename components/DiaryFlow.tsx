@@ -151,7 +151,8 @@ function DiaryImage({ entry }: { entry: DiaryEntry }) {
 }
 
 export default function DiaryFlow({ entries, label, seed, shuffle }: DiaryFlowProps) {
-  const rows = place(entries, seed, shuffle);
+  // An entry saved without a picture yet is simply skipped.
+  const rows = place(entries.filter((entry) => entry.image), seed, shuffle);
 
   return (
     <ul aria-label={label}>

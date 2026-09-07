@@ -14,10 +14,5 @@
     "messagePlaceholder": "Tell us about your art collecting interests and goals",
     "submit": "Send message",
     "success": "Thank you for reaching out. We will be in touch soon."
-  },
-  "expectLabel": "What to expect",
-  "expect": [
-    "During your initial consultation, we will discuss your collecting goals, aesthetic preferences, budget, and the spaces where you envision displaying art. This conversation helps us understand your vision and identify artists and works that align with your values.",
-    "Whether you are acquiring your first piece or building a serious collection, we are here to guide you with expertise, integrity, and genuine passion for contemporary art."
-  ]
+  }
 }
