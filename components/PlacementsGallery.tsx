@@ -22,6 +22,11 @@ const CAMERA_Z = 30;
 const WALL_ANGLE = -0.25; // radians the wall turns away from the viewer
 const GROUND = "#ffffff";
 const EASE = 0.08;
+// The shadow each work casts on the wall: down and to the right, just behind.
+const SHADOW_X = 0.8;
+const SHADOW_Y = -0.8;
+const SHADOW_Z = -0.5;
+const SHADOW_OPACITY = 0.15;
 
 function canUseWebGL() {
   try {
@@ -107,6 +112,18 @@ export default function PlacementsGallery({
           // the width, so nothing is cropped or stretched.
           const wide = HEIGHT * (work.width / work.height);
           const geometry = new THREE.PlaneGeometry(wide, HEIGHT);
+
+          // A shadow on the wall behind, so each work sits off it rather than
+          // printed on it. Part of the scene, not the interface.
+          const shadowGeometry = new THREE.PlaneGeometry(wide, HEIGHT);
+          const shadowMaterial = new THREE.MeshBasicMaterial({
+            color: 0x000000,
+            transparent: true,
+            opacity: SHADOW_OPACITY,
+          });
+          const shadow = new THREE.Mesh(shadowGeometry, shadowMaterial);
+          shadow.position.set(index * SPACING + SHADOW_X, SHADOW_Y, SHADOW_Z);
+
           const texture = loader.load(work.image);
           texture.colorSpace = THREE.SRGBColorSpace;
           const material = new THREE.MeshBasicMaterial({ map: texture });
@@ -120,8 +137,8 @@ export default function PlacementsGallery({
           );
           outline.position.copy(mesh.position);
 
-          wall.add(mesh, outline);
-          disposables.push(geometry, material, texture, edges);
+          wall.add(shadow, mesh, outline);
+          disposables.push(geometry, material, texture, edges, shadowGeometry, shadowMaterial);
         });
 
         // The two hairlines that run the length of the wall, above and below.
