@@ -25,11 +25,11 @@
   },
   "subscribe": {
     "eyebrow": "Substack",
-    "headline": "Letters on collecting, sent now and then.",
-    "lede": "Notes from the fairs, the studios and the rooms where early decisions get made.",
+    "headline": "Notes on collecting, straight to your inbox.",
+    "lede": "Dispatches from the fairs, the studios and the rooms where early decisions get made.",
     "cta": "Subscribe on Substack",
     "ctaLink": "https://iandiworldwide.substack.com",
-    "latestLabel": "Latest",
+    "latestLabel": "Most read",
     "feedEmbedId": "543939391025",
     "feedScript": "https://js.supascribe.com/v1/loader/FdOEwJV3RqVXdrxASCGs23qYf3h1.js"
   },

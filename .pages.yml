@@ -97,7 +97,7 @@ content:
           - { name: lede, label: Sentence beneath, type: text }
           - { name: cta, label: Call to action, type: string }
           - { name: ctaLink, label: Substack address, type: string }
-          - { name: latestLabel, label: Feed heading, type: string }
+          - { name: latestLabel, label: Feed heading, type: string, description: Sits above the Substack posts, e.g. Most read. }
           - { name: feedEmbedId, label: Supascribe embed id, type: string }
           - { name: feedScript, label: Supascribe script address, type: string }
       - name: testimonials
