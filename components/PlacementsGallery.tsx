@@ -5,7 +5,6 @@ import Image from "next/image";
 import Link from "next/link";
 
 export interface GalleryWork {
-  id: number;
   image: string;
   artist: string;
   title: string;
@@ -287,7 +286,7 @@ export default function PlacementsGallery({
       {/* The works stay in the document for anyone who cannot see the wall. */}
       <ul aria-label={label} className="sr-only">
         {works.map((work) => (
-          <li key={work.id}>{`${work.artist}, ${work.title}, ${work.year}`}</li>
+          <li key={work.image}>{`${work.artist}, ${work.title}, ${work.year}`}</li>
         ))}
       </ul>
     </>
@@ -297,7 +296,7 @@ export default function PlacementsGallery({
     <div className="row-view mt-lg px-xs md:px-md">
       <ul aria-label={label} className="row-track">
         {works.map((work) => (
-          <li key={work.id} className="group">
+          <li key={work.image} className="group">
             <figure className="lift">
               <div className="relative aspect-[4/5]">
                 <Image

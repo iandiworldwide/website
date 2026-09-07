@@ -1,0 +1,52 @@
+{
+  "home": {
+    "headline": "Guiding next-gen collectors on building personal and purposeful art collections.",
+    "lede": "A London-based independent art advisory, working with emerging to mid-career artists.",
+    "testimonialsLabel": "Clients",
+    "ctaLabel": "Begin",
+    "cta": "Book a free consultation",
+    "ctaLink": "#contact"
+  },
+  "intro": {
+    "marks": [
+      "i",
+      "I",
+      "👁",
+      "👀"
+    ],
+    "ands": [
+      "&",
+      "+",
+      "⁊",
+      "∧",
+      "&&",
+      " et "
+    ],
+    "final": "i&i",
+    "hint": "scroll to enter"
+  },
+  "subscribe": {
+    "eyebrow": "Substack",
+    "headline": "Letters on collecting, sent now and then.",
+    "lede": "Notes from the fairs, the studios and the rooms where early decisions get made.",
+    "cta": "Subscribe on Substack",
+    "ctaLink": "https://iandiworldwide.substack.com",
+    "latestLabel": "Latest",
+    "feedEmbedId": "543939391025",
+    "feedScript": "https://js.supascribe.com/v1/loader/FdOEwJV3RqVXdrxASCGs23qYf3h1.js"
+  },
+  "testimonials": [
+    {
+      "text": "Talia's expertise transformed how I approach collecting. Her research is impeccable.",
+      "author": "Private Collector, Miami"
+    },
+    {
+      "text": "An art advisor who truly understands and champions emerging artists.",
+      "author": "Corporate Client, New York"
+    },
+    {
+      "text": "Building my collection with I&I Worldwide has been a meaningful and insightful experience.",
+      "author": "Collector, London"
+    }
+  ]
+}

@@ -49,7 +49,7 @@ export default function BlogSection() {
       {/* An index, not cards: date, category, title, excerpt. */}
       <ul className="mt-md space-y-md">
         {filtered.map((post) => (
-          <li key={post.id} data-reveal className="grid gap-xs md:grid-cols-4 md:gap-md">
+          <li key={post.slug} data-reveal className="grid gap-xs md:grid-cols-4 md:gap-md">
             <span className="text-caption">{post.date}</span>
             <span className="text-caption">{post.category}</span>
             <div className="md:col-span-2">

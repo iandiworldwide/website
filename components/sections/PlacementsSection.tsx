@@ -53,7 +53,7 @@ export default function PlacementsSection() {
         <ArtworkGrid
           label={placementsContent.gridLabel}
           items={filtered.map((work) => ({
-            id: work.id,
+            id: work.image ?? `${work.artist}-${work.title}`,
             image: work.image,
             alt: `${work.title} by ${work.artist}`,
             caption: <PlacementCaption work={work} />,

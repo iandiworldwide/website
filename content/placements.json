@@ -1,0 +1,167 @@
+{
+  "page": {
+    "title": "Placements",
+    "intro": "A curated selection of works placed with our clients.",
+    "filterLabel": "Filter by category",
+    "gridLabel": "Placed works",
+    "previewCount": 7,
+    "previewCta": "View all placements",
+    "previewCtaLink": "/placements"
+  },
+  "categories": [
+    {
+      "value": "all",
+      "label": "All"
+    },
+    {
+      "value": "painting",
+      "label": "Painting"
+    },
+    {
+      "value": "sculpture",
+      "label": "Sculpture"
+    },
+    {
+      "value": "works-on-paper",
+      "label": "Works on paper"
+    },
+    {
+      "value": "textile",
+      "label": "Textile"
+    },
+    {
+      "value": "mixed-media",
+      "label": "Mixed media"
+    }
+  ],
+  "works": [
+    {
+      "artist": "Muzae Sesay",
+      "title": "Neighborhood",
+      "year": 2024,
+      "medium": "Oil pastel on canvas",
+      "category": "painting",
+      "image": "/placements/muzae-sesay-neighborhood.jpg"
+    },
+    {
+      "artist": "Ben Tong",
+      "title": "Although My Eyes Were Closed",
+      "year": 2025,
+      "medium": "Oil on canvas",
+      "category": "painting",
+      "image": "/placements/ben-tong-although-my-eyes-were-closed.jpg"
+    },
+    {
+      "artist": "Thebe Phetogo",
+      "title": "Lowe La Leru (Lowe of the cloud)",
+      "year": 2024,
+      "medium": "Acrylic and oil on canvas",
+      "category": "painting",
+      "image": "/placements/thebe-phetogo-lowe-la-leru.jpg"
+    },
+    {
+      "artist": "Covey Gong",
+      "title": "Portrait of a Lady",
+      "year": 2023,
+      "medium": "Bronze",
+      "category": "sculpture",
+      "image": "/placements/covey-gong-portrait-of-a-lady.jpg"
+    },
+    {
+      "artist": "Justin Chance",
+      "title": "Station",
+      "year": 2020,
+      "medium": "Cut paper, linen tape, and ink on woven paper",
+      "category": "works-on-paper",
+      "image": "/placements/justin-chance-station.jpg"
+    },
+    {
+      "artist": "Tyler Garces Ormsby",
+      "title": "walking after rain",
+      "year": 2024,
+      "medium": "Oil on canvas",
+      "category": "painting",
+      "image": "/placements/tyler-garces-ormsby-walking-after-rain.jpg"
+    },
+    {
+      "artist": "Esiri Erheriene-Essi",
+      "title": "E is for Everybody",
+      "year": 2023,
+      "medium": "Oil, ink and xerox transfer on linen",
+      "category": "painting",
+      "image": "/placements/esiri-erheriene-essi-e-is-for-everybody.jpg"
+    },
+    {
+      "artist": "Jacob Littlejohn",
+      "title": "Burial",
+      "year": 2025,
+      "medium": "Oil and colored pencil on paper",
+      "category": "works-on-paper",
+      "image": "/placements/jacob-littlejohn-burial.jpg"
+    },
+    {
+      "artist": "Antonio Tarsis",
+      "title": "Untitled",
+      "year": 2026,
+      "medium": "Matchbox balsa wood and paper on wood",
+      "category": "mixed-media",
+      "image": "/placements/antonio-tarsis-untitled.jpg"
+    },
+    {
+      "artist": "Emma Amos",
+      "title": "Vision",
+      "year": 2010,
+      "medium": "Acrylic on African fabric panel",
+      "category": "mixed-media",
+      "image": "/placements/emma-amos-vision.jpg"
+    },
+    {
+      "artist": "Heath Wae",
+      "title": "Meridian 08 — Cu",
+      "year": 2026,
+      "medium": "Pigments, copper and metal salts on linen",
+      "category": "painting",
+      "image": "/placements/heath-wae-meridian-08-cu.jpg"
+    },
+    {
+      "artist": "Nnena Kalu",
+      "title": "Vortex Drawing 49",
+      "year": 2018,
+      "medium": "Watercolour, pencil, marker and ink on paper",
+      "category": "works-on-paper",
+      "image": "/placements/nnena-kalu-vortex-drawing-49.jpg"
+    },
+    {
+      "artist": "Kelsey Isaacs",
+      "title": "classical detail twin",
+      "year": 2024,
+      "medium": "Oil on canvas",
+      "category": "painting",
+      "image": "/placements/kelsey-isaacs-classical-detail-twin.jpg"
+    },
+    {
+      "artist": "Molly Rose Lieberman",
+      "title": "I can see the moon from where you stand",
+      "year": 2026,
+      "medium": "Oil, acrylic, paper, tape on canvas in artist's frame",
+      "category": "mixed-media",
+      "image": "/placements/molly-rose-lieberman-i-can-see-the-moon.jpg"
+    },
+    {
+      "artist": "Molly Rose Lieberman",
+      "title": "EmBedded",
+      "year": 2026,
+      "medium": "Oil, acrylic, paper, tape on canvas in artist's frame",
+      "category": "mixed-media",
+      "image": "/placements/molly-rose-lieberman-embedded.jpg"
+    },
+    {
+      "artist": "Mohammed Z Rahman",
+      "title": "Spaghetti Rooms III (Games)",
+      "year": 2026,
+      "medium": "Acrylic on canvas",
+      "category": "painting",
+      "image": "/placements/mohammed-z-rahman-spaghetti-rooms-iii.jpg"
+    }
+  ]
+}

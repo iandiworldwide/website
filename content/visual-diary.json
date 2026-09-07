@@ -1,0 +1,43 @@
+{
+  "page": {
+    "title": "Visual Diary",
+    "intro": "A glimpse into our world of art, travel, and discovery.",
+    "feedLabel": "Diary entries",
+    "seed": 7,
+    "shuffle": true
+  },
+  "entries": [
+    {
+      "image": "/visual-diary/acrylic-letters.jpg",
+      "alt": "Cut acrylic letters pinned to a wall"
+    },
+    {
+      "image": "/visual-diary/seafood-table.jpg",
+      "alt": "Mussels, clams and flatbread on a long black table"
+    },
+    {
+      "image": "/visual-diary/ceramic-legs.jpg",
+      "alt": "Stitched ceramic legs on a gallery floor"
+    },
+    {
+      "image": "/visual-diary/bottles-by-the-sea.jpg",
+      "alt": "Seven glass bottles on a plinth by a window to the sea"
+    },
+    {
+      "image": "/visual-diary/dinner-place-setting.jpg",
+      "alt": "A dinner place setting with a menu and place card"
+    },
+    {
+      "image": "/visual-diary/heath-wae-painting.jpg",
+      "alt": "Framed pink and blue painting by Heath Wae"
+    },
+    {
+      "image": "/visual-diary/black-sphere-white-column.jpg",
+      "alt": "A black sphere and a white column in a corner"
+    },
+    {
+      "image": "/visual-diary/molly-rose-lieberman-framed.jpg",
+      "alt": "Framed painting by Molly Rose Lieberman"
+    }
+  ]
+}

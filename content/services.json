@@ -1,0 +1,49 @@
+{
+  "title": "Services",
+  "services": [
+    {
+      "title": "Acquisition Planning",
+      "description": "Following an initial consultation with our Founder, where we'll gain a thorough understanding of your artistic vision, we conduct in-depth research into artists and galleries worldwide. Our goal is to source unique pieces specifically tailored to your preferences.",
+      "items": [
+        "Work with clients to establish and refine collection goals",
+        "Develop on-going list of artists for consideration",
+        "Identify acquisition opportunities (upcoming exhibitions, auctions and potential private market offerings by target artists)",
+        "Provide in-depth analysis of artists' primary and secondary markets"
+      ]
+    },
+    {
+      "title": "Global Access",
+      "description": "",
+      "items": [
+        "Provide VIP access and personalized navigation of international art fairs",
+        "Coordinate customized global art agendas (including private gallery viewings, studio visits, and guided museum tours)",
+        "Secure access to works from the world's leading galleries with strategic guidance and recommendations based on individual artist's market as well as broader industry trends"
+      ]
+    },
+    {
+      "title": "Global Shipping & Installation",
+      "description": "",
+      "items": [
+        "Domestic and international shipping and insurance",
+        "Framing",
+        "Professional installation",
+        "Storage"
+      ]
+    },
+    {
+      "title": "Collection Management",
+      "description": "",
+      "items": [
+        "Create and maintain digital database of client artworks (including up to date provenance and exhibition histories)",
+        "Continuously track markets of artists within clients' collections",
+        "Identify and facilitate exhibition opportunities (e.g. museum loans)",
+        "Identify and facilitate sale opportunities (per terms of original purchase agreement)",
+        "Assist in long-term care and conservation of artworks",
+        "Art library development"
+      ]
+    }
+  ],
+  "ctaLabel": "Begin",
+  "cta": "Schedule a consultation",
+  "ctaLink": "#contact"
+}

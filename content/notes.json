@@ -1,0 +1,80 @@
+{
+  "page": {
+    "title": "Notes",
+    "intro": "Catalogues and notes from the fairs, the studios and the galleries. Published on Substack.",
+    "filterLabel": "Filter by category",
+    "allLabel": "All",
+    "categories": [
+      "Catalogue",
+      "Notes"
+    ],
+    "archiveCta": "Read everything on Substack",
+    "archiveUrl": "https://iandiworldwide.substack.com"
+  },
+  "posts": [
+    {
+      "title": "Catalogue 09: Summer Steals",
+      "slug": "catalogue-09-summer-steals",
+      "excerpt": "Five selections that I've been thinking about all summer and one new discovery, all under $10K. Plus, introducing Market Notes for paid subscribers.",
+      "date": "31 August 2026",
+      "category": "Catalogue",
+      "author": "Talia Pockhai"
+    },
+    {
+      "title": "Could restaurants be the new artist residencies?",
+      "slug": "restaurants-artist-residencies",
+      "excerpt": "Exploring Zoli's eerie aquariums, Bistrot Ha's mosaics and the new Frenchette Bakery's terrazzo flooring, and what these collaborations mean.",
+      "date": "1 August 2026",
+      "category": "Notes",
+      "author": "Talia Pockhai"
+    },
+    {
+      "title": "Catalogue 08: 5 under 5 is back.",
+      "slug": "catalogue-08-5-under-5",
+      "excerpt": "Queer art. Religious art. Textile, collage and assemblage. All within reach.",
+      "date": "30 June 2026",
+      "category": "Catalogue",
+      "author": "Talia Pockhai"
+    },
+    {
+      "title": "Catalogue 07: Affordable Art from NYC Fairs",
+      "slug": "catalogue-07-nyc-fairs",
+      "excerpt": "Emerging art, institutional validation, accessible prices.",
+      "date": "19 May 2026",
+      "category": "Catalogue",
+      "author": "Talia Pockhai"
+    },
+    {
+      "title": "Fair Notes: Milan",
+      "slug": "fair-notes-milan",
+      "excerpt": "A gamble that paid off.",
+      "date": "23 April 2026",
+      "category": "Notes",
+      "author": "Talia Pockhai"
+    },
+    {
+      "title": "Catalogue 06: A Case Study with Cottage Noir",
+      "slug": "catalogue-06-cottage-noir",
+      "excerpt": "A selection of artworks for this iconic North London home under £10K.",
+      "date": "11 April 2026",
+      "category": "Catalogue",
+      "author": "Talia Pockhai and Kemide Lawson"
+    },
+    {
+      "title": "Catalogue 05: That Spring Feeling",
+      "slug": "catalogue-05-that-spring-feeling",
+      "excerpt": "Bringing you a selection of artworks between $1–10K.",
+      "date": "31 March 2026",
+      "category": "Catalogue",
+      "author": "Talia Pockhai"
+    },
+    {
+      "title": "As the art world prepares for Venice, I went to Kochi instead.",
+      "slug": "kochi-muziris-biennale",
+      "excerpt": "Highlights from Kochi-Muziris, the Peoples' Biennale.",
+      "date": "11 March 2026",
+      "category": "Notes",
+      "author": "Talia Pockhai"
+    }
+  ]
+}

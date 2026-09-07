@@ -10,7 +10,6 @@ const WORKS: GalleryWork[] = placements
   .map((work) => {
     const size = getImageSize(work.image!) ?? { width: 4, height: 5 };
     return {
-      id: work.id,
       image: work.image!,
       artist: work.artist,
       title: work.title,

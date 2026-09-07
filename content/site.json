@@ -1,0 +1,48 @@
+{
+  "siteConfig": {
+    "name": "I&I Worldwide",
+    "tagline": "Independent Art Advisory",
+    "logo": "I&I",
+    "metaTitle": "I&I Worldwide - Independent Art Advisory",
+    "metaDescription": "Guiding next-gen collectors on building personal and purposeful art collections. A London-based independent art advisory led by Talia Pockhai."
+  },
+  "navigation": [
+    {
+      "name": "Services",
+      "href": "#services"
+    },
+    {
+      "name": "About",
+      "href": "#about"
+    },
+    {
+      "name": "Founder",
+      "href": "#founder"
+    },
+    {
+      "name": "Placements",
+      "href": "/placements"
+    },
+    {
+      "name": "Visual Diary",
+      "href": "/visual-diary"
+    },
+    {
+      "name": "Notes",
+      "href": "/blog"
+    }
+  ],
+  "footer": {
+    "copyright": "© 2026 I&I Worldwide",
+    "socials": [
+      {
+        "name": "Instagram",
+        "url": "https://www.instagram.com/i.and.i.worldwide"
+      },
+      {
+        "name": "Substack",
+        "url": "https://iandiworldwide.substack.com"
+      }
+    ]
+  }
+}

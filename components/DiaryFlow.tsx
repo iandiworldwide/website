@@ -169,7 +169,7 @@ export default function DiaryFlow({ entries, label, seed, shuffle }: DiaryFlowPr
           ) : (
             row.map((item, position) => (
               <div
-                key={item.entry.id}
+                key={item.entry.image}
                 style={item.style as React.CSSProperties}
                 className={`w-(--wm) md:w-(--w) md:mt-(--stagger) ${position === 0 ? "md:ml-(--x)" : "md:mr-(--x)"}`}
               >
