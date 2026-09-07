@@ -48,7 +48,7 @@ export const homeContent = {
   testimonialsLabel: "Clients",
   ctaLabel: "Begin",
   cta: "Book a free consultation",
-  ctaLink: "/contact",
+  ctaLink: "#contact",
 };
 
 // The opening flicker, shown once over the whole screen. It runs through
@@ -130,7 +130,7 @@ export const aboutContent = {
     "Every recommendation I make is rooted in deep research — into the artists I source as much as into my clients. I spend time understanding who you are and what's important to you before I bring a single work to your attention. The result is a collection that is a true reflection of you and your journey.",
   ctaLabel: "Begin",
   cta: "Book a free consultation",
-  ctaLink: "/contact",
+  ctaLink: "#contact",
 };
 
 /* ------------------------------------------------------------------ */
@@ -185,7 +185,7 @@ export const servicesContent = {
   ],
   ctaLabel: "Begin",
   cta: "Schedule a consultation",
-  ctaLink: "/contact",
+  ctaLink: "#contact",
 };
 
 /* ------------------------------------------------------------------ */
@@ -219,9 +219,6 @@ export const placementsContent = {
   previewCount: 7,
   previewCta: "View all placements",
   previewCtaLink: "/placements",
-  ctaLabel: "Enquire",
-  cta: "Contact us about upcoming placements",
-  ctaLink: "/contact",
 };
 
 export const placementCategories: { value: PlacementCategory | "all"; label: string }[] = [
@@ -542,7 +539,6 @@ export const contactContent = {
   detailsLabel: "Details",
   email: "hello@iandiworldwide.com",
   address: "London & Miami",
-  phone: "+1 (555) 123-4567",
   formLabel: "Write to us",
   form: {
     nameLabel: "Name",

@@ -880,3 +880,41 @@
   width: 100%;
   height: 100%;
 }
+
+/* ------------------------------------------------------------------ */
+/* Colour in the opening flicker                                       */
+/* ------------------------------------------------------------------ */
+
+/* The mark drifts through the same palette as the moving gradient. Colour
+   rather than a clipped gradient, so the eyes stay eyes. The two lightest
+   are deepened towards ink to hold on white. */
+.intro-mark {
+  color: var(--slate-blue);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .intro-mark {
+    animation: intro-hues 7s linear infinite;
+  }
+
+  @keyframes intro-hues {
+    0% {
+      color: var(--slate-blue);
+    }
+    20% {
+      color: color-mix(in srgb, var(--olive) 72%, var(--ink));
+    }
+    40% {
+      color: var(--spruce);
+    }
+    60% {
+      color: color-mix(in srgb, var(--periwinkle) 78%, var(--ink));
+    }
+    80% {
+      color: var(--forest);
+    }
+    100% {
+      color: var(--slate-blue);
+    }
+  }
+}

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Bricolage_Grotesque, Fraunces } from "next/font/google";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import ContactSection from "@/components/sections/ContactSection";
 import Intro from "@/components/Intro";
 import RevealObserver from "@/components/RevealObserver";
 import { siteConfig } from "@/lib/content";
@@ -40,6 +41,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <RevealObserver />
         <Header />
         <main>{children}</main>
+        {/* The way in, at the foot of every page. */}
+        <ContactSection />
         <Footer />
       </body>
     </html>

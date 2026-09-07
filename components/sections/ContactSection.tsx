@@ -3,6 +3,7 @@
 import { FormEvent, useState } from "react";
 import { contactContent } from "@/lib/content";
 
+// Sits at the foot of every page. Where to find us, and a note.
 export default function ContactSection() {
   const [formData, setFormData] = useState({ name: "", email: "", message: "" });
   const [submitted, setSubmitted] = useState(false);
@@ -22,27 +23,25 @@ export default function ContactSection() {
   };
 
   return (
-    <section id="contact" aria-labelledby="contact-heading" className="section px-xs md:px-md">
+    <section
+      id="contact"
+      aria-labelledby="contact-heading"
+      className="section px-xs md:px-md"
+    >
       <div data-reveal className="grid gap-md md:grid-cols-4">
-        <h2 id="contact-heading">{contactContent.title}</h2>
-        <p className="md:col-span-2">{contactContent.description}</p>
-      </div>
+        <div>
+          <h2 id="contact-heading">{contactContent.title}</h2>
+          <p className="mt-md max-w-[34ch]">{contactContent.description}</p>
+          <ul role="list" className="mt-md text-caption">
+            <li>{contactContent.address}</li>
+            <li>
+              <a href={`mailto:${contactContent.email}`} className="link-sweep">
+                {contactContent.email}
+              </a>
+            </li>
+          </ul>
+        </div>
 
-      <div data-reveal className="mt-lg grid gap-md md:grid-cols-4">
-        <h3>{contactContent.detailsLabel}</h3>
-        <ul className="md:col-span-2">
-          <li>{contactContent.address}</li>
-          <li>
-            <a href={`mailto:${contactContent.email}`}>{contactContent.email}</a>
-          </li>
-          <li>
-            <a href={`tel:${contactContent.phone}`}>{contactContent.phone}</a>
-          </li>
-        </ul>
-      </div>
-
-      <div data-reveal className="mt-lg grid gap-md md:grid-cols-4">
-        <h3>{contactContent.formLabel}</h3>
         <form onSubmit={handleSubmit} className="space-y-md md:col-span-2">
           <label className="block">
             <span className="block text-caption">{form.nameLabel}</span>
@@ -75,7 +74,7 @@ export default function ContactSection() {
               value={formData.message}
               onChange={handleChange}
               required
-              rows={6}
+              rows={5}
               placeholder={form.messagePlaceholder}
             />
           </label>
@@ -86,15 +85,6 @@ export default function ContactSection() {
 
           {submitted && <p role="status">{form.success}</p>}
         </form>
-      </div>
-
-      <div data-reveal className="mt-lg grid gap-md md:grid-cols-4">
-        <h3>{contactContent.expectLabel}</h3>
-        <div className="space-y-xs md:col-span-2">
-          {contactContent.expect.map((paragraph) => (
-            <p key={paragraph}>{paragraph}</p>
-          ))}
-        </div>
       </div>
     </section>
   );
