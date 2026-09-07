@@ -1,19 +1,22 @@
 # Fonts
 
-Both display faces used by this site are licensed and are not committed here.
+Both faces used by this site are licensed from ABC Dinamo and are not
+committed here. Each is picked up automatically once its file is dropped in;
+until then the site falls back to a free stand-in, self-hosted by `next/font`,
+and needs no action.
 
 ## ABC Camera (headings)
 
-Buy a webfont licence from ABC Dinamo, then drop the file in as:
+Buy a webfont licence, then drop the file in as:
 
     public/fonts/ABCCamera-Regular.woff2
 
-It is picked up automatically. Until then, headings and the wordmark fall back to
-Bricolage Grotesque, which is self-hosted by `next/font` and needs no action.
+Until then, headings and the wordmark fall back to Bricolage Grotesque.
 
-## Editorial New (body copy)
+## ABC Favorit (body copy)
 
-The body face is handled the same way, but is not yet wired up. Once
-licensed, add the woff2 here and add a matching `@font-face` block to
-`app/globals.css` alongside the ABC Camera one. Body copy currently
-falls back to Fraunces.
+Buy a webfont licence, then drop the file in as:
+
+    public/fonts/ABCFavorit-Regular.woff2
+
+Until then, body copy, navigation and captions fall back to Instrument Sans.

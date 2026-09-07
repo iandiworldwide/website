@@ -14,6 +14,7 @@ import placementsData from "@/content/placements.json";
 import diary from "@/content/visual-diary.json";
 import notes from "@/content/notes.json";
 import contact from "@/content/contact.json";
+import notFound from "@/content/not-found.json";
 
 /* ------------------------------------------------------------------ */
 /* Site-wide                                                           */
@@ -40,7 +41,13 @@ export const introContent = home.intro;
 
 export const subscribeContent = home.subscribe;
 
-export const testimonials = home.testimonials;
+export interface Testimonial {
+  text: string;
+  author: string;
+}
+
+// Shown one at a time after the placements, sliding across as the page scrolls.
+export const testimonials = home.testimonials as Testimonial[];
 
 /* ------------------------------------------------------------------ */
 /* About                                                               */
@@ -131,3 +138,20 @@ export const blogPosts = notes.posts as BlogPost[];
 /* ------------------------------------------------------------------ */
 
 export const contactContent = contact;
+
+/* ------------------------------------------------------------------ */
+/* Not found                                                           */
+/* ------------------------------------------------------------------ */
+
+export interface LyricLine {
+  text: string;
+  /** Words within `text` that flicker through the marks. Must appear in it. */
+  highlight?: string;
+}
+
+export const notFoundContent = notFound.page;
+
+export const notFoundSong = {
+  ...notFound.song,
+  lines: notFound.song.lines as LyricLine[],
+};

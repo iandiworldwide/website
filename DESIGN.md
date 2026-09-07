@@ -113,7 +113,7 @@ No dark-mode block exists in the tokens, and no evidence of a theme toggle or `p
 | {typography.heading} | 14.4px | 400 | 1.4 | normal | Section/heading text (h3/h4-level) |
 
 ### Heading face (I&I addition)
-Headings use **ABC Camera** (ABC Dinamo, licensed) at 400, one step up from the body size, in Ink Black. Body copy, nav links and captions stay at 14.4px in the body serif. Two heading sizes only:
+Headings use **ABC Camera** (ABC Dinamo, licensed) at 400, one step up from the body size, in Ink Black. Body copy, nav links and captions stay at 14.4px in **ABC Favorit** (ABC Dinamo, licensed), which replaces Editorial New as the body face; Instrument Sans stands in until it is licensed. Two heading sizes only:
 
 | Role | Size |
 |---|---|

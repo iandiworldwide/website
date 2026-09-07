@@ -1,0 +1,21 @@
+{
+  "page": {
+    "code": "404",
+    "title": "Page not found",
+    "lede": "The page you were looking for is not here. It may have moved, or the address may have a typo in it.",
+    "homeLabel": "Back to the home page"
+  },
+  "song": {
+    "lines": [
+      { "text": "Live if you want to live" },
+      { "text": "Rastaman vibration, yeah, positive" },
+      { "text": "That’s what we got to give!" },
+      { "text": "I and I vibration yeah, positive", "highlight": "I and I" },
+      { "text": "Got to have a good vibe!" },
+      { "text": "Iyaman Iration, yeah, irie ites" },
+      { "text": "Wo-wo-ooh!" },
+      { "text": "Positive vibration, yeah, positive" }
+    ],
+    "credit": "Bob Marley & The Wailers, “Positive Vibration”, Rastaman Vibration, 1975"
+  }
+}

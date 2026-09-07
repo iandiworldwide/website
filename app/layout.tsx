@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Bricolage_Grotesque, Fraunces } from "next/font/google";
+import { Bricolage_Grotesque, Instrument_Sans } from "next/font/google";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ContactSection from "@/components/sections/ContactSection";
@@ -8,10 +8,11 @@ import RevealObserver from "@/components/RevealObserver";
 import { siteConfig } from "@/lib/content";
 import "./globals.css";
 
-// Body: Editorial New Regular is the system face. Fraunces at 400 is the
-// open substitute named in DESIGN.md; it is self-hosted by next/font.
-const fraunces = Fraunces({
-  variable: "--font-fraunces",
+// Body: ABC Favorit (Dinamo) is licensed and not bundled. Instrument Sans is
+// the closest free stand-in — a plain grotesque at the same weight — and is
+// self-hosted by next/font.
+const instrument = Instrument_Sans({
+  variable: "--font-instrument",
   subsets: ["latin"],
   weight: "400",
   display: "swap",
@@ -34,9 +35,9 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${fraunces.variable} ${bricolage.variable}`}>
+    <html lang="en" className={`${instrument.variable} ${bricolage.variable}`}>
       {/* Bottom padding clears the fixed navigation bar. */}
-      <body className="min-h-screen bg-surface pb-header font-editorial text-body text-ink">
+      <body className="min-h-screen bg-surface pb-header font-body text-body text-ink">
         <Intro />
         <RevealObserver />
         <Header />

@@ -2,7 +2,7 @@ import FluidBackground from "@/components/FluidBackground";
 import { aboutContent } from "@/lib/content";
 
 // The founder. The colour field returns here, tying the screen back to the
-// opening, with the quote given room of its own.
+// opening, with the quote given room of its own on the next screen.
 export default function FounderSection() {
   return (
     <section
@@ -13,18 +13,12 @@ export default function FounderSection() {
       <FluidBackground />
       <div className="fluid-over px-xs md:px-md">
         <div data-reveal className="grid gap-md md:grid-cols-4">
-          <h2 id="founder-heading">
-            {aboutContent.founderTitle}
-            <br />
-            {aboutContent.founderName}
-          </h2>
+          <h2 id="founder-heading">{aboutContent.founderTitle}</h2>
           <div className="space-y-md md:col-span-2 max-w-[52ch]">
             <p>{aboutContent.founderBio}</p>
-            <p>{aboutContent.founderApproach}</p>
             <p>{aboutContent.founderClosure}</p>
           </div>
         </div>
-
       </div>
     </section>
   );

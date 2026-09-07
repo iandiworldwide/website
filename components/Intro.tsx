@@ -3,28 +3,12 @@
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { introContent } from "@/lib/content";
+import { buildSequence } from "@/lib/marks";
 
 const GRACE_MS = 700; // long enough to see it flicker before it can be dismissed
 const HOLD_MS = 420; // how long the real mark holds before the screen goes
 const FADE_MS = 900;
 const SAFETY_MS = 9000; // nobody is ever stuck here
-
-// Every combination of a mark and a conjunction, minus the real one, which
-// is held back to open and close the sequence.
-const COMBINATIONS = introContent.marks
-  .flatMap((mark) => introContent.ands.map((and) => `${mark}${and}${mark}`))
-  .filter((variant) => variant !== introContent.final);
-
-// Index 0 is always the real mark, so the server and the first client render
-// agree and the screen opens on it. The rest are shuffled on the client.
-function buildSequence() {
-  const rest = [...COMBINATIONS];
-  for (let i = rest.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [rest[i], rest[j]] = [rest[j], rest[i]];
-  }
-  return [introContent.final, ...rest];
-}
 
 // Set on the client after the first play, so returning to the home page
 // during the same visit does not replay it. A fresh load starts over.
@@ -42,7 +26,7 @@ let hasPlayed = false;
 */
 export default function Intro() {
   const pathname = usePathname();
-  const [sequence] = useState(buildSequence);
+  const [sequence] = useState(() => buildSequence(introContent.final));
   const [frame, setFrame] = useState(0);
   const [armed, setArmed] = useState(false);
   const [landed, setLanded] = useState(false);
