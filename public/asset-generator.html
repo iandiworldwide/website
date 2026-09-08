@@ -301,6 +301,11 @@ textarea.field-input { resize:vertical; min-height:60px; }
       </div>
 
       <div class="field">
+        <div class="field-label"><span>Image opacity · lets the field through</span><span id="imgOpacityVal">100%</span></div>
+        <input type="range" class="range-input" id="imgOpacity" min="0" max="100" value="100">
+      </div>
+
+      <div class="field">
         <div class="field-label">Email subject line · header only</div>
         <input type="text" class="field-input" id="inSubject" value="Notes on collecting, from I&amp;I" placeholder="The subject line of the email">
       </div>
@@ -355,6 +360,11 @@ textarea.field-input { resize:vertical; min-height:60px; }
           <div class="swatch" data-color="#ffffff" style="background:#ffffff;border-color:var(--alice);" title="White"></div>
           <div class="swatch" data-color="#1d1d1b" style="background:#1d1d1b;" title="Ink"></div>
         </div>
+      </div>
+
+      <div class="field">
+        <div class="field-label"><span>Field colour · turns the whole palette</span><span id="hueVal">0°</span></div>
+        <input type="range" class="range-input" id="fieldHue" min="0" max="360" value="0">
       </div>
 
       <div class="field">
@@ -413,7 +423,16 @@ textarea.field-input { resize:vertical; min-height:60px; }
         <button class="cta" id="btnExportAll">Export all four</button>
         <button class="cta" id="btnExportAll23">Export the full suite, 23 sizes</button>
       </div>
-      <p class="export-hint">For video, click any preview to open it full screen with the field moving, then screen record.</p>
+      <div class="field" style="margin-top:var(--md);">
+        <div class="field-label">Video length</div>
+        <div class="chips" id="videoLength">
+          <button class="chip" data-secs="5">5 s</button>
+          <button class="chip active" data-secs="8">8 s</button>
+          <button class="chip" data-secs="12">12 s</button>
+          <button class="chip" data-secs="15">15 s</button>
+        </div>
+      </div>
+      <p class="export-hint" id="videoHint">Each preview has an export video button. The field keeps moving and the grain flickers.</p>
     </div>
 
     <div class="panel-section">
@@ -437,21 +456,25 @@ textarea.field-input { resize:vertical; min-height:60px; }
       <div class="preview-label">Portrait 4:5 · 1080 × 1350</div>
       <div class="asset-frame" id="frame-portrait" data-fmt="portrait" style="width:324px;height:405px;"></div>
       <button class="preview-single-dl cta" data-fmt="portrait">Export portrait</button>
+      <button class="preview-single-dl cta preview-video-dl" data-fmt="portrait" style="margin-left:var(--md);">Export video</button>
     </div>
     <div class="preview-block">
       <div class="preview-label">Vertical 9:16 · 1080 × 1920</div>
       <div class="asset-frame" id="frame-vertical" data-fmt="vertical" style="width:270px;height:480px;"></div>
       <button class="preview-single-dl cta" data-fmt="vertical">Export vertical</button>
+      <button class="preview-single-dl cta preview-video-dl" data-fmt="vertical" style="margin-left:var(--md);">Export video</button>
     </div>
     <div class="preview-block">
       <div class="preview-label">Square 1:1 · 1080 × 1080</div>
       <div class="asset-frame" id="frame-square" data-fmt="square" style="width:360px;height:360px;"></div>
       <button class="preview-single-dl cta" data-fmt="square">Export square</button>
+      <button class="preview-single-dl cta preview-video-dl" data-fmt="square" style="margin-left:var(--md);">Export video</button>
     </div>
     <div class="preview-block">
       <div class="preview-label">Email header 3:1 · 1200 × 400 · carries the subject line</div>
       <div class="asset-frame" id="frame-email" data-fmt="email" style="width:480px;height:160px;"></div>
       <button class="preview-single-dl cta" data-fmt="email">Export email header</button>
+      <button class="preview-single-dl cta preview-video-dl" data-fmt="email" style="margin-left:var(--md);">Export video</button>
     </div>
   </main>
 </div>
@@ -509,7 +532,7 @@ const S = {
   subject:'Notes on collecting, from I&I',
   bgColor:'field', textColor:'#1d1d1b', overlayOpacity:0, textPos:'bl',
   motion:true, showGrain:true, showWordmark:true, showMark:true, showSafe:false,
-  seed:1, exportFmt:'png',
+  seed:1, hue:0, imgOpacity:100, videoSeconds:8, exportFmt:'png',
 };
 
 // --- The two brand images, loaded once for the canvas ---
@@ -538,8 +561,31 @@ function fieldTime() { return (performance.now() - fieldClock.start) / 1000 + S.
 
 function hexToRgb(h) { return [parseInt(h.slice(1,3),16), parseInt(h.slice(3,5),16), parseInt(h.slice(5,7),16)]; }
 
+// Turn a colour round the wheel by so many degrees, keeping its depth.
+const shiftCache = new Map();
+function shiftHex(hex, deg) {
+  if (!deg) return hex;
+  const key = hex + deg;
+  if (shiftCache.has(key)) return shiftCache.get(key);
+  let [r,g,b] = hexToRgb(hex).map(v => v/255);
+  const max = Math.max(r,g,b), min = Math.min(r,g,b), l = (max+min)/2;
+  let hh = 0, sat = 0;
+  if (max !== min) {
+    const d = max - min;
+    sat = l > 0.5 ? d/(2-max-min) : d/(max+min);
+    hh = max === r ? ((g-b)/d + (g < b ? 6 : 0)) : max === g ? (b-r)/d + 2 : (r-g)/d + 4;
+    hh /= 6;
+  }
+  hh = (hh + deg/360) % 1;
+  const q = l < 0.5 ? l*(1+sat) : l + sat - l*sat, pp = 2*l - q;
+  const f = t => { t = (t+1)%1; return t < 1/6 ? pp+(q-pp)*6*t : t < 1/2 ? q : t < 2/3 ? pp+(q-pp)*(2/3-t)*6 : pp; };
+  const out = '#' + [f(hh+1/3), f(hh), f(hh-1/3)].map(v => Math.round(v*255).toString(16).padStart(2,'0')).join('');
+  shiftCache.set(key, out);
+  return out;
+}
+
 function drawField(ctx, w, h, t) {
-  ctx.fillStyle = PALETTE.lavender;
+  ctx.fillStyle = shiftHex(PALETTE.lavender, S.hue);
   ctx.fillRect(0, 0, w, h);
   const swirl = (t / SWIRL_PERIOD) * Math.PI * 2;
   const big = Math.max(w, h);
@@ -554,7 +600,7 @@ function drawField(ctx, w, h, t) {
     const scale = 1 + 0.3 * Math.sin(ph * 1.3);
     const alpha = b.a * (0.85 + 0.15 * Math.sin(ph * 0.7));
     const r = big * 0.36 * scale;
-    const [R,G,B] = hexToRgb(b.c);
+    const [R,G,B] = hexToRgb(shiftHex(b.c, S.hue));
     const g = ctx.createRadialGradient(x*w, y*h, 0, x*w, y*h, r);
     g.addColorStop(0, `rgba(${R},${G},${B},${alpha})`);
     g.addColorStop(0.45, `rgba(${R},${G},${B},${alpha*0.55})`);
@@ -627,7 +673,7 @@ function render() {
 function renderFrame(frame, key) {
   const field = frame.querySelector('[data-r="field"]');
   field.style.display = S.bgColor === 'field' ? 'block' : 'none';
-  frame.style.background = S.bgColor === 'field' ? PALETTE.lavender : S.bgColor;
+  frame.style.background = S.bgColor === 'field' ? shiftHex(PALETTE.lavender, S.hue) : S.bgColor;
   repaintFieldsNow();
 
   const bg = frame.querySelector('[data-r="bg"]');
@@ -637,9 +683,10 @@ function renderFrame(frame, key) {
     bg.style.objectFit = S.imgFit; bg.style.objectPosition = S.imgPos;
     bg.style.transform = `scale(${S.imgScale/100})`;
     bg.style.transformOrigin = S.imgPos;
+    bg.style.opacity = S.imgOpacity / 100;
   } else bg.style.display = 'none';
 
-  const washColour = S.bgColor === 'field' ? PALETTE.lavender : S.bgColor;
+  const washColour = S.bgColor === 'field' ? shiftHex(PALETTE.lavender, S.hue) : S.bgColor;
   const [r,g,b] = hexToRgb(washColour);
   frame.querySelector('[data-r="ov"]').style.background = S.imageUrl ? `rgba(${r},${g},${b},${S.overlayOpacity})` : 'transparent';
 
@@ -793,6 +840,12 @@ $('togWordmark').addEventListener('change', e => { S.showWordmark = e.target.che
 $('togMark').addEventListener('change', e => { S.showMark = e.target.checked; render(); });
 $('togSafe').addEventListener('change', e => { S.showSafe = e.target.checked; render(); });
 $('fieldSeed').addEventListener('input', e => { S.seed = +e.target.value; $('seedVal').textContent = e.target.value; repaintFieldsNow(); });
+$('fieldHue').addEventListener('input', e => { S.hue = +e.target.value; $('hueVal').textContent = e.target.value + '°'; render(); });
+$('imgOpacity').addEventListener('input', e => { S.imgOpacity = +e.target.value; $('imgOpacityVal').textContent = e.target.value + '%'; render(); });
+document.querySelectorAll('#videoLength .chip').forEach(b => b.addEventListener('click', () => {
+  document.querySelectorAll('#videoLength .chip').forEach(x => x.classList.remove('active'));
+  b.classList.add('active'); S.videoSeconds = +b.dataset.secs;
+}));
 
 document.querySelectorAll('[data-fmt].chip').forEach(b => b.addEventListener('click', () => {
   document.querySelectorAll('[data-fmt].chip').forEach(x => x.classList.remove('active'));
@@ -821,14 +874,39 @@ function tinted(img, colour, alpha) {
   return c;
 }
 
-async function exportCanvas(w, h, filename, email = false) {
-  await fontsReady();
-  const canvas = document.createElement('canvas');
-  canvas.width = w; canvas.height = h;
-  const ctx = canvas.getContext('2d');
+// A cached tint of a brand image, so video frames do not redo it.
+const tintCache = new Map();
+function tintedCached(img, colour) {
+  const key = img.src + colour;
+  if (!tintCache.has(key)) tintCache.set(key, tinted(img, colour));
+  return tintCache.get(key);
+}
 
+// A tile of near-white noise, laid on with multiply and jogged about: the
+// cheap grain for video, where per-pixel noise would be too slow.
+let noiseTile = null;
+function getNoiseTile() {
+  if (noiseTile) return noiseTile;
+  const c = document.createElement('canvas'); c.width = c.height = 256;
+  const x = c.getContext('2d'); const id = x.createImageData(256, 256); const d = id.data;
+  for (let i = 0; i < d.length; i += 4) { const v = 255 - Math.random() * 34; d[i] = d[i+1] = d[i+2] = v; d[i+3] = 255; }
+  x.putImageData(id, 0, 0); noiseTile = c; return c;
+}
+const JOGS = [[0,0],[-31,-58],[47,19],[-63,52],[22,-41],[-38,66],[59,-23],[-9,33]];
+function drawGrainTile(ctx, w, h, step) {
+  const [jx, jy] = JOGS[step % JOGS.length];
+  ctx.save();
+  ctx.globalCompositeOperation = 'multiply';
+  ctx.fillStyle = ctx.createPattern(getNoiseTile(), 'repeat');
+  ctx.translate(jx, jy); ctx.fillRect(-jx - 256, -jy - 256, w + 512, h + 512);
+  ctx.restore();
+}
+
+// Everything that goes into one frame, at any size. A still uses per-pixel
+// grain; a video frame uses the jogged tile.
+function drawFrame(ctx, w, h, { t = fieldTime(), email = false, grain = 'pixels', step = 0 } = {}) {
   // 1. Ground
-  if (S.bgColor === 'field') drawField(ctx, w, h, fieldTime());
+  if (S.bgColor === 'field') drawField(ctx, w, h, t);
   else { ctx.fillStyle = S.bgColor; ctx.fillRect(0, 0, w, h); }
 
   // 2. Image
@@ -845,15 +923,17 @@ async function exportCanvas(w, h, filename, email = false) {
     const [pv, phz] = S.imgPos.split(' ');
     dx = box.x + (phz === 'left' ? 0 : phz === 'right' ? box.w - dw : (box.w - dw)/2);
     dy = box.y + (pv === 'top' ? 0 : pv === 'bottom' ? box.h - dh : (box.h - dh)/2);
+    ctx.globalAlpha = S.imgOpacity / 100;
     ctx.drawImage(S.image, dx, dy, dw, dh);
+    ctx.globalAlpha = 1;
     if (S.overlayOpacity > 0) {
-      const [r,g,b] = hexToRgb(S.bgColor === 'field' ? PALETTE.lavender : S.bgColor);
+      const [r,g,b] = hexToRgb(S.bgColor === 'field' ? shiftHex(PALETTE.lavender, S.hue) : S.bgColor);
       ctx.fillStyle = `rgba(${r},${g},${b},${S.overlayOpacity})`; ctx.fillRect(0, 0, w, h);
     }
   }
 
   // 3. Grain
-  if (S.showGrain) applyGrain(ctx, w, h, 34);
+  if (S.showGrain) { if (grain === 'pixels') applyGrain(ctx, w, h, 34); else drawGrainTile(ctx, w, h, step); }
 
   // 4. Type
   drawTextOnCanvas(ctx, w, h, email);
@@ -864,14 +944,22 @@ async function exportCanvas(w, h, filename, email = false) {
   const wm = brandImgs['/logo-iandi-worldwide.png'], mk = brandImgs['/logo-mark.png'];
   if (S.showWordmark && wm.complete && wm.naturalWidth) {
     const hh = Math.max(14, base * 0.032), ww = hh * (wm.naturalWidth / wm.naturalHeight);
-    ctx.drawImage(tinted(wm, chromeColour()), pad, pad, ww, hh);
+    ctx.drawImage(tintedCached(wm, chromeColour()), pad, pad, ww, hh);
   }
   if (S.showMark && mk.complete && mk.naturalWidth) {
     const ww = base * 0.13, hh = ww * (mk.naturalHeight / mk.naturalWidth);
     ctx.globalAlpha = 0.45;
-    ctx.drawImage(tinted(mk, S.bgColor === PALETTE.ink ? PALETTE.periwinkle : PALETTE.slateBlue), w - pad - ww, h - pad - hh, ww, hh);
+    ctx.drawImage(tintedCached(mk, S.bgColor === PALETTE.ink ? PALETTE.periwinkle : PALETTE.slateBlue), w - pad - ww, h - pad - hh, ww, hh);
     ctx.globalAlpha = 1;
   }
+}
+
+async function exportCanvas(w, h, filename, email = false) {
+  await fontsReady();
+  const canvas = document.createElement('canvas');
+  canvas.width = w; canvas.height = h;
+  const ctx = canvas.getContext('2d');
+  drawFrame(ctx, w, h, { email });
 
   // 6. Save
   const mime = S.exportFmt === 'jpg' ? 'image/jpeg' : 'image/png';
@@ -884,6 +972,52 @@ async function exportCanvas(w, h, filename, email = false) {
     setTimeout(() => URL.revokeObjectURL(url), 1000);
     resolve();
   }, mime, S.exportFmt === 'jpg' ? 0.92 : undefined));
+}
+
+// ===========================================================
+// VIDEO · the browser records the moving frame straight to a file.
+// Safari writes MP4; Chrome and Firefox write WebM.
+// ===========================================================
+const VIDEO_MIME = ['video/mp4;codecs=avc1', 'video/mp4', 'video/webm;codecs=vp9', 'video/webm']
+  .find(m => window.MediaRecorder && MediaRecorder.isTypeSupported(m)) || null;
+const VIDEO_EXT = VIDEO_MIME && VIDEO_MIME.startsWith('video/mp4') ? 'mp4' : 'webm';
+
+async function exportVideo(w, h, filename, email = false, onProgress = () => {}) {
+  if (!VIDEO_MIME) { alert('This browser cannot record video. Try Safari or Chrome.'); return; }
+  await fontsReady();
+  const canvas = document.createElement('canvas');
+  canvas.width = w; canvas.height = h;
+  const ctx = canvas.getContext('2d');
+  const stream = canvas.captureStream(30);
+  const rec = new MediaRecorder(stream, { mimeType: VIDEO_MIME, videoBitsPerSecond: 14e6 });
+  const chunks = [];
+  rec.ondataavailable = e => { if (e.data && e.data.size) chunks.push(e.data); };
+  const stopped = new Promise(r => { rec.onstop = r; });
+
+  const seconds = S.videoSeconds;
+  const t0 = fieldTime();
+  drawFrame(ctx, w, h, { t: t0, email, grain: 'tile', step: 0 });
+  rec.start(250);
+  const start = performance.now();
+  await new Promise(resolve => {
+    const loop = () => {
+      const el = (performance.now() - start) / 1000;
+      drawFrame(ctx, w, h, { t: t0 + el, email, grain: 'tile', step: Math.floor(el * 9) });
+      onProgress(Math.min(1, el / seconds));
+      if (el < seconds) requestAnimationFrame(loop); else resolve();
+    };
+    requestAnimationFrame(loop);
+  });
+  rec.stop();
+  await stopped;
+  stream.getTracks().forEach(tr => tr.stop());
+
+  const blob = new Blob(chunks, { type: VIDEO_MIME });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = `${filename}.${VIDEO_EXT}`;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 2000);
 }
 
 function wrapText(ctx, text, maxW) {
@@ -999,11 +1133,20 @@ $('btnExportAll23').addEventListener('click', async function() {
   }
   this.disabled = false; this.textContent = was;
 });
-document.querySelectorAll('.preview-single-dl').forEach(btn => btn.addEventListener('click', async () => {
+document.querySelectorAll('.preview-single-dl:not(.preview-video-dl)').forEach(btn => btn.addEventListener('click', async () => {
   const f = FMT[btn.dataset.fmt]; const was = btn.textContent; btn.textContent = 'Exporting';
   await exportCanvas(f.w, f.h, `${slug(f.email)}_${btn.dataset.fmt}_${f.w}x${f.h}`, !!f.email);
   btn.textContent = was;
 }));
+document.querySelectorAll('.preview-video-dl').forEach(btn => btn.addEventListener('click', async () => {
+  const f = FMT[btn.dataset.fmt]; const was = btn.textContent; btn.disabled = true;
+  await exportVideo(f.w, f.h, `${slug(f.email)}_${btn.dataset.fmt}_${f.w}x${f.h}`, !!f.email,
+    p => { btn.textContent = `Recording ${Math.round(p * 100)}%`; });
+  btn.textContent = was; btn.disabled = false;
+}));
+$('videoHint').textContent = VIDEO_MIME
+  ? `Each preview has an export video button. This browser saves ${VIDEO_EXT.toUpperCase()}${VIDEO_EXT === 'webm' ? '; Safari saves MP4, which Instagram wants' : ''}. The field keeps moving and the grain flickers.`
+  : 'This browser cannot record video. Use Safari or Chrome, or click a preview to open it full screen and screen record.';
 
 // ===========================================================
 // FULLSCREEN · for screen recording the moving field
