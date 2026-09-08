@@ -329,6 +329,13 @@
   scroll-margin-top: var(--space-md);
 }
 
+/* Not a full screen, but with ample air above and below. */
+.section-roomy {
+  position: relative;
+  padding-block: calc(var(--space-lg) * 3);
+  scroll-margin-top: var(--space-md);
+}
+
 /* A screen of its own. Content sits centred with air above and below. */
 .section-full {
   position: relative;
