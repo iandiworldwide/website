@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { preload } from "react-dom";
 import { usePathname } from "next/navigation";
 import { introContent } from "@/lib/content";
 import { buildSequence } from "@/lib/marks";
@@ -16,9 +17,9 @@ let hasPlayed = false;
 
 /*
   The opening screen, on the home page only. It opens on i&i, flickers through
-  every other way of writing "i and i", and always lands back on i&i before it
-  fades. It leaves on the first sign of intent: a mouse move, a scroll, a tap
-  or a keystroke.
+  every other way of writing "i and i", and always lands on the mark itself,
+  drawn at the height of the type, before it fades. It leaves on the first
+  sign of intent: a mouse move, a scroll, a tap or a keystroke.
 
   It is rendered on the server so there is no flash of the site beforehand,
   and a noscript rule hides it when JavaScript is unavailable, so it can
@@ -36,6 +37,9 @@ export default function Intro() {
   const [gone, setGone] = useState(() => hasPlayed);
 
   const showing = pathname === "/" && !gone;
+
+  // Fetch the mark early, so it is there the instant the flicker lands.
+  if (showing) preload("/logo-mark.png", { as: "image" });
 
   // Flicker through the sequence in order, so every variation gets a turn.
   useEffect(() => {
@@ -117,7 +121,9 @@ export default function Intro() {
         <style>{`.intro{display:none}`}</style>
       </noscript>
       <div className="text-center">
-        <p className="intro-mark text-hero-sm">{sequence[frame]}</p>
+        <p className="intro-mark text-hero-sm">
+          {landed ? <span className="intro-logo" /> : sequence[frame]}
+        </p>
         {introContent.hint && <p className="intro-hint text-caption">{introContent.hint}</p>}
       </div>
     </div>

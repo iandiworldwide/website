@@ -776,6 +776,24 @@
   line-height: 1;
 }
 
+/* The mark the flicker lands on: exactly the height of the type it replaces,
+   in whatever colour the type had reached, so nothing jumps. */
+.intro-logo {
+  display: inline-block;
+  height: 1em;
+  aspect-ratio: 1088 / 947;
+  vertical-align: bottom;
+  background: url("/logo-mark.png") center / contain no-repeat;
+}
+
+@supports (mask-image: url("/logo-mark.png")) {
+  .intro-logo {
+    background: currentColor;
+    -webkit-mask: url("/logo-mark.png") center / contain no-repeat;
+    mask: url("/logo-mark.png") center / contain no-repeat;
+  }
+}
+
 .intro-hint {
   margin-top: var(--space-md);
   color: var(--slate);
