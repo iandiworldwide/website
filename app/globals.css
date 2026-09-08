@@ -296,11 +296,18 @@
    logotype, drifting through the same palette, but held back so it sits
    quietly under the page rather than competing with it. */
 .footer-mark {
-  width: clamp(120px, 14vw, 190px);
+  /* Full width on a phone; a measured size once there is room. */
+  width: 100%;
   aspect-ratio: 1088 / 947;
   margin: 0 auto var(--space-lg);
   opacity: 0.45;
   background: url("/logo-mark.png") center / contain no-repeat;
+}
+
+@media (min-width: 768px) {
+  .footer-mark {
+    width: clamp(120px, 14vw, 190px);
+  }
 }
 
 @supports (mask-image: url("/logo-mark.png")) {
