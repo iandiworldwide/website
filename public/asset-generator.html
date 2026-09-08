@@ -454,30 +454,50 @@ textarea.field-input { resize:vertical; min-height:60px; }
   <main class="preview-area" id="previewArea">
     <div class="preview-block">
       <div class="preview-label">Portrait 4:5 · 1080 × 1350</div>
+      <div class="chips frame-chips" data-frame="portrait" style="justify-content:center;margin-bottom:var(--xs);font-size:var(--caption);">
+        <button class="chip active" data-el="wordmark">Logotype</button>
+        <button class="chip active" data-el="mark">Mark</button>
+      </div>
       <div class="asset-frame" id="frame-portrait" data-fmt="portrait" style="width:324px;height:405px;"></div>
       <button class="preview-single-dl cta" data-fmt="portrait">Export portrait</button>
       <button class="preview-single-dl cta preview-video-dl" data-fmt="portrait" style="margin-left:var(--md);">Export video</button>
     </div>
     <div class="preview-block">
       <div class="preview-label">Vertical 9:16 · 1080 × 1920</div>
+      <div class="chips frame-chips" data-frame="vertical" style="justify-content:center;margin-bottom:var(--xs);font-size:var(--caption);">
+        <button class="chip active" data-el="wordmark">Logotype</button>
+        <button class="chip active" data-el="mark">Mark</button>
+      </div>
       <div class="asset-frame" id="frame-vertical" data-fmt="vertical" style="width:270px;height:480px;"></div>
       <button class="preview-single-dl cta" data-fmt="vertical">Export vertical</button>
       <button class="preview-single-dl cta preview-video-dl" data-fmt="vertical" style="margin-left:var(--md);">Export video</button>
     </div>
     <div class="preview-block">
       <div class="preview-label">Square 1:1 · 1080 × 1080</div>
+      <div class="chips frame-chips" data-frame="square" style="justify-content:center;margin-bottom:var(--xs);font-size:var(--caption);">
+        <button class="chip active" data-el="wordmark">Logotype</button>
+        <button class="chip active" data-el="mark">Mark</button>
+      </div>
       <div class="asset-frame" id="frame-square" data-fmt="square" style="width:360px;height:360px;"></div>
       <button class="preview-single-dl cta" data-fmt="square">Export square</button>
       <button class="preview-single-dl cta preview-video-dl" data-fmt="square" style="margin-left:var(--md);">Export video</button>
     </div>
     <div class="preview-block">
       <div class="preview-label">Email header 3:1 · 1200 × 400 · carries the subject line</div>
+      <div class="chips frame-chips" data-frame="email" style="justify-content:center;margin-bottom:var(--xs);font-size:var(--caption);">
+        <button class="chip active" data-el="wordmark">Logotype</button>
+        <button class="chip active" data-el="mark">Mark</button>
+      </div>
       <div class="asset-frame" id="frame-email" data-fmt="email" style="width:480px;height:160px;"></div>
       <button class="preview-single-dl cta" data-fmt="email">Export email header</button>
       <button class="preview-single-dl cta preview-video-dl" data-fmt="email" style="margin-left:var(--md);">Export video</button>
     </div>
     <div class="preview-block">
       <div class="preview-label">Presentation 16:9 · 1920 × 1080 · slides, desktop, call background</div>
+      <div class="chips frame-chips" data-frame="slide" style="justify-content:center;margin-bottom:var(--xs);font-size:var(--caption);">
+        <button class="chip active" data-el="wordmark">Logotype</button>
+        <button class="chip active" data-el="mark">Mark</button>
+      </div>
       <div class="asset-frame" id="frame-slide" data-fmt="slide" style="width:480px;height:270px;"></div>
       <button class="preview-single-dl cta" data-fmt="slide">Export slide</button>
       <button class="preview-single-dl cta preview-video-dl" data-fmt="slide" style="margin-left:var(--md);">Export video</button>
@@ -543,6 +563,8 @@ const S = {
   bgColor:'field', textColor:'#1d1d1b', overlayOpacity:0, textPos:'bl',
   motion:true, showGrain:true, showWordmark:true, showMark:true, showSafe:false,
   seed:1, hue:0, imgOpacity:100, videoSeconds:8, exportFmt:'png',
+  // Which logos each frame shows. The switches under Elements set them all.
+  chrome:{ portrait:{wordmark:true,mark:true}, vertical:{wordmark:true,mark:true}, square:{wordmark:true,mark:true}, email:{wordmark:true,mark:true}, slide:{wordmark:true,mark:true} },
 };
 
 // --- The two brand images, loaded once for the canvas ---
@@ -706,21 +728,25 @@ function renderFrame(frame, key) {
   const top = frame.querySelector('.asset-sz-top'), bot = frame.querySelector('.asset-sz-bot');
   if (top) { top.style.top = (f.safeY*100) + '%'; bot.style.bottom = (f.safeY*100) + '%'; top.style.display = bot.style.display = f.safeY ? 'block' : 'none'; }
 
-  buildChrome(frame.querySelector('[data-r="chrome"]'));
+  buildChrome(frame.querySelector('[data-r="chrome"]'), key);
   buildContent(frame.querySelector('[data-r="content"]'), key);
 }
+
+// The logos a frame shows; sizes from the suite follow the switches.
+function chromeFor(key) { return (key && S.chrome[key]) || { wordmark:S.showWordmark, mark:S.showMark }; }
 
 // Ink chrome on light grounds, white on ink.
 function chromeColour() { return S.bgColor === PALETTE.ink ? PALETTE.surface : PALETTE.ink; }
 
-function buildChrome(el) {
+function buildChrome(el, key) {
   const pw = baseOf(parseInt(el.parentElement.style.width), parseInt(el.parentElement.style.height));
   const pad = pw * 0.06;
+  const show = chromeFor(key);
   let html = '';
-  if (S.showWordmark) {
+  if (show.wordmark) {
     html += `<span class="asset-wordmark" style="top:${pad}px;left:${pad}px;height:${Math.max(8, pw*0.032)}px;background:${chromeColour()};"></span>`;
   }
-  if (S.showMark) {
+  if (show.mark) {
     html += `<span class="asset-mark" style="bottom:${pad}px;right:${pad}px;width:${pw*0.13}px;background:${S.bgColor === PALETTE.ink ? PALETTE.periwinkle : PALETTE.slateBlue};"></span>`;
   }
   el.innerHTML = html;
@@ -748,7 +774,7 @@ function buildContent(el, key, k = 1) {
   el.style.padding = vertical ? '16% 8%' : '8%';
   // Keep the block under the logotype's row when it sits at the top.
   const padTop = vertical ? pw * 0.16 : pw * 0.08;
-  el.style.paddingTop = Math.max(padTop, S.showWordmark ? basePx * 0.12 : 0) + 'px';
+  el.style.paddingTop = Math.max(padTop, chromeFor(key).wordmark ? basePx * 0.12 : 0) + 'px';
 
   const colour = S.textColor === 'colour';
   const tc = colour ? PALETTE.ink : S.textColor;
@@ -860,8 +886,21 @@ document.querySelectorAll('#posGrid .pos-cell').forEach(c => c.addEventListener(
 
 $('togMotion').addEventListener('change', e => { S.motion = e.target.checked; repaintFieldsNow(); });
 $('togGrain').addEventListener('change', e => { S.showGrain = e.target.checked; render(); });
-$('togWordmark').addEventListener('change', e => { S.showWordmark = e.target.checked; render(); });
-$('togMark').addEventListener('change', e => { S.showMark = e.target.checked; render(); });
+$('togWordmark').addEventListener('change', e => { S.showWordmark = e.target.checked; Object.values(S.chrome).forEach(c => c.wordmark = e.target.checked); syncFrameChips(); render(); });
+$('togMark').addEventListener('change', e => { S.showMark = e.target.checked; Object.values(S.chrome).forEach(c => c.mark = e.target.checked); syncFrameChips(); render(); });
+
+// Per-frame chips, above each preview.
+function syncFrameChips() {
+  document.querySelectorAll('.frame-chips').forEach(row => {
+    const c = S.chrome[row.dataset.frame];
+    row.querySelectorAll('.chip').forEach(b => b.classList.toggle('active', !!c[b.dataset.el]));
+  });
+}
+document.querySelectorAll('.frame-chips .chip').forEach(b => b.addEventListener('click', () => {
+  const c = S.chrome[b.closest('.frame-chips').dataset.frame];
+  c[b.dataset.el] = !c[b.dataset.el];
+  syncFrameChips(); render();
+}));
 $('togSafe').addEventListener('change', e => { S.showSafe = e.target.checked; render(); });
 $('fieldSeed').addEventListener('input', e => { S.seed = +e.target.value; $('seedVal').textContent = e.target.value; repaintFieldsNow(); });
 $('fieldHue').addEventListener('input', e => { S.hue = +e.target.value; $('hueVal').textContent = e.target.value + '°'; render(); });
@@ -928,7 +967,7 @@ function drawGrainTile(ctx, w, h, step) {
 
 // Everything that goes into one frame, at any size. A still uses per-pixel
 // grain; a video frame uses the jogged tile.
-function drawFrame(ctx, w, h, { t = fieldTime(), email = false, grain = 'pixels', step = 0 } = {}) {
+function drawFrame(ctx, w, h, { t = fieldTime(), email = false, grain = 'pixels', step = 0, show = chromeFor(null) } = {}) {
   // 1. Ground
   if (S.bgColor === 'field') drawField(ctx, w, h, t);
   else { ctx.fillStyle = S.bgColor; ctx.fillRect(0, 0, w, h); }
@@ -960,17 +999,17 @@ function drawFrame(ctx, w, h, { t = fieldTime(), email = false, grain = 'pixels'
   if (S.showGrain) { if (grain === 'pixels') applyGrain(ctx, w, h, 34); else drawGrainTile(ctx, w, h, step); }
 
   // 4. Type
-  drawTextOnCanvas(ctx, w, h, email);
+  drawTextOnCanvas(ctx, w, h, email, show.wordmark);
 
   // 5. Chrome
   const base = baseOf(w, h);
   const pad = base * 0.06;
   const wm = brandImgs['/logo-iandi-worldwide.png'], mk = brandImgs['/logo-mark.png'];
-  if (S.showWordmark && wm.complete && wm.naturalWidth) {
+  if (show.wordmark && wm.complete && wm.naturalWidth) {
     const hh = Math.max(14, base * 0.032), ww = hh * (wm.naturalWidth / wm.naturalHeight);
     ctx.drawImage(tintedCached(wm, chromeColour()), pad, pad, ww, hh);
   }
-  if (S.showMark && mk.complete && mk.naturalWidth) {
+  if (show.mark && mk.complete && mk.naturalWidth) {
     const ww = base * 0.13, hh = ww * (mk.naturalHeight / mk.naturalWidth);
     ctx.globalAlpha = 0.45;
     ctx.drawImage(tintedCached(mk, S.bgColor === PALETTE.ink ? PALETTE.periwinkle : PALETTE.slateBlue), w - pad - ww, h - pad - hh, ww, hh);
@@ -978,12 +1017,12 @@ function drawFrame(ctx, w, h, { t = fieldTime(), email = false, grain = 'pixels'
   }
 }
 
-async function exportCanvas(w, h, filename, email = false) {
+async function exportCanvas(w, h, filename, email = false, key = null) {
   await fontsReady();
   const canvas = document.createElement('canvas');
   canvas.width = w; canvas.height = h;
   const ctx = canvas.getContext('2d');
-  drawFrame(ctx, w, h, { email });
+  drawFrame(ctx, w, h, { email, show: chromeFor(key) });
 
   // 6. Save
   const mime = S.exportFmt === 'jpg' ? 'image/jpeg' : 'image/png';
@@ -1006,7 +1045,7 @@ const VIDEO_MIME = ['video/mp4;codecs=avc1', 'video/mp4', 'video/webm;codecs=vp9
   .find(m => window.MediaRecorder && MediaRecorder.isTypeSupported(m)) || null;
 const VIDEO_EXT = VIDEO_MIME && VIDEO_MIME.startsWith('video/mp4') ? 'mp4' : 'webm';
 
-async function exportVideo(w, h, filename, email = false, onProgress = () => {}) {
+async function exportVideo(w, h, filename, email = false, onProgress = () => {}, key = null) {
   if (!VIDEO_MIME) { alert('This browser cannot record video. Try Safari or Chrome.'); return; }
   await fontsReady();
   const canvas = document.createElement('canvas');
@@ -1020,13 +1059,14 @@ async function exportVideo(w, h, filename, email = false, onProgress = () => {})
 
   const seconds = S.videoSeconds;
   const t0 = fieldTime();
-  drawFrame(ctx, w, h, { t: t0, email, grain: 'tile', step: 0 });
+  const show = chromeFor(key);
+  drawFrame(ctx, w, h, { t: t0, email, grain: 'tile', step: 0, show });
   rec.start(250);
   const start = performance.now();
   await new Promise(resolve => {
     const loop = () => {
       const el = (performance.now() - start) / 1000;
-      drawFrame(ctx, w, h, { t: t0 + el, email, grain: 'tile', step: Math.floor(el * 9) });
+      drawFrame(ctx, w, h, { t: t0 + el, email, grain: 'tile', step: Math.floor(el * 9), show });
       onProgress(Math.min(1, el / seconds));
       if (el < seconds) requestAnimationFrame(loop); else resolve();
     };
@@ -1066,7 +1106,7 @@ function colourFill(ctx, x0, x1) {
   return g;
 }
 
-function drawTextOnCanvas(ctx, w, h, email = false) {
+function drawTextOnCanvas(ctx, w, h, email = false, wordmark = S.showWordmark) {
   const vertical = h / w > 1.4;
   const base = baseOf(w, h);
   const padX = w * 0.08, padY = vertical ? h * 0.16 : base * 0.08;
@@ -1079,7 +1119,7 @@ function drawTextOnCanvas(ctx, w, h, email = false) {
   const colour = S.textColor === 'colour';
   const tc = colour ? PALETTE.ink : S.textColor;
   // The room the block has: under the logotype's row, above the bottom pad.
-  const top = Math.max(padY, S.showWordmark ? base * 0.12 : 0);
+  const top = Math.max(padY, wordmark ? base * 0.12 : 0);
   const room = h - top - padY;
 
   const display = sz => `400 ${sz}px ${FONT_DISPLAY}`;
@@ -1159,7 +1199,7 @@ const delay = ms => new Promise(r => setTimeout(r, ms));
 
 $('btnExportAll').addEventListener('click', async function() {
   this.disabled = true; const was = this.textContent; this.textContent = 'Exporting';
-  for (const [k, f] of Object.entries(FMT)) { await exportCanvas(f.w, f.h, `${slug(f.email)}_${k}_${f.w}x${f.h}`, !!f.email); await delay(250); }
+  for (const [k, f] of Object.entries(FMT)) { await exportCanvas(f.w, f.h, `${slug(f.email)}_${k}_${f.w}x${f.h}`, !!f.email, k); await delay(250); }
   this.disabled = false; this.textContent = was;
 });
 $('btnExportAll23').addEventListener('click', async function() {
@@ -1174,13 +1214,13 @@ $('btnExportAll23').addEventListener('click', async function() {
 });
 document.querySelectorAll('.preview-single-dl:not(.preview-video-dl)').forEach(btn => btn.addEventListener('click', async () => {
   const f = FMT[btn.dataset.fmt]; const was = btn.textContent; btn.textContent = 'Exporting';
-  await exportCanvas(f.w, f.h, `${slug(f.email)}_${btn.dataset.fmt}_${f.w}x${f.h}`, !!f.email);
+  await exportCanvas(f.w, f.h, `${slug(f.email)}_${btn.dataset.fmt}_${f.w}x${f.h}`, !!f.email, btn.dataset.fmt);
   btn.textContent = was;
 }));
 document.querySelectorAll('.preview-video-dl').forEach(btn => btn.addEventListener('click', async () => {
   const f = FMT[btn.dataset.fmt]; const was = btn.textContent; btn.disabled = true;
   await exportVideo(f.w, f.h, `${slug(f.email)}_${btn.dataset.fmt}_${f.w}x${f.h}`, !!f.email,
-    p => { btn.textContent = `Recording ${Math.round(p * 100)}%`; });
+    p => { btn.textContent = `Recording ${Math.round(p * 100)}%`; }, btn.dataset.fmt);
   btn.textContent = was; btn.disabled = false;
 }));
 $('videoHint').textContent = VIDEO_MIME
@@ -1306,10 +1346,10 @@ $('btnBatchExport').addEventListener('click', async function() {
       await new Promise(res => { const img = new Image(); img.onload = () => { S.image = img; S.imageUrl = snap._imageDataUrl; res(); }; img.src = snap._imageDataUrl; });
     } else { S.image = null; S.imageUrl = null; }
     this.textContent = `Exporting ${i+1} of ${batchQueue.length}`;
-    for (const [k, f] of Object.entries(FMT)) { await exportCanvas(f.w, f.h, `${slug(f.email)}_${k}`, !!f.email); await delay(250); }
+    for (const [k, f] of Object.entries(FMT)) { await exportCanvas(f.w, f.h, `${slug(f.email)}_${k}`, !!f.email, k); await delay(250); }
   }
   Object.assign(S, orig);
-  render();
+  syncFrameChips(); render();
   this.disabled = false; this.textContent = 'Export the queue';
 });
 
