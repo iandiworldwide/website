@@ -209,7 +209,7 @@ textarea.field-input { resize:vertical; min-height:60px; }
     <span class="header-title">Asset generator</span>
   </div>
   <div class="header-right">
-    <span class="header-meta" id="headerMeta">3 formats</span>
+    <span class="header-meta" id="headerMeta">4 formats</span>
     <a href="/" class="cta">Site</a>
   </div>
 </header>
@@ -300,6 +300,10 @@ textarea.field-input { resize:vertical; min-height:60px; }
         </div>
       </div>
 
+      <div class="field">
+        <div class="field-label">Email subject line · header only</div>
+        <input type="text" class="field-input" id="inSubject" value="Notes on collecting, from I&amp;I" placeholder="The subject line of the email">
+      </div>
       <div class="field">
         <div class="field-label">Headline</div>
         <textarea class="field-input" id="inTitle" rows="2">Guiding next-gen collectors on building personal and purposeful art collections.</textarea>
@@ -406,7 +410,7 @@ textarea.field-input { resize:vertical; min-height:60px; }
         </div>
       </div>
       <div class="export-list">
-        <button class="cta" id="btnExportAll">Export all three</button>
+        <button class="cta" id="btnExportAll">Export all four</button>
         <button class="cta" id="btnExportAll23">Export the full suite, 23 sizes</button>
       </div>
       <p class="export-hint">For video, click any preview to open it full screen with the field moving, then screen record.</p>
@@ -444,6 +448,11 @@ textarea.field-input { resize:vertical; min-height:60px; }
       <div class="asset-frame" id="frame-square" data-fmt="square" style="width:360px;height:360px;"></div>
       <button class="preview-single-dl cta" data-fmt="square">Export square</button>
     </div>
+    <div class="preview-block">
+      <div class="preview-label">Email header 3:1 · 1200 × 400 · carries the subject line</div>
+      <div class="asset-frame" id="frame-email" data-fmt="email" style="width:480px;height:160px;"></div>
+      <button class="preview-single-dl cta" data-fmt="email">Export email header</button>
+    </div>
   </main>
 </div>
 
@@ -463,7 +472,12 @@ const FMT = {
   portrait: { w:1080, h:1350, label:'Portrait 4:5', safeY:0.13 },
   vertical: { w:1080, h:1920, label:'Vertical 9:16', safeY:0.13 },
   square:   { w:1080, h:1080, label:'Square 1:1', safeY:0 },
+  // The email header carries the subject line rather than the headline.
+  email:    { w:1200, h:400,  label:'Email header 3:1', safeY:0, email:true },
 };
+
+// Wide frames size their type and chrome from the height, not the width.
+const baseOf = (w, h) => Math.min(w, h * 2.4);
 
 const FULL_SUITE = [
   { w:1080,h:1080, n:'IG_Square' }, { w:1080,h:1350, n:'IG_Portrait' }, { w:1080,h:1920, n:'IG_Story' },
@@ -473,7 +487,7 @@ const FULL_SUITE = [
   { w:1280,h:720,  n:'YT_Thumbnail' }, { w:2560,h:1440, n:'YT_Banner' }, { w:1080,h:1920, n:'YT_Short' },
   { w:1080,h:1920, n:'TikTok' },
   { w:300, h:250,  n:'GDN_MedRect' }, { w:728, h:90,   n:'GDN_Leaderboard' }, { w:160, h:600,  n:'GDN_Skyscraper' }, { w:336, h:280,  n:'GDN_LargeRect' },
-  { w:1200,h:400,  n:'Email_Header' }, { w:1200,h:600,  n:'Email_Body' },
+  { w:1200,h:400,  n:'Email_Header', email:true }, { w:1200,h:600,  n:'Email_Body' },
   { w:1080,h:1920, n:'WA_Status' },
 ];
 
@@ -492,6 +506,7 @@ const S = {
   title:'Guiding next-gen collectors on building personal and purposeful art collections.',
   sub:'A London-based independent art advisory, working with emerging to mid-career artists.',
   caption:'', meta:'iandiworldwide.org', quote:'', author:'',
+  subject:'Notes on collecting, from I&I',
   bgColor:'field', textColor:'#1d1d1b', overlayOpacity:0, textPos:'bl',
   motion:true, showGrain:true, showWordmark:true, showMark:true, showSafe:false,
   seed:1, exportFmt:'png',
@@ -579,7 +594,7 @@ function buildFrame(frame) {
     </div>`;
   liveCanvases.add(frame.querySelector('[data-r="field"]'));
 }
-['portrait','vertical','square'].forEach(k => buildFrame(document.getElementById('frame-' + k)));
+Object.keys(FMT).forEach(k => buildFrame(document.getElementById('frame-' + k)));
 
 // One loop paints every live field. Around 30 frames a second is plenty.
 let lastPaint = 0;
@@ -642,7 +657,7 @@ function renderFrame(frame, key) {
 function chromeColour() { return S.bgColor === PALETTE.ink ? PALETTE.surface : PALETTE.ink; }
 
 function buildChrome(el) {
-  const pw = parseInt(el.parentElement.style.width);
+  const pw = baseOf(parseInt(el.parentElement.style.width), parseInt(el.parentElement.style.height));
   const pad = pw * 0.06;
   let html = '';
   if (S.showWordmark) {
@@ -660,7 +675,8 @@ function nl2br(t) { return esc(t).replace(/\n/g, '<br>'); }
 function buildContent(el, key) {
   const pw = parseInt(el.parentElement.style.width);
   const ph = parseInt(el.parentElement.style.height);
-  const scale = pw / 360;
+  const scale = baseOf(pw, ph) / 360;
+  const email = !!(FMT[key] && FMT[key].email);
   const pos = S.textPos;
   let jc = 'flex-end', ai = 'flex-start', ta = 'left';
   if (pos.startsWith('t')) jc = 'flex-start';
@@ -681,7 +697,10 @@ function buildContent(el, key) {
   const measure = 'max-width:100%;';
 
   let html = '';
-  if (S.intent === 'quote') {
+  if (email) {
+    html += `<div class="${cls}" style="font-family:${FONT_DISPLAY};font-size:${heroSmSz}px;line-height:1.1;color:${tc};${measure}">${nl2br(S.subject)}</div>`;
+    if (S.meta) html += `<div style="font-family:${FONT_BODY};font-size:${capSz}px;color:${tc};opacity:.6;margin-top:${8*scale}px;">${nl2br(S.meta)}</div>`;
+  } else if (S.intent === 'quote') {
     const q = S.quote || 'Now I do it for you.';
     html += `<div class="${cls}" style="font-family:${FONT_DISPLAY};font-size:${heroSmSz}px;line-height:1.12;color:${tc};${measure}">“${nl2br(q)}”</div>`;
     if (S.author) html += `<div style="font-family:${FONT_BODY};font-size:${capSz}px;color:${tc};margin-top:${12*scale}px;">${nl2br(S.author)}</div>`;
@@ -751,7 +770,7 @@ document.querySelectorAll('#imgPosGrid .pos-cell').forEach(c => c.addEventListen
 }));
 
 const bind = (id, key) => $(id).addEventListener('input', e => { S[key] = e.target.value; render(); });
-bind('inTitle','title'); bind('inSub','sub'); bind('inCaption','caption'); bind('inMeta','meta'); bind('inQuote','quote'); bind('inAuthor','author');
+bind('inTitle','title'); bind('inSub','sub'); bind('inCaption','caption'); bind('inMeta','meta'); bind('inQuote','quote'); bind('inAuthor','author'); bind('inSubject','subject');
 
 $('overlayOpacity').addEventListener('input', e => { S.overlayOpacity = e.target.value/100; $('overlayVal').textContent = e.target.value + '%'; render(); });
 
@@ -802,7 +821,7 @@ function tinted(img, colour, alpha) {
   return c;
 }
 
-async function exportCanvas(w, h, filename) {
+async function exportCanvas(w, h, filename, email = false) {
   await fontsReady();
   const canvas = document.createElement('canvas');
   canvas.width = w; canvas.height = h;
@@ -837,17 +856,18 @@ async function exportCanvas(w, h, filename) {
   if (S.showGrain) applyGrain(ctx, w, h, 34);
 
   // 4. Type
-  drawTextOnCanvas(ctx, w, h);
+  drawTextOnCanvas(ctx, w, h, email);
 
   // 5. Chrome
-  const pad = w * 0.06;
+  const base = baseOf(w, h);
+  const pad = base * 0.06;
   const wm = brandImgs['/logo-iandi-worldwide.png'], mk = brandImgs['/logo-mark.png'];
   if (S.showWordmark && wm.complete && wm.naturalWidth) {
-    const hh = Math.max(14, w * 0.032), ww = hh * (wm.naturalWidth / wm.naturalHeight);
+    const hh = Math.max(14, base * 0.032), ww = hh * (wm.naturalWidth / wm.naturalHeight);
     ctx.drawImage(tinted(wm, chromeColour()), pad, pad, ww, hh);
   }
   if (S.showMark && mk.complete && mk.naturalWidth) {
-    const ww = w * 0.13, hh = ww * (mk.naturalHeight / mk.naturalWidth);
+    const ww = base * 0.13, hh = ww * (mk.naturalHeight / mk.naturalWidth);
     ctx.globalAlpha = 0.45;
     ctx.drawImage(tinted(mk, S.bgColor === PALETTE.ink ? PALETTE.periwinkle : PALETTE.slateBlue), w - pad - ww, h - pad - hh, ww, hh);
     ctx.globalAlpha = 1;
@@ -888,9 +908,10 @@ function colourFill(ctx, x0, x1) {
   return g;
 }
 
-function drawTextOnCanvas(ctx, w, h) {
+function drawTextOnCanvas(ctx, w, h, email = false) {
   const vertical = h / w > 1.4;
-  const padX = w * 0.08, padY = vertical ? h * 0.16 : h * 0.08;
+  const base = baseOf(w, h);
+  const padX = w * 0.08, padY = vertical ? h * 0.16 : base * 0.08;
   const pos = S.textPos;
   const align = pos.endsWith('l') ? 'left' : pos.endsWith('r') ? 'right' : 'center';
   const anchorX = align === 'left' ? padX : align === 'right' ? w - padX : w / 2;
@@ -898,10 +919,10 @@ function drawTextOnCanvas(ctx, w, h) {
   const colour = S.textColor === 'colour';
   const tc = colour ? PALETTE.ink : S.textColor;
 
-  const heroSz = Math.max(40, w * 0.083);
-  const heroSmSz = Math.max(32, w * 0.067);
-  const bodySz = Math.max(18, w * 0.029);
-  const capSz = Math.max(15, w * 0.0233);
+  const heroSz = Math.max(40, base * 0.083);
+  const heroSmSz = Math.max(32, base * 0.067);
+  const bodySz = Math.max(18, base * 0.029);
+  const capSz = Math.max(15, base * 0.0233);
 
   const lines = [];
   const push = (text, cfg) => {
@@ -913,7 +934,10 @@ function drawTextOnCanvas(ctx, w, h) {
   const display = (sz) => `400 ${sz}px ${FONT_DISPLAY}`;
   const body = (sz) => `400 ${sz}px ${FONT_BODY}`;
 
-  if (S.intent === 'quote') {
+  if (email) {
+    push(S.subject, { font:display(heroSmSz), size:heroSmSz, lh:1.1, colour, alpha:1 });
+    if (S.meta) { gap(capSz*0.5); push(S.meta, { font:body(capSz), size:capSz, lh:1.35, alpha:.6 }); }
+  } else if (S.intent === 'quote') {
     push('“' + (S.quote || 'Now I do it for you.') + '”', { font:display(heroSmSz), size:heroSmSz, lh:1.12, colour, alpha:1 });
     if (S.author) { gap(heroSmSz*0.45); push(S.author, { font:body(capSz), size:capSz, lh:1.35, alpha:1 }); }
     if (S.meta) { gap(capSz*0.3); push(S.meta, { font:body(capSz), size:capSz, lh:1.35, alpha:.6 }); }
@@ -956,12 +980,13 @@ function drawTextOnCanvas(ctx, w, h) {
 // ===========================================================
 // EXPORT BUTTONS
 // ===========================================================
-const slug = () => (S.intent === 'quote' ? (S.author || 'quote') : (S.title || 'iandi')).replace(/[^a-zA-Z0-9]+/g,'_').replace(/^_|_$/g,'').substring(0,30) || 'iandi';
+const clean = t => String(t || '').replace(/[^a-zA-Z0-9]+/g,'_').replace(/^_|_$/g,'').substring(0,30);
+const slug = (email = false) => clean(email ? S.subject : S.intent === 'quote' ? (S.author || 'quote') : S.title) || 'iandi';
 const delay = ms => new Promise(r => setTimeout(r, ms));
 
 $('btnExportAll').addEventListener('click', async function() {
   this.disabled = true; const was = this.textContent; this.textContent = 'Exporting';
-  for (const [k, f] of Object.entries(FMT)) { await exportCanvas(f.w, f.h, `${slug()}_${k}_${f.w}x${f.h}`); await delay(250); }
+  for (const [k, f] of Object.entries(FMT)) { await exportCanvas(f.w, f.h, `${slug(f.email)}_${k}_${f.w}x${f.h}`, !!f.email); await delay(250); }
   this.disabled = false; this.textContent = was;
 });
 $('btnExportAll23').addEventListener('click', async function() {
@@ -969,14 +994,14 @@ $('btnExportAll23').addEventListener('click', async function() {
   for (let i = 0; i < FULL_SUITE.length; i++) {
     const f = FULL_SUITE[i];
     this.textContent = `Exporting ${i+1} of ${FULL_SUITE.length}`;
-    await exportCanvas(f.w, f.h, `${slug()}_${f.n}_${f.w}x${f.h}`);
+    await exportCanvas(f.w, f.h, `${slug(f.email)}_${f.n}_${f.w}x${f.h}`, !!f.email);
     await delay(220);
   }
   this.disabled = false; this.textContent = was;
 });
 document.querySelectorAll('.preview-single-dl').forEach(btn => btn.addEventListener('click', async () => {
   const f = FMT[btn.dataset.fmt]; const was = btn.textContent; btn.textContent = 'Exporting';
-  await exportCanvas(f.w, f.h, `${slug()}_${btn.dataset.fmt}_${f.w}x${f.h}`);
+  await exportCanvas(f.w, f.h, `${slug(f.email)}_${btn.dataset.fmt}_${f.w}x${f.h}`, !!f.email);
   btn.textContent = was;
 }));
 
@@ -1013,15 +1038,15 @@ const CAROUSEL = {
 const OTHER = {
   quote: { intent:'quote', quote:'I started collecting nearly two decades ago and spent years navigating an art world that wasn’t built for everyone. Finding artists who spoke directly to me took years of searching. That search became a career. Now I do it for you.', author:'Talia Pockhai', meta:'', bg:'#ffffff', tc:'colour' },
   placement: { intent:'artwork', title:'', sub:'', caption:'Artist, Title, Year', meta:'Placed with a private collector', bg:'field', tc:'#1d1d1b' },
-  substack: { intent:'announce', title:'Follow on Substack.', sub:'Art fairs, studio visits, artists to watch and how we think about collecting.', caption:'', meta:'iandiworldwide.substack.com', bg:'field', tc:'#1d1d1b' },
+  substack: { intent:'announce', title:'Follow on Substack.', sub:'Art fairs, studio visits, artists to watch and how we think about collecting.', caption:'', meta:'iandiworldwide.substack.com', subject:'New on Substack, from I&I', bg:'field', tc:'#1d1d1b' },
 };
 
 function applyPreset(p, activeSelector) {
   document.querySelectorAll('#carouselPresets .chip, #otherPresets .chip').forEach(b => b.classList.remove('active'));
   if (activeSelector) document.querySelector(activeSelector).classList.add('active');
   if (p) {
-    Object.assign(S, { title:p.title ?? S.title, sub:p.sub ?? S.sub, caption:p.caption ?? S.caption, meta:p.meta ?? S.meta, quote:p.quote ?? S.quote, author:p.author ?? S.author, bgColor:p.bg ?? S.bgColor, textColor:p.tc ?? S.textColor });
-    $('inTitle').value = S.title; $('inSub').value = S.sub; $('inCaption').value = S.caption; $('inMeta').value = S.meta; $('inQuote').value = S.quote; $('inAuthor').value = S.author;
+    Object.assign(S, { title:p.title ?? S.title, sub:p.sub ?? S.sub, caption:p.caption ?? S.caption, meta:p.meta ?? S.meta, quote:p.quote ?? S.quote, author:p.author ?? S.author, subject:p.subject ?? S.subject, bgColor:p.bg ?? S.bgColor, textColor:p.tc ?? S.textColor });
+    $('inTitle').value = S.title; $('inSub').value = S.sub; $('inCaption').value = S.caption; $('inMeta').value = S.meta; $('inQuote').value = S.quote; $('inAuthor').value = S.author; $('inSubject').value = S.subject;
     document.querySelectorAll('#bgColor .swatch').forEach(s => s.classList.toggle('active', s.dataset.color === S.bgColor));
     document.querySelectorAll('#textColor .swatch').forEach(s => s.classList.toggle('active', s.dataset.color === S.textColor));
     setIntent(p.intent || S.intent);
@@ -1031,7 +1056,7 @@ function applyPreset(p, activeSelector) {
 document.querySelectorAll('[data-carousel]').forEach(b => b.addEventListener('click', () => applyPreset(CAROUSEL[b.dataset.carousel], `[data-carousel="${b.dataset.carousel}"]`)));
 document.querySelectorAll('[data-preset]').forEach(b => b.addEventListener('click', () => {
   if (b.dataset.preset === 'clear') {
-    applyPreset({ intent:'announce', title:'', sub:'', caption:'', meta:'', quote:'', author:'', bg:'field', tc:'#1d1d1b' }, null);
+    applyPreset({ intent:'announce', title:'', sub:'', caption:'', meta:'', quote:'', author:'', subject:'', bg:'field', tc:'#1d1d1b' }, null);
   } else applyPreset(OTHER[b.dataset.preset], `[data-preset="${b.dataset.preset}"]`);
 }));
 
@@ -1065,7 +1090,7 @@ function renderBatchList() {
   list.innerHTML = '';
   $('btnBatchExport').style.display = batchQueue.length ? '' : 'none';
   $('btnBatchClear').style.display = batchQueue.length ? '' : 'none';
-  $('headerMeta').textContent = batchQueue.length ? `3 formats · ${batchQueue.length} queued` : '3 formats';
+  $('headerMeta').textContent = batchQueue.length ? `4 formats · ${batchQueue.length} queued` : '4 formats';
   batchQueue.forEach((item, idx) => {
     const div = document.createElement('div');
     div.className = 'batch-item';
@@ -1099,8 +1124,7 @@ $('btnBatchExport').addEventListener('click', async function() {
       await new Promise(res => { const img = new Image(); img.onload = () => { S.image = img; S.imageUrl = snap._imageDataUrl; res(); }; img.src = snap._imageDataUrl; });
     } else { S.image = null; S.imageUrl = null; }
     this.textContent = `Exporting ${i+1} of ${batchQueue.length}`;
-    const name = slug();
-    for (const [k, f] of Object.entries(FMT)) { await exportCanvas(f.w, f.h, `${name}_${k}`); await delay(250); }
+    for (const [k, f] of Object.entries(FMT)) { await exportCanvas(f.w, f.h, `${slug(f.email)}_${k}`, !!f.email); await delay(250); }
   }
   Object.assign(S, orig);
   render();
