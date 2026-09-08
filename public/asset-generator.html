@@ -209,7 +209,7 @@ textarea.field-input { resize:vertical; min-height:60px; }
     <span class="header-title">Asset generator</span>
   </div>
   <div class="header-right">
-    <span class="header-meta" id="headerMeta">4 formats</span>
+    <span class="header-meta" id="headerMeta">5 formats</span>
     <a href="/" class="cta">Site</a>
   </div>
 </header>
@@ -420,8 +420,8 @@ textarea.field-input { resize:vertical; min-height:60px; }
         </div>
       </div>
       <div class="export-list">
-        <button class="cta" id="btnExportAll">Export all four</button>
-        <button class="cta" id="btnExportAll23">Export the full suite, 23 sizes</button>
+        <button class="cta" id="btnExportAll">Export all five</button>
+        <button class="cta" id="btnExportAll23">Export the full suite, 24 sizes</button>
       </div>
       <div class="field" style="margin-top:var(--md);">
         <div class="field-label">Video length</div>
@@ -476,6 +476,12 @@ textarea.field-input { resize:vertical; min-height:60px; }
       <button class="preview-single-dl cta" data-fmt="email">Export email header</button>
       <button class="preview-single-dl cta preview-video-dl" data-fmt="email" style="margin-left:var(--md);">Export video</button>
     </div>
+    <div class="preview-block">
+      <div class="preview-label">Presentation 16:9 · 1920 × 1080 · slides, desktop, call background</div>
+      <div class="asset-frame" id="frame-slide" data-fmt="slide" style="width:480px;height:270px;"></div>
+      <button class="preview-single-dl cta" data-fmt="slide">Export slide</button>
+      <button class="preview-single-dl cta preview-video-dl" data-fmt="slide" style="margin-left:var(--md);">Export video</button>
+    </div>
   </main>
 </div>
 
@@ -497,10 +503,13 @@ const FMT = {
   square:   { w:1080, h:1080, label:'Square 1:1', safeY:0 },
   // The email header carries the subject line rather than the headline.
   email:    { w:1200, h:400,  label:'Email header 3:1', safeY:0, email:true },
+  // Desktop and presentation: a slide, a wallpaper, a call background.
+  slide:    { w:1920, h:1080, label:'Presentation 16:9', safeY:0 },
 };
 
-// Wide frames size their type and chrome from the height, not the width.
-const baseOf = (w, h) => Math.min(w, h * 2.4);
+// Wide frames size their type and chrome from the height, not the width:
+// a slide from a little over its height, a banner from a little more.
+const baseOf = (w, h) => { const r = w / h; return r > 2.2 ? Math.min(w, h * 2.4) : r > 1.3 ? h * 1.3 : w; };
 
 const FULL_SUITE = [
   { w:1080,h:1080, n:'IG_Square' }, { w:1080,h:1350, n:'IG_Portrait' }, { w:1080,h:1920, n:'IG_Story' },
@@ -511,6 +520,7 @@ const FULL_SUITE = [
   { w:1080,h:1920, n:'TikTok' },
   { w:300, h:250,  n:'GDN_MedRect' }, { w:728, h:90,   n:'GDN_Leaderboard' }, { w:160, h:600,  n:'GDN_Skyscraper' }, { w:336, h:280,  n:'GDN_LargeRect' },
   { w:1200,h:400,  n:'Email_Header', email:true }, { w:1200,h:600,  n:'Email_Body' },
+  { w:1920,h:1080, n:'Presentation_16x9' },
   { w:1080,h:1920, n:'WA_Status' },
 ];
 
@@ -719,10 +729,11 @@ function buildChrome(el) {
 function esc(t) { return String(t || '').replace(/&/g,'&amp;').replace(/</g,'&lt;'); }
 function nl2br(t) { return esc(t).replace(/\n/g, '<br>'); }
 
-function buildContent(el, key) {
+function buildContent(el, key, k = 1) {
   const pw = parseInt(el.parentElement.style.width);
   const ph = parseInt(el.parentElement.style.height);
-  const scale = baseOf(pw, ph) / 360;
+  const basePx = baseOf(pw, ph);
+  const scale = basePx / 360 * k;
   const email = !!(FMT[key] && FMT[key].email);
   const pos = S.textPos;
   let jc = 'flex-end', ai = 'flex-start', ta = 'left';
@@ -732,7 +743,12 @@ function buildContent(el, key) {
   if (pos.endsWith('r')) { ai = 'flex-end'; ta = 'right'; }
   el.style.justifyContent = jc; el.style.alignItems = ai; el.style.textAlign = ta;
   const vertical = ph / pw > 1.4;
+  // On a slide the type holds to the left, leaving the right for a picture.
+  const landscape = pw / ph > 1.3 && pw / ph <= 2.2;
   el.style.padding = vertical ? '16% 8%' : '8%';
+  // Keep the block under the logotype's row when it sits at the top.
+  const padTop = vertical ? pw * 0.16 : pw * 0.08;
+  el.style.paddingTop = Math.max(padTop, S.showWordmark ? basePx * 0.12 : 0) + 'px';
 
   const colour = S.textColor === 'colour';
   const tc = colour ? PALETTE.ink : S.textColor;
@@ -741,7 +757,7 @@ function buildContent(el, key) {
   const heroSmSz = Math.max(14, 24 * scale);
   const bodySz = Math.max(8, 10.5 * scale);
   const capSz = Math.max(7, 8.4 * scale);
-  const measure = 'max-width:100%;';
+  const measure = landscape ? 'max-width:56%;' : 'max-width:100%;';
 
   let html = '';
   if (email) {
@@ -763,7 +779,15 @@ function buildContent(el, key) {
     if (S.caption) html += `<div style="font-family:${FONT_BODY};font-size:${capSz}px;color:${tc};margin-top:${10*scale}px;">${nl2br(S.caption)}</div>`;
     if (S.meta) html += `<div style="font-family:${FONT_BODY};font-size:${capSz}px;color:${tc};opacity:.6;margin-top:${10*scale}px;">${nl2br(S.meta)}</div>`;
   }
-  el.innerHTML = html;
+  el.innerHTML = `<div class="asset-copy" style="max-width:100%;">${html}</div>`;
+
+  // Too tall for its room? Bring the whole block down and go again.
+  const inner = el.firstElementChild;
+  const cs = getComputedStyle(el);
+  const room = el.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
+  if (inner && inner.offsetHeight > room && k > 0.5) {
+    buildContent(el, key, Math.max(0.5, k * (room / inner.offsetHeight) * 0.97));
+  }
 }
 
 // ===========================================================
@@ -1049,49 +1073,64 @@ function drawTextOnCanvas(ctx, w, h, email = false) {
   const pos = S.textPos;
   const align = pos.endsWith('l') ? 'left' : pos.endsWith('r') ? 'right' : 'center';
   const anchorX = align === 'left' ? padX : align === 'right' ? w - padX : w / 2;
-  const maxW = w - padX * 2;
+  // On a slide the type holds to a measure, leaving the right for a picture.
+  const landscape = w / h > 1.3 && w / h <= 2.2;
+  const maxW = landscape ? w * 0.56 : w - padX * 2;
   const colour = S.textColor === 'colour';
   const tc = colour ? PALETTE.ink : S.textColor;
+  // The room the block has: under the logotype's row, above the bottom pad.
+  const top = Math.max(padY, S.showWordmark ? base * 0.12 : 0);
+  const room = h - top - padY;
 
-  const heroSz = Math.max(40, base * 0.083);
-  const heroSmSz = Math.max(32, base * 0.067);
-  const bodySz = Math.max(18, base * 0.029);
-  const capSz = Math.max(15, base * 0.0233);
+  const display = sz => `400 ${sz}px ${FONT_DISPLAY}`;
+  const body = sz => `400 ${sz}px ${FONT_BODY}`;
 
-  const lines = [];
-  const push = (text, cfg) => {
-    ctx.font = cfg.font;
-    wrapText(ctx, text, Math.min(maxW, cfg.measure || maxW)).forEach(l => lines.push({ ...cfg, text: l }));
+  // Everything at a scale k, so a long headline can be brought down to fit.
+  const layout = k => {
+    const heroSz = Math.max(40, base * 0.083) * k;
+    const heroSmSz = Math.max(32, base * 0.067) * k;
+    const bodySz = Math.max(18, base * 0.029) * k;
+    const capSz = Math.max(15, base * 0.0233) * k;
+    const lines = [];
+    const push = (text, cfg) => {
+      ctx.font = cfg.font;
+      wrapText(ctx, text, Math.min(maxW, cfg.measure || maxW)).forEach(l => lines.push({ ...cfg, text: l }));
+    };
+    const gap = px => lines.push({ text:'', size:px, lh:1 });
+
+    if (email) {
+      push(S.subject, { font:display(heroSmSz), size:heroSmSz, lh:1.1, colour, alpha:1 });
+      if (S.meta) { gap(capSz*0.5); push(S.meta, { font:body(capSz), size:capSz, lh:1.35, alpha:.6 }); }
+    } else if (S.intent === 'quote') {
+      push('\u201C' + (S.quote || 'Now I do it for you.') + '\u201D', { font:display(heroSmSz), size:heroSmSz, lh:1.12, colour, alpha:1 });
+      if (S.author) { gap(heroSmSz*0.45); push(S.author, { font:body(capSz), size:capSz, lh:1.35, alpha:1 }); }
+      if (S.meta) { gap(capSz*0.3); push(S.meta, { font:body(capSz), size:capSz, lh:1.35, alpha:.6 }); }
+    } else if (S.intent === 'artwork') {
+      if (S.caption) push(S.caption, { font:body(capSz), size:capSz, lh:1.35, alpha:1 });
+      if (S.title) { gap(capSz*0.6); push(S.title, { font:display(heroSmSz*0.7), size:heroSmSz*0.7, lh:1.15, colour, alpha:1 }); }
+      if (S.sub) { gap(bodySz*0.6); push(S.sub, { font:body(bodySz), size:bodySz, lh:1.4, alpha:1, measure:bodySz*18 }); }
+      if (S.meta) { gap(capSz*0.8); push(S.meta, { font:body(capSz), size:capSz, lh:1.35, alpha:.6 }); }
+    } else {
+      if (S.title) push(S.title, { font:display(heroSz), size:heroSz, lh:1.08, colour, alpha:1 });
+      if (S.sub) { gap(bodySz*0.9); push(S.sub, { font:body(bodySz), size:bodySz, lh:1.4, alpha:1, measure:bodySz*20 }); }
+      if (S.caption) { gap(capSz*0.8); push(S.caption, { font:body(capSz), size:capSz, lh:1.35, alpha:1 }); }
+      if (S.meta) { gap(capSz*0.8); push(S.meta, { font:body(capSz), size:capSz, lh:1.35, alpha:.6 }); }
+    }
+    let blockH = 0;
+    lines.forEach(l => { blockH += l.size * (l.lh || 1.2); });
+    return { lines, blockH };
   };
-  const gap = px => lines.push({ text:'', size:px, lh:1 });
 
-  const display = (sz) => `400 ${sz}px ${FONT_DISPLAY}`;
-  const body = (sz) => `400 ${sz}px ${FONT_BODY}`;
-
-  if (email) {
-    push(S.subject, { font:display(heroSmSz), size:heroSmSz, lh:1.1, colour, alpha:1 });
-    if (S.meta) { gap(capSz*0.5); push(S.meta, { font:body(capSz), size:capSz, lh:1.35, alpha:.6 }); }
-  } else if (S.intent === 'quote') {
-    push('“' + (S.quote || 'Now I do it for you.') + '”', { font:display(heroSmSz), size:heroSmSz, lh:1.12, colour, alpha:1 });
-    if (S.author) { gap(heroSmSz*0.45); push(S.author, { font:body(capSz), size:capSz, lh:1.35, alpha:1 }); }
-    if (S.meta) { gap(capSz*0.3); push(S.meta, { font:body(capSz), size:capSz, lh:1.35, alpha:.6 }); }
-  } else if (S.intent === 'artwork') {
-    if (S.caption) push(S.caption, { font:body(capSz), size:capSz, lh:1.35, alpha:1 });
-    if (S.title) { gap(capSz*0.6); push(S.title, { font:display(heroSmSz*0.7), size:heroSmSz*0.7, lh:1.15, colour, alpha:1 }); }
-    if (S.sub) { gap(bodySz*0.6); push(S.sub, { font:body(bodySz), size:bodySz, lh:1.4, alpha:1, measure:bodySz*18 }); }
-    if (S.meta) { gap(capSz*0.8); push(S.meta, { font:body(capSz), size:capSz, lh:1.35, alpha:.6 }); }
-  } else {
-    if (S.title) push(S.title, { font:display(heroSz), size:heroSz, lh:1.08, colour, alpha:1 });
-    if (S.sub) { gap(bodySz*0.9); push(S.sub, { font:body(bodySz), size:bodySz, lh:1.4, alpha:1, measure:bodySz*20 }); }
-    if (S.caption) { gap(capSz*0.8); push(S.caption, { font:body(capSz), size:capSz, lh:1.35, alpha:1 }); }
-    if (S.meta) { gap(capSz*0.8); push(S.meta, { font:body(capSz), size:capSz, lh:1.35, alpha:.6 }); }
+  let k = 1, laid = layout(k);
+  for (let i = 0; i < 4 && laid.blockH > room && k > 0.5; i++) {
+    k = Math.max(0.5, k * (room / laid.blockH) * 0.97);
+    laid = layout(k);
   }
+  const { lines, blockH } = laid;
 
-  let blockH = 0;
-  lines.forEach(l => { blockH += l.size * (l.lh || 1.2); });
   let y;
-  if (pos.startsWith('t')) y = padY;
-  else if (pos.startsWith('m')) y = (h - blockH) / 2;
+  if (pos.startsWith('t')) y = top;
+  else if (pos.startsWith('m')) y = Math.max(top, (h - blockH) / 2);
   else y = h - padY - blockH;
 
   ctx.textAlign = align;
@@ -1233,7 +1272,7 @@ function renderBatchList() {
   list.innerHTML = '';
   $('btnBatchExport').style.display = batchQueue.length ? '' : 'none';
   $('btnBatchClear').style.display = batchQueue.length ? '' : 'none';
-  $('headerMeta').textContent = batchQueue.length ? `4 formats · ${batchQueue.length} queued` : '4 formats';
+  $('headerMeta').textContent = batchQueue.length ? `5 formats · ${batchQueue.length} queued` : '5 formats';
   batchQueue.forEach((item, idx) => {
     const div = document.createElement('div');
     div.className = 'batch-item';
