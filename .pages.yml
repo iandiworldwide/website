@@ -54,6 +54,8 @@ content:
         type: object
         fields:
           - { name: copyright, label: Copyright line, type: string }
+          - { name: company, label: Registered company name, type: string }
+          - { name: companyNumber, label: Company number line, type: string }
           - name: socials
             label: Links
             type: object

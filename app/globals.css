@@ -292,6 +292,25 @@
   }
 }
 
+/* The mark itself, at the foot of every page. Drawn the same way as the
+   logotype, drifting through the same palette, but held back so it sits
+   quietly under the page rather than competing with it. */
+.footer-mark {
+  width: clamp(120px, 14vw, 190px);
+  aspect-ratio: 1088 / 947;
+  margin: 0 auto var(--space-lg);
+  opacity: 0.45;
+  background: url("/logo-mark.png") center / contain no-repeat;
+}
+
+@supports (mask-image: url("/logo-mark.png")) {
+  .footer-mark {
+    background: var(--slate-blue);
+    -webkit-mask: url("/logo-mark.png") center / contain no-repeat;
+    mask: url("/logo-mark.png") center / contain no-repeat;
+  }
+}
+
 /* ------------------------------------------------------------------ */
 /* Sections                                                            */
 /* ------------------------------------------------------------------ */
@@ -532,6 +551,13 @@
 
   .wordmark:hover .wordmark-mark {
     animation-play-state: paused;
+  }
+
+  /* The mark at the foot drifts through the same colours, out of step with
+     the logotype so the two are never the same colour at once. */
+  .footer-mark {
+    animation: mark-cycle 24s linear infinite;
+    animation-delay: -9s;
   }
 
   @keyframes mark-cycle {
