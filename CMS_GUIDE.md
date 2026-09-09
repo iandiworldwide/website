@@ -66,6 +66,14 @@ copy of its own.
 - **A filter only appears** if there is work in that category.
 - **Notes posts need a different slug each.** It is only used behind the
   scenes, so anything short with dashes is fine.
+- **Search engines** read the "Browser tab title" and "Search engine
+  description" of each page, under its "Page wording". A page with no
+  description of its own uses the sentence beneath its heading. The site's
+  own description, under Site details, is what Google shows for the home
+  page and what a shared link shows beneath its card.
+- **The site address**, under Site details, can stay empty: the site then
+  uses the address Vercel serves it from. Only fill it in once that domain
+  points at this site, or search engines will be sent to the wrong place.
 - **The subscribe screen's feeds** (Latest and Most read) come live from
   Substack through Supascribe, so new posts appear there without any
   editing. Each feed has a name and a Supascribe embed id.

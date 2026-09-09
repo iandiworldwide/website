@@ -27,6 +27,20 @@ repository if you prefer.
 site's own colour field, with the logotype and mark, as stills or short
 videos. It is unlisted: nothing on the site links to it.
 
+## Search engines
+
+Every page carries a title, a description, a canonical address and a social
+card; `/robots.txt` and `/sitemap.xml` are generated from the content, and
+structured data describes the practice, the founder, the Notes and the
+placed works. The card image is `app/opengraph-image.tsx`, drawn at build
+time on the colour field.
+
+All absolute addresses come from `lib/site-url.ts`: the "Site address" in
+the CMS if set, otherwise the domain Vercel serves production from. The
+custom domain, iandiworldwide.org, currently points at an older Netlify
+site. Once it is attached to this Vercel project every address updates by
+itself; nothing needs editing.
+
 ## Fonts
 
 The two licensed faces, ABC Camera and ABC Favorit, are not in the

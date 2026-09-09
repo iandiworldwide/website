@@ -27,7 +27,10 @@ export default function BlogSection() {
   return (
     <section id="blog" aria-labelledby="blog-heading" className="section px-xs md:px-md">
       <div data-reveal className="grid gap-md md:grid-cols-4">
-        <h2 id="blog-heading">{blogContent.title}</h2>
+        {/* The page's own title, so it is the first heading a search engine reads. */}
+        <h1 id="blog-heading" className="page-title">
+          {blogContent.title}
+        </h1>
         <p className="md:col-span-2">{blogContent.intro}</p>
       </div>
 

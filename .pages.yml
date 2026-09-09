@@ -41,6 +41,10 @@ content:
             label: Search engine description
             type: text
             description: One or two sentences. Shown in Google results.
+          - name: url
+            label: Site address
+            type: string
+            description: e.g. https://iandiworldwide.org. Leave empty to use the address Vercel serves the site from. Only set it once that domain points at this site.
       - name: navigation
         label: Menu
         type: object
@@ -169,6 +173,7 @@ content:
         type: object
         fields:
           - { name: metaTitle, label: Browser tab title, type: string }
+          - { name: metaDescription, label: Search engine description, type: text, description: One or two sentences. Shown in Google results. Leave empty to use the sentence beneath the heading. }
           - { name: title, label: Heading, type: string }
           - { name: intro, label: Sentence beneath, type: text }
           - { name: filterLabel, label: Filter label, type: string }
@@ -218,6 +223,7 @@ content:
         type: object
         fields:
           - { name: metaTitle, label: Browser tab title, type: string }
+          - { name: metaDescription, label: Search engine description, type: text, description: One or two sentences. Shown in Google results. Leave empty to use the sentence beneath the heading. }
           - { name: title, label: Heading, type: string }
           - { name: intro, label: Sentence beneath, type: text }
           - { name: feedLabel, label: Feed label, type: string }
@@ -256,6 +262,7 @@ content:
         type: object
         fields:
           - { name: metaTitle, label: Browser tab title, type: string }
+          - { name: metaDescription, label: Search engine description, type: text, description: One or two sentences. Shown in Google results. Leave empty to use the sentence beneath the heading. }
           - { name: title, label: Heading, type: string }
           - { name: intro, label: Sentence beneath, type: text }
           - { name: filterLabel, label: Filter label, type: string }

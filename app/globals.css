@@ -171,6 +171,13 @@
     line-height: var(--type-leading);
   }
 
+  /* The title of a page of its own. It is the page's first heading, but it
+     sits where a section heading sits and keeps that size. */
+  h1.page-title {
+    font-size: var(--size-h2);
+    line-height: 1.12;
+  }
+
   /* Titles that hold a link keep the ink so the link reads as a link. */
   h1 a,
   h2 a,

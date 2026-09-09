@@ -26,7 +26,10 @@ export default function PlacementsSection() {
   return (
     <section id="placements" aria-labelledby="placements-heading" className="section">
       <div data-reveal className="grid gap-md px-xs md:grid-cols-4 md:px-md">
-        <h2 id="placements-heading">{placementsContent.title}</h2>
+        {/* The page's own title, so it is the first heading a search engine reads. */}
+        <h1 id="placements-heading" className="page-title">
+          {placementsContent.title}
+        </h1>
         <p className="md:col-span-2">{placementsContent.intro}</p>
       </div>
 

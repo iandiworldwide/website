@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Bricolage_Grotesque, Instrument_Sans } from "next/font/google";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -6,6 +6,8 @@ import ContactSection from "@/components/sections/ContactSection";
 import Intro from "@/components/Intro";
 import RevealObserver from "@/components/RevealObserver";
 import { siteConfig } from "@/lib/content";
+import { jsonLd, siteGraph } from "@/lib/seo";
+import { siteUrl } from "@/lib/site-url";
 import "./globals.css";
 
 // Body: ABC Favorit (Dinamo) is licensed and not bundled. Instrument Sans is
@@ -28,9 +30,33 @@ const bricolage = Bricolage_Grotesque({
   display: "swap",
 });
 
+/*
+  What search engines and social cards read on the home page, and what every
+  other page inherits unless it says otherwise. The site address makes the
+  canonical link, the card address and the sitemap absolute. The card image
+  is app/opengraph-image.tsx and the icons are the files beside it.
+*/
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
   title: siteConfig.metaTitle,
   description: siteConfig.metaDescription,
+  applicationName: siteConfig.name,
+  alternates: { canonical: "/" },
+  openGraph: {
+    title: siteConfig.metaTitle,
+    description: siteConfig.metaDescription,
+    url: "/",
+    siteName: siteConfig.name,
+    locale: "en_GB",
+    type: "website",
+  },
+  twitter: { card: "summary_large_image" },
+  robots: { index: true, follow: true, googleBot: { "max-image-preview": "large" } },
+  formatDetection: { telephone: false },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#ffffff",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
@@ -38,6 +64,11 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html lang="en" className={`${instrument.variable} ${bricolage.variable}`}>
       {/* Bottom padding clears the fixed navigation bar. */}
       <body className="min-h-screen bg-surface pb-header font-body text-body text-ink">
+        {/* The practice, its founder and the site, for search engines. */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: jsonLd(siteGraph()) }}
+        />
         <Intro />
         <RevealObserver />
         <Header />
