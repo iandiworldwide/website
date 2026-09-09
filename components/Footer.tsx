@@ -1,15 +1,17 @@
+import FooterMark from "@/components/FooterMark";
 import { footerContent } from "@/lib/content";
 
 /*
   Sits at the foot of the document rather than pinned to the viewport, so it
   never floats over a full-height screen. The mark first, drifting through
-  the palette as the logotype does but more faded, then one borderless row:
-  copyright and company details left, links right.
+  the palette as the logotype does but more faded, and bending under the
+  pointer, then one borderless row: copyright and company details left,
+  links right.
 */
 export default function Footer() {
   return (
     <footer className="px-xs pt-lg text-ink md:px-md">
-      <div aria-hidden="true" className="footer-mark" />
+      <FooterMark />
 
       <div className="grid h-header grid-cols-2 items-center">
         <div className="text-caption">

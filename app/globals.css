@@ -299,29 +299,30 @@
   }
 }
 
-/* The mark itself, at the foot of every page. Drawn the same way as the
-   logotype, drifting through the same palette, but held back so it sits
-   quietly under the page rather than competing with it. */
+/* The mark itself, at the foot of every page: inline SVG, drawn in the
+   current colour and drifting through the same palette as the logotype, but
+   held back so it sits quietly under the page rather than competing with
+   it. See components/FooterMark.tsx for why it is SVG and how it bends. */
+.footer-mark-frame {
+  /* Full width on a phone; a measured size once there is room. The frame
+     carries the size and the lean towards the pointer. */
+  width: 100%;
+  margin: 0 auto var(--space-lg);
+}
+
 .footer-mark {
-  /* Full width on a phone; a measured size once there is room. */
+  display: block;
   width: 100%;
   aspect-ratio: 1088 / 947;
-  margin: 0 auto var(--space-lg);
   opacity: 0.45;
-  background: url("/logo-mark.png") center / contain no-repeat;
+  color: var(--slate-blue);
+  /* The feet touch the edges, and a bend pushes them past; let them show. */
+  overflow: visible;
 }
 
 @media (min-width: 768px) {
-  .footer-mark {
+  .footer-mark-frame {
     width: clamp(120px, 14vw, 190px);
-  }
-}
-
-@supports (mask-image: url("/logo-mark.png")) {
-  .footer-mark {
-    background: var(--slate-blue);
-    -webkit-mask: url("/logo-mark.png") center / contain no-repeat;
-    mask: url("/logo-mark.png") center / contain no-repeat;
   }
 }
 
@@ -577,9 +578,11 @@
   }
 
   /* The mark at the foot drifts through the same colours, out of step with
-     the logotype so the two are never the same colour at once. */
+     the logotype so the two are never the same colour at once. It is SVG
+     drawn in the current colour, so its cycle animates colour alone: an
+     animated background on an SVG root makes the browser drop its mask. */
   .footer-mark {
-    animation: mark-cycle 24s linear infinite;
+    animation: mark-cycle-ink 24s linear infinite;
     animation-delay: -9s;
   }
 
@@ -607,6 +610,33 @@
     }
     100% {
       background-color: var(--ink);
+    }
+  }
+
+  @keyframes mark-cycle-ink {
+    0% {
+      color: var(--ink);
+    }
+    14% {
+      color: var(--mark-r);
+    }
+    28% {
+      color: var(--mark-o);
+    }
+    43% {
+      color: var(--mark-g);
+    }
+    57% {
+      color: var(--mark-b);
+    }
+    71% {
+      color: var(--mark-i);
+    }
+    86% {
+      color: var(--mark-v);
+    }
+    100% {
+      color: var(--ink);
     }
   }
 
