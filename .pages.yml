@@ -103,7 +103,7 @@ content:
             label: Feeds
             type: object
             list: true
-            description: Each feed drops open under its name, one at a time. The first is open when the screen appears.
+            description: Shown as a row of tabs, one feed at a time. The first is showing when the screen appears.
             fields:
               - { name: label, label: Name, type: string, description: e.g. Latest or Most read }
               - { name: embedId, label: Supascribe embed id, type: string }

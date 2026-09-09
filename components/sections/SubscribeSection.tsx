@@ -6,14 +6,14 @@ import { subscribeContent } from "@/lib/content";
 
 /*
   A screen of its own: the invitation on the left, the live Substack feeds on
-  the right, and a link out. Each feed sits in a fold of its own, Latest and
-  Most read, with one open at a time; clicking a name opens it and closes the
-  other. The feeds are drawn by Supascribe, which loads after the page is
-  interactive so it never holds up the first paint. Both feeds are in the
-  page from the start, so the closed one is ready the moment it opens.
+  the right, and a link out. The feeds, Latest and Most read, sit under a row
+  of tabs; the chosen one is underlined and its feed shows beneath. The feeds
+  are drawn by Supascribe, which loads after the page is interactive so it
+  never holds up the first paint. Both feeds are in the page from the start,
+  so switching is immediate.
 */
 export default function SubscribeSection() {
-  const [open, setOpen] = useState<number | null>(0);
+  const [selected, setSelected] = useState(0);
 
   return (
     <section
@@ -40,41 +40,37 @@ export default function SubscribeSection() {
           </p>
         </div>
 
-        <ul data-reveal>
-          {subscribeContent.feeds.map((feed, index) => {
-            const isOpen = open === index;
-            const panel = `feed-${index}`;
-            return (
-              <li key={feed.embedId} className="fold" data-open={isOpen ? "" : undefined}>
-                <h3>
-                  <button
-                    type="button"
-                    aria-expanded={isOpen}
-                    aria-controls={panel}
-                    onClick={() => setOpen(isOpen ? null : index)}
-                    className="fold-head"
-                  >
-                    <span>{feed.label}</span>
-                    {/* The site's own mark for "and": a plus that turns to close. */}
-                    <span aria-hidden="true" className="fold-mark">
-                      +
-                    </span>
-                  </button>
-                </h3>
+        <div data-reveal>
+          <div role="tablist" aria-label={subscribeContent.eyebrow} className="flex flex-wrap gap-md">
+            {subscribeContent.feeds.map((feed, index) => (
+              <button
+                key={feed.embedId}
+                type="button"
+                role="tab"
+                id={`feed-tab-${index}`}
+                aria-selected={selected === index}
+                aria-controls={`feed-${index}`}
+                onClick={() => setSelected(index)}
+                className="link-sweep"
+              >
+                {feed.label}
+              </button>
+            ))}
+          </div>
 
-                <div id={panel} className="fold-panel">
-                  <div className="fold-body">
-                    <div
-                      className="pt-sm pb-md"
-                      data-supascribe-embed-id={feed.embedId}
-                      data-supascribe-feed=""
-                    />
-                  </div>
-                </div>
-              </li>
-            );
-          })}
-        </ul>
+          {subscribeContent.feeds.map((feed, index) => (
+            <div
+              key={feed.embedId}
+              role="tabpanel"
+              id={`feed-${index}`}
+              aria-labelledby={`feed-tab-${index}`}
+              hidden={selected !== index}
+              className="mt-md"
+              data-supascribe-embed-id={feed.embedId}
+              data-supascribe-feed=""
+            />
+          ))}
+        </div>
       </div>
 
       <Script src={subscribeContent.feedScript} strategy="lazyOnload" />

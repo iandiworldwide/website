@@ -472,7 +472,8 @@
 /* ------------------------------------------------------------------ */
 
 /* A rule that draws itself in from the left on hover, and stays put on
-   the current page or the active filter. Used for nav and filters. */
+   the current page, the active filter or the chosen tab. Used for nav,
+   filters and the Substack feed tabs. */
 .link-sweep {
   background-image: linear-gradient(var(--indigo), var(--indigo));
   background-repeat: no-repeat;
@@ -487,7 +488,8 @@
 .link-sweep:hover,
 .link-sweep:focus-visible,
 .link-sweep[aria-current],
-.link-sweep[aria-pressed="true"] {
+.link-sweep[aria-pressed="true"],
+.link-sweep[aria-selected="true"] {
   background-size: 100% 1px;
 }
 
