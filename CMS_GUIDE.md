@@ -66,7 +66,8 @@ copy of its own.
 - **A filter only appears** if there is work in that category.
 - **Notes posts need a different slug each.** It is only used behind the
   scenes, so anything short with dashes is fine.
-- **The subscribe screen's feed** comes live from Substack through
-  Supascribe, so new posts appear there without any editing.
+- **The subscribe screen's feeds** (Latest and Most read) come live from
+  Substack through Supascribe, so new posts appear there without any
+  editing. Each feed has a name and a Supascribe embed id.
 - **The Visual Diary arrangement** is set by the "Arrangement" number.
   Change it to any other number to shuffle the scatter.

@@ -1,15 +1,25 @@
+"use client";
+
 import Script from "next/script";
+import { useState } from "react";
 import { subscribeContent } from "@/lib/content";
 
-// A screen of its own: the invitation on the left, the live Substack feed on
-// the right, and a link out. The feed is drawn by Supascribe, which loads
-// after the page is interactive so it never holds up the first paint.
+/*
+  A screen of its own: the invitation on the left, the live Substack feeds on
+  the right, and a link out. Each feed sits in a fold of its own, Latest and
+  Most read, with one open at a time; clicking a name opens it and closes the
+  other. The feeds are drawn by Supascribe, which loads after the page is
+  interactive so it never holds up the first paint. Both feeds are in the
+  page from the start, so the closed one is ready the moment it opens.
+*/
 export default function SubscribeSection() {
+  const [open, setOpen] = useState<number | null>(0);
+
   return (
     <section
       id="subscribe"
       aria-labelledby="subscribe-heading"
-      className="section-full px-xs md:px-md"
+      className="section-full fold-screen px-xs md:px-md"
     >
       <div className="grid gap-lg md:grid-cols-2 md:gap-md">
         <div data-reveal className="max-w-[34ch]">
@@ -30,14 +40,41 @@ export default function SubscribeSection() {
           </p>
         </div>
 
-        <div data-reveal>
-          <h3 className="text-caption">{subscribeContent.latestLabel}</h3>
-          <div
-            className="mt-md"
-            data-supascribe-embed-id={subscribeContent.feedEmbedId}
-            data-supascribe-feed=""
-          />
-        </div>
+        <ul data-reveal>
+          {subscribeContent.feeds.map((feed, index) => {
+            const isOpen = open === index;
+            const panel = `feed-${index}`;
+            return (
+              <li key={feed.embedId} className="fold" data-open={isOpen ? "" : undefined}>
+                <h3>
+                  <button
+                    type="button"
+                    aria-expanded={isOpen}
+                    aria-controls={panel}
+                    onClick={() => setOpen(isOpen ? null : index)}
+                    className="fold-head"
+                  >
+                    <span>{feed.label}</span>
+                    {/* The site's own mark for "and": a plus that turns to close. */}
+                    <span aria-hidden="true" className="fold-mark">
+                      +
+                    </span>
+                  </button>
+                </h3>
+
+                <div id={panel} className="fold-panel">
+                  <div className="fold-body">
+                    <div
+                      className="pt-sm pb-md"
+                      data-supascribe-embed-id={feed.embedId}
+                      data-supascribe-feed=""
+                    />
+                  </div>
+                </div>
+              </li>
+            );
+          })}
+        </ul>
       </div>
 
       <Script src={subscribeContent.feedScript} strategy="lazyOnload" />

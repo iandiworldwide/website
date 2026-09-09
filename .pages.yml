@@ -99,8 +99,14 @@ content:
           - { name: lede, label: Sentence beneath, type: text }
           - { name: cta, label: Call to action, type: string }
           - { name: ctaLink, label: Substack address, type: string }
-          - { name: latestLabel, label: Feed heading, type: string, description: Sits above the Substack posts, e.g. Most read. }
-          - { name: feedEmbedId, label: Supascribe embed id, type: string }
+          - name: feeds
+            label: Feeds
+            type: object
+            list: true
+            description: Each feed drops open under its name, one at a time. The first is open when the screen appears.
+            fields:
+              - { name: label, label: Name, type: string, description: e.g. Latest or Most read }
+              - { name: embedId, label: Supascribe embed id, type: string }
           - { name: feedScript, label: Supascribe script address, type: string }
       - name: testimonials
         label: Testimonials

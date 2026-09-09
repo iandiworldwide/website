@@ -29,8 +29,16 @@
     "lede": "Art fairs, studio visits, artists to watch and how we think about collecting.",
     "cta": "Subscribe on Substack",
     "ctaLink": "https://iandiworldwide.substack.com",
-    "latestLabel": "Most read",
-    "feedEmbedId": "543939391025",
+    "feeds": [
+      {
+        "label": "Latest",
+        "embedId": "968303760932"
+      },
+      {
+        "label": "Most read",
+        "embedId": "543939391025"
+      }
+    ],
     "feedScript": "https://js.supascribe.com/v1/loader/FdOEwJV3RqVXdrxASCGs23qYf3h1.js"
   },
   "testimonials": [
