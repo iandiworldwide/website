@@ -13,6 +13,8 @@
     "messageLabel": "Message",
     "messagePlaceholder": "Tell us about your art collecting interests and goals",
     "submit": "Send message",
-    "success": "Thank you for reaching out. We will be in touch soon."
+    "sending": "Sending",
+    "success": "Thank you for reaching out. We will be in touch soon.",
+    "error": "That did not send. Please email info@iandiworldwide.org instead."
   }
 }

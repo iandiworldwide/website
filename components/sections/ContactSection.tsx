@@ -3,10 +3,13 @@
 import { FormEvent, useState } from "react";
 import { contactContent } from "@/lib/content";
 
-// Sits at the foot of every page. Where to find us, and a note.
+type Status = "idle" | "sending" | "sent" | "error";
+
+// Sits at the foot of every page. Where to find us, and a note, which is
+// sent through Brevo by the route at /api/contact.
 export default function ContactSection() {
-  const [formData, setFormData] = useState({ name: "", email: "", message: "" });
-  const [submitted, setSubmitted] = useState(false);
+  const [formData, setFormData] = useState({ name: "", email: "", message: "", company: "" });
+  const [status, setStatus] = useState<Status>("idle");
   const { form } = contactContent;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -14,12 +17,22 @@ export default function ContactSection() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    // Wire to a backend or form service here.
-    setSubmitted(true);
-    setFormData({ name: "", email: "", message: "" });
-    setTimeout(() => setSubmitted(false), 5000);
+    if (status === "sending") return;
+    setStatus("sending");
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+      if (!response.ok) throw new Error(String(response.status));
+      setStatus("sent");
+      setFormData({ name: "", email: "", message: "", company: "" });
+    } catch {
+      setStatus("error");
+    }
   };
 
   return (
@@ -51,6 +64,7 @@ export default function ContactSection() {
               value={formData.name}
               onChange={handleChange}
               required
+              autoComplete="name"
               placeholder={form.namePlaceholder}
             />
           </label>
@@ -63,6 +77,7 @@ export default function ContactSection() {
               value={formData.email}
               onChange={handleChange}
               required
+              autoComplete="email"
               placeholder={form.emailPlaceholder}
             />
           </label>
@@ -79,11 +94,25 @@ export default function ContactSection() {
             />
           </label>
 
-          <button type="submit" className="cta">
-            {form.submit}
+          {/* Honeypot: hidden from people, filled by bots. */}
+          <label className="sr-only" aria-hidden="true">
+            Company
+            <input
+              type="text"
+              name="company"
+              value={formData.company}
+              onChange={handleChange}
+              tabIndex={-1}
+              autoComplete="off"
+            />
+          </label>
+
+          <button type="submit" className="cta" disabled={status === "sending"}>
+            {status === "sending" ? form.sending : form.submit}
           </button>
 
-          {submitted && <p role="status">{form.success}</p>}
+          {status === "sent" && <p role="status">{form.success}</p>}
+          {status === "error" && <p role="alert">{form.error}</p>}
         </form>
       </div>
     </section>

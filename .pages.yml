@@ -326,4 +326,6 @@ content:
           - { name: messageLabel, label: Message label, type: string }
           - { name: messagePlaceholder, label: Message placeholder, type: string }
           - { name: submit, label: Button, type: string }
+          - { name: sending, label: Button while sending, type: string }
           - { name: success, label: Thank you message, type: string }
+          - { name: error, label: Message if sending fails, type: string }
