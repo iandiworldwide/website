@@ -404,6 +404,13 @@ textarea.field-input { resize:vertical; min-height:60px; }
       <div class="toggle-row"><span>Grain</span><input type="checkbox" class="toggle-switch" id="togGrain" checked></div>
       <div class="toggle-row"><span>Logotype, top left</span><input type="checkbox" class="toggle-switch" id="togWordmark" checked></div>
       <div class="toggle-row"><span>Mark, bottom right</span><input type="checkbox" class="toggle-switch" id="togMark" checked></div>
+      <div class="field" style="margin-top:6px;">
+        <div class="field-label">Mark colour</div>
+        <div class="chips" id="markColour">
+          <button class="chip active" data-ink="0">Colour, faded</button>
+          <button class="chip" data-ink="1">Ink</button>
+        </div>
+      </div>
       <div class="toggle-row"><span>Safe zone guides</span><input type="checkbox" class="toggle-switch" id="togSafe"></div>
       <div class="field" style="margin-top:var(--xs);">
         <div class="field-label"><span>Field arrangement</span><span id="seedVal">1</span></div>
@@ -562,7 +569,7 @@ const S = {
   subject:'Notes on collecting, from I&I',
   bgColor:'field', textColor:'#1d1d1b', overlayOpacity:0, textPos:'bl',
   motion:true, showGrain:true, showWordmark:true, showMark:true, showSafe:false,
-  seed:1, hue:0, imgOpacity:100, videoSeconds:8, exportFmt:'png',
+  seed:1, hue:0, imgOpacity:100, videoSeconds:8, exportFmt:'png', markInk:false,
   // Which logos each frame shows. The switches under Elements set them all.
   chrome:{ portrait:{wordmark:true,mark:true}, vertical:{wordmark:true,mark:true}, square:{wordmark:true,mark:true}, email:{wordmark:true,mark:true}, slide:{wordmark:true,mark:true} },
 };
@@ -735,6 +742,10 @@ function renderFrame(frame, key) {
 // The logos a frame shows; sizes from the suite follow the switches.
 function chromeFor(key) { return (key && S.chrome[key]) || { wordmark:S.showWordmark, mark:S.showMark }; }
 
+// The mark: in the palette colour, faded, or in ink at full strength.
+function markColour() { return S.markInk ? chromeColour() : (S.bgColor === PALETTE.ink ? PALETTE.periwinkle : PALETTE.slateBlue); }
+function markAlpha() { return S.markInk ? 1 : 0.45; }
+
 // Ink chrome on light grounds, white on ink.
 function chromeColour() { return S.bgColor === PALETTE.ink ? PALETTE.surface : PALETTE.ink; }
 
@@ -747,7 +758,7 @@ function buildChrome(el, key) {
     html += `<span class="asset-wordmark" style="top:${pad}px;left:${pad}px;height:${Math.max(8, pw*0.032)}px;background:${chromeColour()};"></span>`;
   }
   if (show.mark) {
-    html += `<span class="asset-mark" style="bottom:${pad}px;right:${pad}px;width:${pw*0.13}px;background:${S.bgColor === PALETTE.ink ? PALETTE.periwinkle : PALETTE.slateBlue};"></span>`;
+    html += `<span class="asset-mark" style="bottom:${pad}px;right:${pad}px;width:${pw*0.13}px;background:${markColour()};opacity:${markAlpha()};"></span>`;
   }
   el.innerHTML = html;
 }
@@ -902,6 +913,10 @@ document.querySelectorAll('.frame-chips .chip').forEach(b => b.addEventListener(
   syncFrameChips(); render();
 }));
 $('togSafe').addEventListener('change', e => { S.showSafe = e.target.checked; render(); });
+document.querySelectorAll('#markColour .chip').forEach(b => b.addEventListener('click', () => {
+  document.querySelectorAll('#markColour .chip').forEach(x => x.classList.remove('active'));
+  b.classList.add('active'); S.markInk = b.dataset.ink === '1'; render();
+}));
 $('fieldSeed').addEventListener('input', e => { S.seed = +e.target.value; $('seedVal').textContent = e.target.value; repaintFieldsNow(); });
 $('fieldHue').addEventListener('input', e => { S.hue = +e.target.value; $('hueVal').textContent = e.target.value + '°'; render(); });
 $('imgOpacity').addEventListener('input', e => { S.imgOpacity = +e.target.value; $('imgOpacityVal').textContent = e.target.value + '%'; render(); });
@@ -1011,8 +1026,8 @@ function drawFrame(ctx, w, h, { t = fieldTime(), email = false, grain = 'pixels'
   }
   if (show.mark && mk.complete && mk.naturalWidth) {
     const ww = base * 0.13, hh = ww * (mk.naturalHeight / mk.naturalWidth);
-    ctx.globalAlpha = 0.45;
-    ctx.drawImage(tintedCached(mk, S.bgColor === PALETTE.ink ? PALETTE.periwinkle : PALETTE.slateBlue), w - pad - ww, h - pad - hh, ww, hh);
+    ctx.globalAlpha = markAlpha();
+    ctx.drawImage(tintedCached(mk, markColour()), w - pad - ww, h - pad - hh, ww, hh);
     ctx.globalAlpha = 1;
   }
 }
