@@ -337,13 +337,6 @@
   scroll-margin-top: var(--space-md);
 }
 
-/* Not a full screen, but with ample air above and below. */
-.section-roomy {
-  position: relative;
-  padding-block: calc(var(--space-lg) * 3);
-  scroll-margin-top: var(--space-md);
-}
-
 /* A screen of its own. Content sits centred with air above and below. */
 .section-full {
   position: relative;
@@ -881,10 +874,11 @@
 /* ------------------------------------------------------------------ */
 
 /* A screen that holds still while the page keeps scrolling, walking the row
-   of works sideways as it goes. The extra height is the runway. */
+   of works sideways as it goes. The extra height is the runway; a section
+   can set its own with --runway. */
 .section-track {
   position: relative;
-  min-height: 200vh;
+  min-height: var(--runway, 200vh);
   scroll-margin-top: var(--space-md);
 }
 
