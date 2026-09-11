@@ -27,16 +27,8 @@
     "eyebrow": "Substack",
     "headline": "Follow on Substack.",
     "lede": "Art fairs, studio visits, artists to watch and how we think about collecting.",
-    "cta": "Read on Substack",
+    "cta": "Subscribe on Substack",
     "ctaLink": "https://iandiworldwide.substack.com",
-    "form": {
-      "label": "Or leave your email for the newsletter",
-      "placeholder": "your@email.com",
-      "submit": "Subscribe",
-      "sending": "Sending",
-      "success": "You're on the list. Thank you.",
-      "error": "That did not go through. Subscribe on Substack instead."
-    },
     "feeds": [
       {
         "label": "Latest",

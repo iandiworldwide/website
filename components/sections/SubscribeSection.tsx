@@ -1,11 +1,10 @@
-import SubscribeForm from "@/components/SubscribeForm";
 import SubstackFeeds from "@/components/SubstackFeeds";
 import { subscribeContent } from "@/lib/content";
 import { getSubstackPosts, type FeedSort } from "@/lib/substack";
 
 /*
-  The invitation on the left, the Substack feeds on the right, a link out
-  and a one-field form for the mailing list. It takes only the height it needs rather than a screen of its own,
+  The invitation on the left, the Substack feeds on the right, and a link
+  out. It takes only the height it needs rather than a screen of its own,
   since three posts and a headline would leave most of a screen empty. The
   feeds, Latest and Most read, are read from Substack on the server and
   kept for an hour, so the page carries no third-party script and only
@@ -42,9 +41,6 @@ export default async function SubscribeSection() {
               {subscribeContent.cta}
             </a>
           </p>
-          <div className="mt-lg">
-            <SubscribeForm />
-          </div>
         </div>
 
         <div data-reveal>

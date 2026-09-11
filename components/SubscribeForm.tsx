@@ -1,18 +1,18 @@
 "use client";
 
 import { FormEvent, useState } from "react";
-import { subscribeContent } from "@/lib/content";
+import { aboutContent } from "@/lib/content";
 
 type Status = "idle" | "sending" | "sent" | "error";
 
 // One field and a button. Posts to /api/subscribe, which adds the address
-// to the mailing list. Sits in the Substack section near the foot of the
-// home page, for people who want the letters without writing a message.
+// to the mailing list. Sits at the end of the About section, for people
+// who want the letters without writing a message.
 export default function SubscribeForm() {
   const [email, setEmail] = useState("");
   const [company, setCompany] = useState("");
   const [status, setStatus] = useState<Status>("idle");
-  const { form } = subscribeContent;
+  const form = aboutContent.newsletter;
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();

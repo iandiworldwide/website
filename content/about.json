@@ -10,5 +10,13 @@
   "founderClosure": "Every recommendation I make is rooted in deep research — into the artists I source as much as into my clients. I spend time understanding who you are and what's important to you before I bring a single work to your attention. The result is a collection that is a true reflection of you and your journey.",
   "ctaLabel": "Begin",
   "cta": "Book a free consultation",
-  "ctaLink": "#contact"
+  "ctaLink": "#contact",
+  "newsletter": {
+    "label": "Or leave your email for the newsletter",
+    "placeholder": "your@email.com",
+    "submit": "Subscribe",
+    "sending": "Sending",
+    "success": "You're on the list. Thank you.",
+    "error": "That did not go through. Subscribe on Substack instead."
+  }
 }
