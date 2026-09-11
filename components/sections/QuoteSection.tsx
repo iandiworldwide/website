@@ -1,3 +1,4 @@
+import FounderMention from "@/components/FounderMention";
 import { aboutContent } from "@/lib/content";
 
 /*
@@ -16,7 +17,9 @@ export default function QuoteSection() {
           {aboutContent.founderQuote}
           {"”"}
         </p>
-        <footer className="mt-lg text-caption">{aboutContent.founderName}</footer>
+        <footer className="mt-lg text-caption">
+          <FounderMention>{aboutContent.founderName}</FounderMention>
+        </footer>
       </blockquote>
     </section>
   );
