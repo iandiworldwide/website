@@ -107,11 +107,16 @@ content:
             label: Feeds
             type: object
             list: true
-            description: Shown as a row of tabs, one feed at a time. The first is showing when the screen appears.
+            description: Shown as a row of tabs, one feed at a time. The first is showing when the screen appears. Posts are read from the Substack address above and refresh within an hour.
             fields:
               - { name: label, label: Name, type: string, description: e.g. Latest or Most read }
-              - { name: embedId, label: Supascribe embed id, type: string }
-          - { name: feedScript, label: Supascribe script address, type: string }
+              - name: sort
+                label: Order
+                type: select
+                options:
+                  values:
+                    - { value: new, label: Newest first }
+                    - { value: top, label: Most read first }
       - name: testimonials
         label: Testimonials
         type: object

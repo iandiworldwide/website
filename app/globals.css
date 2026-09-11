@@ -11,24 +11,10 @@
 */
 
 /* ABC Camera and ABC Favorit are licensed typefaces from ABC Dinamo and are
-   not bundled. Drop ABCCamera-Regular.woff2 and ABCFavorit-Regular.woff2
-   into public/fonts/ and they are picked up automatically; until then each
-   stack falls through to its substitute. */
-@font-face {
-  font-family: "ABC Camera";
-  src: url("/fonts/ABCCamera-Regular.woff2") format("woff2");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "ABC Favorit";
-  src: url("/fonts/ABCFavorit-Regular.woff2") format("woff2");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
+   not bundled, so no @font-face is declared for them: a declaration for a
+   missing file costs a failed request on every page. Each stack names them
+   first and falls through to its substitute. When the files arrive, add
+   the declarations back as described in public/fonts/README.md. */
 
 :root {
   --ink: #1d1d1b;
@@ -421,19 +407,21 @@
 }
 
 /* Grain over the field, so the colour reads as pigment rather than a screen
-   gradient. A tile of fractal noise, drawn once by the browser and repeated,
-   laid on with multiply so it only ever dusts the colour darker. Oversized,
-   so it can be jogged about without an edge coming into view. */
+   gradient. A tile of fractal noise, drawn once by the browser and repeated.
+   The tile is black specks on a clear ground, their alpha taken from the
+   noise and pushed apart so they read as specks rather than a grey haze;
+   that is what multiply blending onto the colour would give, without the
+   blend mode, which would make the browser flatten the whole moving field
+   beneath it on every frame. Oversized, so it can be jogged about without
+   an edge coming into view. */
 .fluid::after {
   content: "";
   position: absolute;
   inset: -40%;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='g'><feTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='3' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%25' height='100%25' filter='url(%23g)'/></svg>");
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='g' color-interpolation-filters='sRGB'><feTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='3' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/><feColorMatrix type='matrix' values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -1.7 0 0 0 1.35'/></filter><rect width='100%25' height='100%25' filter='url(%23g)'/></svg>");
   background-size: 240px 240px;
-  /* Pushed apart, so the specks read as specks rather than a grey haze. */
-  filter: contrast(1.7);
-  mix-blend-mode: multiply;
   opacity: 0.3;
+  will-change: transform;
   pointer-events: none;
 }
 
@@ -654,6 +642,14 @@
      rather than glides, so it flickers like dust on film. */
   .fluid::after {
     animation: grain 1.1s steps(1) infinite;
+  }
+
+  /* Held still while its screen is out of view, so only the field on
+     screen is ever moving. FluidBackground sets the attribute. */
+  .fluid[data-still] .fluid-swirl,
+  .fluid[data-still] .fluid-bloom,
+  .fluid[data-still]::after {
+    animation-play-state: paused;
   }
 
   @keyframes grain {

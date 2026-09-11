@@ -32,14 +32,13 @@
     "feeds": [
       {
         "label": "Latest",
-        "embedId": "968303760932"
+        "sort": "new"
       },
       {
         "label": "Most read",
-        "embedId": "543939391025"
+        "sort": "top"
       }
-    ],
-    "feedScript": "https://js.supascribe.com/v1/loader/FdOEwJV3RqVXdrxASCGs23qYf3h1.js"
+    ]
   },
   "testimonials": [
     {

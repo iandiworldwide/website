@@ -1,19 +1,20 @@
-"use client";
-
-import Script from "next/script";
-import { useState } from "react";
+import SubstackFeeds from "@/components/SubstackFeeds";
 import { subscribeContent } from "@/lib/content";
+import { getSubstackPosts, type FeedSort } from "@/lib/substack";
 
 /*
-  A screen of its own: the invitation on the left, the live Substack feeds on
-  the right, and a link out. The feeds, Latest and Most read, sit under a row
-  of tabs; the chosen one is underlined and its feed shows beneath. The feeds
-  are drawn by Supascribe, which loads after the page is interactive so it
-  never holds up the first paint. Both feeds are in the page from the start,
-  so switching is immediate.
+  A screen of its own: the invitation on the left, the Substack feeds on
+  the right, and a link out. The feeds, Latest and Most read, are read from
+  Substack on the server and kept for an hour, so the page carries no
+  third-party script and only small cover images.
 */
-export default function SubscribeSection() {
-  const [selected, setSelected] = useState(0);
+export default async function SubscribeSection() {
+  const feeds = await Promise.all(
+    subscribeContent.feeds.map(async (feed) => ({
+      label: feed.label,
+      posts: await getSubstackPosts(feed.sort as FeedSort),
+    })),
+  );
 
   return (
     <section
@@ -41,39 +42,14 @@ export default function SubscribeSection() {
         </div>
 
         <div data-reveal>
-          <div role="tablist" aria-label={subscribeContent.eyebrow} className="flex flex-wrap gap-md">
-            {subscribeContent.feeds.map((feed, index) => (
-              <button
-                key={feed.embedId}
-                type="button"
-                role="tab"
-                id={`feed-tab-${index}`}
-                aria-selected={selected === index}
-                aria-controls={`feed-${index}`}
-                onClick={() => setSelected(index)}
-                className="link-sweep"
-              >
-                {feed.label}
-              </button>
-            ))}
-          </div>
-
-          {subscribeContent.feeds.map((feed, index) => (
-            <div
-              key={feed.embedId}
-              role="tabpanel"
-              id={`feed-${index}`}
-              aria-labelledby={`feed-tab-${index}`}
-              hidden={selected !== index}
-              className="mt-md"
-              data-supascribe-embed-id={feed.embedId}
-              data-supascribe-feed=""
-            />
-          ))}
+          <SubstackFeeds
+            label={subscribeContent.eyebrow}
+            feeds={feeds}
+            fallbackHref={subscribeContent.ctaLink}
+            fallbackLabel={subscribeContent.cta}
+          />
         </div>
       </div>
-
-      <Script src={subscribeContent.feedScript} strategy="lazyOnload" />
     </section>
   );
 }
