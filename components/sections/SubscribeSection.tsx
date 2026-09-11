@@ -3,10 +3,12 @@ import { subscribeContent } from "@/lib/content";
 import { getSubstackPosts, type FeedSort } from "@/lib/substack";
 
 /*
-  A screen of its own: the invitation on the left, the Substack feeds on
-  the right, and a link out. The feeds, Latest and Most read, are read from
-  Substack on the server and kept for an hour, so the page carries no
-  third-party script and only small cover images.
+  The invitation on the left, the Substack feeds on the right, and a link
+  out. It takes only the height it needs rather than a screen of its own,
+  since three posts and a headline would leave most of a screen empty. The
+  feeds, Latest and Most read, are read from Substack on the server and
+  kept for an hour, so the page carries no third-party script and only
+  small cover images.
 */
 export default async function SubscribeSection() {
   const feeds = await Promise.all(
@@ -20,7 +22,7 @@ export default async function SubscribeSection() {
     <section
       id="subscribe"
       aria-labelledby="subscribe-heading"
-      className="section-full fold-screen px-xs md:px-md"
+      className="section px-xs md:px-md"
     >
       <div className="grid gap-lg md:grid-cols-2 md:gap-md">
         <div data-reveal className="max-w-[34ch]">

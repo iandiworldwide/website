@@ -8,7 +8,7 @@ import QuoteSection from "@/components/sections/QuoteSection";
 import SubscribeSection from "@/components/sections/SubscribeSection";
 
 /*
-  Each screen is full height, and the order tells a story:
+  Each screen but the last is full height, and the order tells a story:
   what we stand for, what the practice is, what we have placed, what clients
   have said, what we do, who is behind it, then how to stay close.
 
