@@ -70,6 +70,13 @@ export default function ServicesSection() {
             );
           })}
         </ul>
+
+        {/* The way in, under the offer: an anchor to the form at the foot. */}
+        <p className="mt-sm md:col-start-2 md:col-span-2">
+          <a href={servicesContent.ctaLink} className="cta">
+            {servicesContent.cta}
+          </a>
+        </p>
       </div>
     </section>
   );

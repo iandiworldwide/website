@@ -13,9 +13,11 @@ Set these in Vercel, Settings > Environment Variables, for Production:
 | `BREVO_SENDER_EMAIL` | A sender verified in Brevo, e.g. info@iandiworldwide.org |
 | `BREVO_SENDER_NAME` | Optional. Defaults to I&I Worldwide |
 | `CONTACT_TO` | Optional. Where enquiries land. Defaults to the sender |
-| `BREVO_LIST_ID` | Optional. A list id; enquirers are added to it when set |
+| `BREVO_LIST_ID` | A list id. Enquirers who tick the box, and anyone using the subscribe form on the home page, are added to it |
 
-Until the first two are set, the form tells the visitor to email instead.
+Until the first two are set, the contact form tells the visitor to email
+instead. Until the list id is set, the subscribe form points them to
+Substack and the tick box on the contact form does nothing.
 
 ## Campaign templates
 

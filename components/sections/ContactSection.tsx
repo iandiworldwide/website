@@ -5,16 +5,20 @@ import { contactContent } from "@/lib/content";
 
 type Status = "idle" | "sending" | "sent" | "error";
 
+const empty = { name: "", email: "", message: "", company: "", subscribe: false };
+
 // Sits at the foot of every page. Where to find us, and a note, which is
-// sent through Brevo by the route at /api/contact.
+// sent through Brevo by the route at /api/contact. A box, off by default,
+// asks to join the mailing list as well.
 export default function ContactSection() {
-  const [formData, setFormData] = useState({ name: "", email: "", message: "", company: "" });
+  const [formData, setFormData] = useState(empty);
   const [status, setStatus] = useState<Status>("idle");
   const { form } = contactContent;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    const target = e.target;
+    const next = target instanceof HTMLInputElement && target.type === "checkbox" ? target.checked : target.value;
+    setFormData((prev) => ({ ...prev, [target.name]: next }));
   };
 
   const handleSubmit = async (e: FormEvent) => {
@@ -29,7 +33,7 @@ export default function ContactSection() {
       });
       if (!response.ok) throw new Error(String(response.status));
       setStatus("sent");
-      setFormData({ name: "", email: "", message: "", company: "" });
+      setFormData(empty);
     } catch {
       setStatus("error");
     }
@@ -92,6 +96,16 @@ export default function ContactSection() {
               rows={5}
               placeholder={form.messagePlaceholder}
             />
+          </label>
+
+          <label className="check">
+            <input
+              type="checkbox"
+              name="subscribe"
+              checked={formData.subscribe}
+              onChange={handleChange}
+            />
+            <span>{form.subscribeLabel}</span>
           </label>
 
           {/* Honeypot: hidden from people, filled by bots. */}

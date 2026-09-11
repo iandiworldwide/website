@@ -240,6 +240,24 @@
     resize: vertical;
   }
 
+  /* A tick box keeps its own shape, in the site's indigo, beside its label. */
+  input[type="checkbox"] {
+    width: 0.9em;
+    height: 0.9em;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    accent-color: var(--indigo);
+    cursor: pointer;
+  }
+
+  .check {
+    display: flex;
+    align-items: center;
+    gap: 0.6em;
+    cursor: pointer;
+  }
+
   :focus-visible {
     outline: 1px solid var(--indigo);
     outline-offset: 3px;
