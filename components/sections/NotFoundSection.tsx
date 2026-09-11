@@ -10,10 +10,12 @@ function around(text: string, highlight: string) {
 }
 
 /*
-  What a wrong address gets: Bob Marley taking the news well, and the usual
-  apology beneath him. "I and I" in the answering line flickers through the
-  same variations as the opening screen, since it is the house name turning
-  up in the song.
+  What a wrong address gets: Bad Brains taking the news well, and the usual
+  apology beside them. The lines run clean, with no verse labels or
+  answering calls, and an empty line in the content is a gap between
+  verses. "I and I" in the closing line flickers through the same
+  variations as the opening screen, since it is the house name turning up
+  in the song.
 */
 export default function NotFoundSection() {
   return (
@@ -22,6 +24,7 @@ export default function NotFoundSection() {
       <div data-reveal className="grid gap-lg md:grid-cols-2 md:items-start">
         <blockquote>
           {notFoundSong.lines.map((line, index) => {
+            if (!line.text.trim()) return <span key={index} aria-hidden="true" className="lyric-gap" />;
             const parts = line.highlight ? around(line.text, line.highlight) : null;
             return (
               <p key={index} className="lyric-line">

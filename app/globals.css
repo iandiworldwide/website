@@ -995,8 +995,9 @@
 /* ------------------------------------------------------------------ */
 
 /* One voice: every line the same colour, flush left, and the only thing
-   picked out of the eight is the house name where the song sings it. Its
-   own scale, a step above body copy, so each line stays whole on a phone. */
+   picked out is the house name where the song sings it. Its own scale, a
+   step above body copy, so each line stays whole on a phone. A gap is a
+   line's worth of air between verses. */
 .lyric-line {
   font-family: var(--font-display);
   font-size: clamp(1rem, 2.6vw, 1.5rem);
@@ -1006,6 +1007,11 @@
 
 .lyric-line + .lyric-line {
   margin-top: 0.12em;
+}
+
+.lyric-gap {
+  display: block;
+  height: clamp(1rem, 2.6vw, 1.5rem);
 }
 
 /* ------------------------------------------------------------------ */

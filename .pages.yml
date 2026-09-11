@@ -313,7 +313,7 @@ content:
             type: object
             list: true
             fields:
-              - { name: text, label: Line, type: string }
+              - { name: text, label: Line, type: string, description: Leave empty for a gap between verses. }
               - name: highlight
                 label: Words that flicker
                 type: string
