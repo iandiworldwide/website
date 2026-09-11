@@ -1,18 +1,18 @@
 "use client";
 
 import { FormEvent, useState } from "react";
-import { aboutContent } from "@/lib/content";
+import { contactContent } from "@/lib/content";
 
 type Status = "idle" | "sending" | "sent" | "error";
 
 // One field and a button. Posts to /api/subscribe, which adds the address
-// to the mailing list. Sits at the end of the About section, for people
-// who want the letters without writing a message.
+// to the mailing list. Sits in its own band beneath the contact form on
+// every page, for people who want the letters without writing a message.
 export default function SubscribeForm() {
   const [email, setEmail] = useState("");
   const [company, setCompany] = useState("");
   const [status, setStatus] = useState<Status>("idle");
-  const form = aboutContent.newsletter;
+  const form = contactContent.newsletter;
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -33,8 +33,8 @@ export default function SubscribeForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} aria-label={form.label} className="max-w-[34ch]">
-      <div className="flex items-end gap-sm">
+    <form onSubmit={handleSubmit} aria-label={form.label}>
+      <div className="flex items-end gap-md">
         <label className="block grow">
           <span className="block text-caption">{form.label}</span>
           <input

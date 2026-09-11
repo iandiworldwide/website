@@ -1,9 +1,7 @@
-import SubscribeForm from "@/components/SubscribeForm";
 import { aboutContent } from "@/lib/content";
 
 // The practice. Deliberately sparse: a heading in one column and the copy
 // in a narrow measure beside it, with the rest of the screen left empty.
-// The copy ends in a one-field form for the mailing list.
 export default function AboutSection() {
   return (
     <section id="about" aria-labelledby="about-heading" className="section-full px-xs md:px-md">
@@ -13,9 +11,6 @@ export default function AboutSection() {
           <p>{aboutContent.intro}</p>
           <p>{aboutContent.approach}</p>
           <p>{aboutContent.closing}</p>
-          <div className="pt-sm">
-            <SubscribeForm />
-          </div>
         </div>
       </div>
     </section>

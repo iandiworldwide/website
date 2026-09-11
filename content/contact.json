@@ -17,5 +17,14 @@
     "sending": "Sending",
     "success": "Thank you for reaching out. We will be in touch soon.",
     "error": "That did not send. Please email info@iandiworldwide.org instead."
+  },
+  "newsletter": {
+    "title": "Newsletter",
+    "label": "Subscribe to our newsletter",
+    "placeholder": "your@email.com",
+    "submit": "Subscribe",
+    "sending": "Sending",
+    "success": "You're on the list. Thank you.",
+    "error": "That did not go through. Subscribe on Substack instead."
   }
 }

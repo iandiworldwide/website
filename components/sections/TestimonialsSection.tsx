@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import FounderMention from "@/components/FounderMention";
 import { homeContent, testimonials } from "@/lib/content";
 
 // How quickly the slide catches up with the scroll. Smaller is smoother.
@@ -123,7 +122,7 @@ export default function TestimonialsSection() {
                 <blockquote>
                   <p className="quote-flow max-w-[28ch] text-hero-sm">
                     {"“"}
-                    <FounderMention>{testimonial.text}</FounderMention>
+                    {testimonial.text}
                     {"”"}
                   </p>
                   <footer className="mt-md text-caption">{testimonial.author}</footer>
