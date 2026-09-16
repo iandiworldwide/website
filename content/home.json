@@ -15,9 +15,6 @@
     "ands": [
       "&",
       "+",
-      "⁊",
-      "∧",
-      "&&",
       " et "
     ],
     "final": "i&i",
@@ -43,14 +40,14 @@
   "testimonials": [
     {
       "text": "Talia's expertise transformed how I approach collecting. Her research is impeccable.",
-      "author": "Private Collector, Miami"
+      "author": "Private Client, Miami"
     },
     {
-      "text": "An art advisor who truly understands and champions emerging artists.",
-      "author": "Corporate Client, New York"
+      "text": "An art advisor who truly understands the market and champions overlooked artists. Talia has made collecting engaging, educational and so enjoyable.",
+      "author": "Private Client, New York"
     },
     {
-      "text": "Building my collection with I&I Worldwide has been a meaningful and insightful experience.",
+      "text": "Building my collection with I&I Worldwide has been a meaningful and insightful experience. Talia ensures that we are making the right decision, always considering our taste and making sure the price makes sense. I know that any acquisition with Talia will be highly considered.",
       "author": "Collector, London"
     }
   ]
