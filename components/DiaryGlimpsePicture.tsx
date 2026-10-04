@@ -54,7 +54,7 @@ export default function DiaryGlimpsePicture({ entries }: { entries: SizedEntry[]
             alt={entry.caption ? entry.alt : ""}
             width={entry.width}
             height={entry.height}
-            sizes="(min-width: 768px) 16vw, 50vw"
+            sizes="(min-width: 768px) 20vw, 60vw"
             className="glimpse-in h-auto w-full"
           />
         )}

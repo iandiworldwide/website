@@ -549,16 +549,15 @@
 /* A picture sitting across the top edge of its section: centred on the
    page, with the middle of the picture on the line where the section
    above ends, and above that section's colour field. Its caption hangs
-   below, out of the way of the centring. Half its width on phones; on wider screens
-   two thirds of one of the four columns, the size of the founder portrait.
-   The section is given room beneath it with .seam-top. */
+   below, out of the way of the centring. 60% of the width on phones; on
+   wider screens four fifths of one of the four columns. The section is given room beneath it with .seam-top. */
 :root {
-  --glimpse-w: 50vw;
+  --glimpse-w: 60vw;
 }
 
 @media (min-width: 48rem) {
   :root {
-    --glimpse-w: calc((100vw - 5 * var(--space-md)) / 4 * 2 / 3);
+    --glimpse-w: calc((100vw - 5 * var(--space-md)) / 4 * 0.8);
   }
 }
 
