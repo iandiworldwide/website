@@ -1,37 +1,43 @@
 {
   "page": {
+    "metaTitle": "Visual Diary — I&I Worldwide",
+    "metaDescription": "Art fairs, studio visits, galleries and travel, in pictures. The visual diary of I&I Worldwide, an independent art advisory in London and Miami.",
     "title": "Visual Diary",
     "intro": "A glimpse into our world of art, travel, and discovery.",
     "feedLabel": "Diary entries",
     "seed": 7,
-    "shuffle": true,
-    "metaTitle": "Visual Diary — I&I Worldwide",
-    "metaDescription": "Art fairs, studio visits, galleries and travel, in pictures. The visual diary of I&I Worldwide, an independent art advisory in London and Miami."
+    "shuffle": true
   },
   "entries": [
     {
-      "image": "/visual-diary/acrylic-letters.jpg",
-      "alt": "Cut acrylic letters pinned to a wall"
+      "image": "/visual-diary/Ana Mendieta Sandwoman Series 1983-1.jpg",
+      "alt": "feminist land sculpture in sand earthworks",
+      "caption": "Ana Mendieta, Sandwoman Series (1983)"
     },
     {
-      "image": "/visual-diary/seafood-table.jpg",
-      "alt": "Mussels, clams and flatbread on a long black table"
+      "image": "/visual-diary/Alvin Ailey captured by William Greaves for the First World Festival of Negro Arts, Dakar 1966-1.jpg",
+      "alt": "Alvin Ailey captured by William Greaves for the First World Festival of African Art in Dakar (1966)",
+      "caption": "Alvin Ailey captured by William Greaves for the First World Festival of Negro Arts, Dakar (1966)"
     },
     {
-      "image": "/visual-diary/ceramic-legs.jpg",
-      "alt": "Stitched ceramic legs on a gallery floor"
+      "image": "/visual-diary/Aaron Douglas Aspects of Negro Life From Slavery to Reconstruction 1934.png",
+      "alt": "Mural by Aaron Douglas Aspects of Negro Life: From Slavery through Reconstruction (1934)",
+      "caption": "Aaron Douglas, Aspects of Negro Life: From Slavery through Reconstruction (1934)"
     },
     {
-      "image": "/visual-diary/bottles-by-the-sea.jpg",
-      "alt": "Seven glass bottles on a plinth by a window to the sea"
+      "image": "/visual-diary/beverly buchanan shot gun house 1992 georgia museum of art.jpg",
+      "alt": "beverly buchanan shotgun house shack ",
+      "caption": "Beverly Buchanan, Shotgun House (1993). In the collection of the Georgia Museum of Art.  "
     },
     {
-      "image": "/visual-diary/dinner-place-setting.jpg",
-      "alt": "A dinner place setting with a menu and place card"
+      "image": "/visual-diary/jack whitten 9.11.01 2006.jpg",
+      "alt": "Jack Whitten mural mosaic 09.11.01 (2006) A tribute to those who lost their lives on 9/11 ",
+      "caption": "Jack Whitten, 09.11.01 (2006)"
     },
     {
-      "image": "/visual-diary/heath-wae-painting.jpg",
-      "alt": "Framed pink and blue painting by Heath Wae"
+      "image": "/visual-diary/suzanne jackson wind and water 1975.jpeg",
+      "alt": "Suzanne Jackson, Wind and Water (1975)",
+      "caption": "Suzanne Jackson, Wind and Water (1975)"
     },
     {
       "image": "/visual-diary/black-sphere-white-column.jpg",
