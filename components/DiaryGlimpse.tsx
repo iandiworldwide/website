@@ -24,6 +24,11 @@ import { diaryEntries, type DiaryEntry } from "@/lib/content";
   appear to cover it. Its place is where it sits once the section's top
   meets the screen's, or, in a section taller than the screen, as low as
   it can go with the whole picture still showing.
+
+  Only on wider screens. A phone scrolls the page itself, ahead of any
+  script, so a held picture lags and jitters there; and with the picture
+  at the foot of its section, the next one covers the caption almost as
+  soon as it holds. On phones the pictures simply scroll with the page.
 */
 
 // Room left beneath a picture held low on the screen.
@@ -59,11 +64,17 @@ export default function DiaryGlimpse({ className = "" }: { className?: string })
     const section = element?.closest("section");
     if (!element || !section) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const wide = window.matchMedia("(min-width: 48rem)");
     let held = 0;
     let pending = 0;
 
     const update = () => {
       pending = 0;
+      if (!wide.matches) {
+        held = 0;
+        element.style.transform = "";
+        return;
+      }
       const box = element.getBoundingClientRect();
       const top = section.getBoundingClientRect().top;
       // Where the picture would be without holding, within the section and on screen.
@@ -80,10 +91,12 @@ export default function DiaryGlimpse({ className = "" }: { className?: string })
     update();
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onScroll);
+    wide.addEventListener("change", onScroll);
     return () => {
       cancelAnimationFrame(pending);
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
+      wide.removeEventListener("change", onScroll);
     };
   }, []);
 
