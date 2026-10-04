@@ -510,84 +510,24 @@
 /* The founder, in portrait                                            */
 /* ------------------------------------------------------------------ */
 
-/* A small portrait fixed at the centre of the screen, behind the founder
-   copy (on wider screens, a still picture to its right; see below). The layer around it covers the section and clips to it, and a
-   clip-path cuts off even fixed descendants, so the portrait shows only
-   while the section does and the next section slides up over it. Above
-   the colour field, below the words. Its opacity is set from script as
-   the section scrolls; the picture is taller than its frame, for the
-   drift.
-
-   Pressing her name sets data-clear on the section, and the portrait
-   comes forward over the words: solid, without grain, and pressable to
-   send it back. */
-.portrait-clip {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  clip-path: inset(0);
-  pointer-events: none;
-}
-
-.portrait {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  width: min(56vw, 300px);
-  aspect-ratio: 3 / 4;
-  translate: -50% -50%;
+/* Her portrait, sitting across the line between the founder screen and
+   the quote, placed like the diary pictures (.glimpse-seam): black and
+   white, with grain laid over it with turbulence. */
+.founder-photo {
+  position: relative;
+  aspect-ratio: 4 / 5;
   overflow: hidden;
-  transition: opacity 0.35s var(--ease);
 }
 
-/* On wider screens it is simply a picture in the section, clear of the
-   copy to the right: in the last of the four columns and two thirds its
-   width, against the right edge, the same place and size as the diary
-   picture on the About screen. It scrolls with the section, solid, with
-   no drift; the styles override what the script sets. */
-@media (min-width: 48rem) {
-  .portrait {
-    position: absolute;
-    opacity: 1 !important;
-    left: auto;
-    right: var(--space-md);
-    width: calc((100% - 5 * var(--space-md)) / 4 * 2 / 3);
-    translate: 0 -50%;
-  }
-
-  .portrait img {
-    top: 0;
-    height: 100%;
-    transform: none !important;
-  }
-}
-
-[data-clear] > .portrait-clip {
-  z-index: 2;
-}
-
-[data-clear] .portrait {
-  opacity: 1 !important;
-  pointer-events: auto;
-  cursor: pointer;
-}
-
-[data-clear] .portrait::after {
-  opacity: 0;
-}
-
-.portrait img {
-  position: absolute;
-  top: -12%;
-  left: 0;
+.founder-photo img {
+  display: block;
   width: 100%;
-  height: 124%;
+  height: 100%;
   object-fit: cover;
   filter: grayscale(1) contrast(1.08);
 }
 
-/* Grain, laid over with turbulence. */
-.portrait::after {
+.founder-photo::after {
   content: "";
   position: absolute;
   inset: 0;
@@ -595,27 +535,6 @@
   background-size: 220px 220px;
   mix-blend-mode: overlay;
   opacity: 0.55;
-  transition: opacity 0.35s var(--ease);
-}
-
-/* Her full name, marked in the copy: a wash of lavender and a line. */
-.mention {
-  background: var(--lavender);
-  box-decoration-break: clone;
-  -webkit-box-decoration-break: clone;
-  padding: 0 0.12em;
-  margin: 0 -0.12em;
-  text-decoration: underline;
-  text-decoration-color: var(--indigo);
-  text-decoration-thickness: 1px;
-  text-underline-offset: 0.18em;
-  cursor: pointer;
-  transition: background-color 0.3s var(--ease);
-}
-
-.mention:hover,
-.mention[aria-pressed="true"] {
-  background: var(--alice);
 }
 
 @keyframes fade-in {
@@ -625,6 +544,39 @@
   to {
     opacity: 1;
   }
+}
+
+/* A picture from the diary, sitting across the top edge of its section:
+   centred on the page, with the middle of the picture (4:5, so its height
+   is 1.25 widths) on the line where the section above ends, and above
+   that section's colour field. Half its width on phones; on wider screens
+   two thirds of one of the four columns, the size of the founder portrait.
+   The section is given room beneath it with .seam-top. */
+:root {
+  --glimpse-w: 50vw;
+}
+
+@media (min-width: 48rem) {
+  :root {
+    --glimpse-w: calc((100vw - 5 * var(--space-md)) / 4 * 2 / 3);
+  }
+}
+
+.glimpse-seam {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  z-index: 2;
+  display: block;
+  width: var(--glimpse-w);
+  translate: -50% calc(var(--glimpse-w) * -0.625);
+}
+
+/* Room at the top of a section for the lower half of its picture and the
+   caption, with the usual air between them and the copy. */
+.section.seam-top,
+.section-full.seam-top {
+  padding-top: calc(var(--glimpse-w) * 0.625 + 3em + var(--space-lg) * 2);
 }
 
 /* A picture from the diary, fading in once it has been drawn. */

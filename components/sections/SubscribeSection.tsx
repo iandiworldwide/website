@@ -4,8 +4,8 @@ import { subscribeContent } from "@/lib/content";
 import { getSubstackPosts, type FeedSort } from "@/lib/substack";
 
 /*
-  The invitation on the left, the Substack feeds on the right with a
-  picture from the diary beneath them, and a link out. It takes only the height it
+  The invitation on the left, the Substack feeds on the right, a picture
+  from the diary across the top edge, and a link out. It takes only the height it
   needs rather than a screen of its own, since three posts and a headline
   would leave most of a screen empty. The
   feeds, Latest and Most read, are read from Substack on the server and
@@ -24,8 +24,9 @@ export default async function SubscribeSection() {
     <section
       id="subscribe"
       aria-labelledby="subscribe-heading"
-      className="section overflow-clip px-xs md:px-md"
+      className="section seam-top relative px-xs md:px-md"
     >
+      <DiaryGlimpse />
       <div className="grid gap-lg md:grid-cols-2 md:gap-md">
         <div data-reveal className="max-w-[34ch]">
           <p className="text-caption">{subscribeContent.eyebrow}</p>
@@ -52,9 +53,6 @@ export default async function SubscribeSection() {
             fallbackHref={subscribeContent.ctaLink}
             fallbackLabel={subscribeContent.cta}
           />
-          {/* The right-hand quarter of the page, two thirds wide: the same
-              place as the diary pictures on the other screens. */}
-          <DiaryGlimpse className="ml-auto mt-lg w-1/2 md:w-[calc((100%_-_var(--space-md))/2*2/3)]" />
         </div>
       </div>
     </section>
