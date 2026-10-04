@@ -1,4 +1,4 @@
-import DiaryGlimpse from "@/components/DiaryGlimpse";
+import DiaryGlimpse, { seamRoom } from "@/components/DiaryGlimpse";
 import SubstackFeeds from "@/components/SubstackFeeds";
 import { subscribeContent } from "@/lib/content";
 import { getSubstackPosts, type FeedSort } from "@/lib/substack";
@@ -25,6 +25,7 @@ export default async function SubscribeSection() {
       id="subscribe"
       aria-labelledby="subscribe-heading"
       className="section seam-top relative px-xs md:px-md"
+      style={seamRoom()}
     >
       <DiaryGlimpse />
       <div className="grid gap-lg md:grid-cols-2 md:gap-md">

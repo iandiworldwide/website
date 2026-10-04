@@ -1,4 +1,4 @@
-import DiaryGlimpse from "@/components/DiaryGlimpse";
+import DiaryGlimpse, { seamRoom } from "@/components/DiaryGlimpse";
 import { aboutContent } from "@/lib/content";
 
 // The practice. Deliberately sparse: a heading in one column and the copy
@@ -6,7 +6,7 @@ import { aboutContent } from "@/lib/content";
 // across the top edge. The rest of the screen is left empty.
 export default function AboutSection() {
   return (
-    <section id="about" aria-labelledby="about-heading" className="section-full seam-top px-xs md:px-md">
+    <section id="about" aria-labelledby="about-heading" className="section-full seam-top px-xs md:px-md" style={seamRoom()}>
       <DiaryGlimpse />
       <div data-reveal className="grid gap-md md:grid-cols-4">
         <h2 id="about-heading">{aboutContent.title}</h2>

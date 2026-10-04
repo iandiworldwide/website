@@ -1,72 +1,36 @@
-"use client";
-
-import Image from "next/image";
-import Link from "next/link";
-import { useEffect, useState } from "react";
-import { diaryEntries, type DiaryEntry } from "@/lib/content";
+import DiaryGlimpsePicture, { type SizedEntry } from "@/components/DiaryGlimpsePicture";
+import { diaryEntries } from "@/lib/content";
+import { getImageSize } from "@/lib/imageSize";
 
 /*
-  One picture from the Visual Diary, set into the empty space of a home
-  screen, with its caption beneath and a link through to the diary.
+  One picture from the Visual Diary, sitting across the top edge of its
+  section, centred on the page, with the middle of the picture on the line
+  where the section above ends. Its caption hangs beneath, and it links
+  through to the diary. See .glimpse-seam and .seam-top in globals.css. It
+  must be the section's own child.
 
-  Which picture is drawn at random on each visit, from a deck shuffled once
-  per page load, so no two places on the page show the same one until the
-  diary runs out. The draw happens in the browser, after the page has
-  arrived, so the static page stays the same for everyone; the frame is a
-  fixed shape, held empty until then, so nothing around it moves.
+  Here, on the server, each entry's picture is measured, so the browser can
+  show it at its own proportions; which one is shown is drawn in the
+  browser (DiaryGlimpsePicture).
 
-  The caption is the entry's caption, or its description when it has none.
-
-  It sits across the top edge of its section, centred on the page, the
-  middle of the picture on the line where the section above ends. The
-  section leaves room beneath it: see .glimpse-seam and .seam-top in
-  globals.css. It must be the section's own child.
+  The section leaves room beneath for the tallest picture in the diary,
+  whichever is drawn, so the copy never moves once the page has loaded:
+  give it seamRoom() as its style.
 */
 
-const entries = diaryEntries.filter((entry) => entry.image);
+const entries: SizedEntry[] = diaryEntries.flatMap((entry) => {
+  const size = entry.image ? getImageSize(entry.image) : undefined;
+  return size ? [{ ...entry, ...size }] : [];
+});
 
-let deck: DiaryEntry[] | null = null;
-let drawn = 0;
+// Height over width of the tallest picture.
+const tallest = Math.max(1, ...entries.map((entry) => entry.height / entry.width));
 
-function draw() {
-  if (!deck) {
-    deck = [...entries];
-    for (let i = deck.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [deck[i], deck[j]] = [deck[j], deck[i]];
-    }
-  }
-  return deck[drawn++ % deck.length];
+export function seamRoom() {
+  return { "--seam-ratio": tallest.toFixed(3) } as React.CSSProperties;
 }
 
 export default function DiaryGlimpse() {
-  const [entry, setEntry] = useState<DiaryEntry | null>(null);
-
-  useEffect(() => {
-    const frame = requestAnimationFrame(() => setEntry(draw()));
-    return () => cancelAnimationFrame(frame);
-  }, []);
-
   if (entries.length === 0) return null;
-  const caption = entry?.caption || entry?.alt;
-
-  return (
-    <Link href="/visual-diary" className="glimpse-seam">
-      <figure className="dim">
-        <div className="relative aspect-[4/5] bg-alice">
-          {entry && (
-            <Image
-              src={entry.image}
-              // The caption beneath already says what it shows.
-              alt={entry.caption ? entry.alt : ""}
-              fill
-              sizes="(min-width: 768px) 16vw, 50vw"
-              className="glimpse-in object-cover"
-            />
-          )}
-        </div>
-        <figcaption className="mt-xs min-h-[1lh] text-caption">{caption}</figcaption>
-      </figure>
-    </Link>
-  );
+  return <DiaryGlimpsePicture entries={entries} />;
 }

@@ -546,10 +546,10 @@
   }
 }
 
-/* A picture from the diary, sitting across the top edge of its section:
-   centred on the page, with the middle of the picture (4:5, so its height
-   is 1.25 widths) on the line where the section above ends, and above
-   that section's colour field. Half its width on phones; on wider screens
+/* A picture sitting across the top edge of its section: centred on the
+   page, with the middle of the picture on the line where the section
+   above ends, and above that section's colour field. Its caption hangs
+   below, out of the way of the centring. Half its width on phones; on wider screens
    two thirds of one of the four columns, the size of the founder portrait.
    The section is given room beneath it with .seam-top. */
 :root {
@@ -569,14 +569,23 @@
   z-index: 2;
   display: block;
   width: var(--glimpse-w);
-  translate: -50% calc(var(--glimpse-w) * -0.625);
+  translate: -50% -50%;
+}
+
+.glimpse-seam figcaption {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
 }
 
 /* Room at the top of a section for the lower half of its picture and the
-   caption, with the usual air between them and the copy. */
+   caption, with the usual air between them and the copy. --seam-ratio is
+   the picture's height over its width, or the tallest one's when it is
+   drawn at random (see DiaryGlimpse); the portrait is 4:5. */
 .section.seam-top,
 .section-full.seam-top {
-  padding-top: calc(var(--glimpse-w) * 0.625 + 3em + var(--space-lg) * 2);
+  padding-top: calc(var(--glimpse-w) * var(--seam-ratio, 1.25) / 2 + 3em + var(--space-lg) * 2);
 }
 
 /* A picture from the diary, fading in once it has been drawn. */
