@@ -507,8 +507,74 @@
 }
 
 /* ------------------------------------------------------------------ */
-/* The founder, mentioned                                              */
+/* The founder, in portrait                                            */
 /* ------------------------------------------------------------------ */
+
+/* A small portrait fixed at the centre of the screen, behind the founder
+   copy. The layer around it covers the section and clips to it, and a
+   clip-path cuts off even fixed descendants, so the portrait shows only
+   while the section does and the next section slides up over it. Above
+   the colour field, below the words. Its opacity is set from script as
+   the section scrolls; the picture is taller than its frame, for the
+   drift.
+
+   Pressing her name sets data-clear on the section, and the portrait
+   comes forward over the words: solid, without grain, and pressable to
+   send it back. */
+.portrait-clip {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  clip-path: inset(0);
+  pointer-events: none;
+}
+
+.portrait {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: min(56vw, 300px);
+  aspect-ratio: 3 / 4;
+  translate: -50% -50%;
+  overflow: hidden;
+  transition: opacity 0.35s var(--ease);
+}
+
+[data-clear] > .portrait-clip {
+  z-index: 2;
+}
+
+[data-clear] .portrait {
+  opacity: 1 !important;
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+[data-clear] .portrait::after {
+  opacity: 0;
+}
+
+.portrait img {
+  position: absolute;
+  top: -12%;
+  left: 0;
+  width: 100%;
+  height: 124%;
+  object-fit: cover;
+  filter: grayscale(1) contrast(1.08);
+}
+
+/* Grain, laid over with turbulence. */
+.portrait::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+  background-size: 220px 220px;
+  mix-blend-mode: overlay;
+  opacity: 0.55;
+  transition: opacity 0.35s var(--ease);
+}
 
 /* Her full name, marked in the copy: a wash of lavender and a line. */
 .mention {
@@ -525,48 +591,12 @@
   transition: background-color 0.3s var(--ease);
 }
 
-.mention:hover {
+.mention:hover,
+.mention[aria-pressed="true"] {
   background: var(--alice);
 }
 
-/* The photograph, down the right-hand third of the screen and the full
-   height of it, while her name is hovered. Multiply blending is what puts
-   it beneath the words: ink times anything is still ink. Grain is laid
-   over it with turbulence. */
-.peek {
-  position: fixed;
-  top: 0;
-  right: 0;
-  z-index: 50;
-  display: block;
-  width: max(180px, 33.333vw);
-  height: 100svh;
-  overflow: hidden;
-  pointer-events: none;
-  mix-blend-mode: multiply;
-  isolation: isolate;
-  animation: peek-in 0.5s var(--ease) both;
-}
-
-.peek img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  filter: grayscale(1) contrast(1.08);
-}
-
-.peek::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
-  background-size: 220px 220px;
-  mix-blend-mode: overlay;
-  opacity: 0.55;
-}
-
-@keyframes peek-in {
+@keyframes fade-in {
   from {
     opacity: 0;
   }
@@ -575,8 +605,13 @@
   }
 }
 
+/* A picture from the diary, fading in once it has been drawn. */
+.glimpse-in {
+  animation: fade-in 0.8s var(--ease) both;
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .peek {
+  .glimpse-in {
     animation: none;
   }
 }
