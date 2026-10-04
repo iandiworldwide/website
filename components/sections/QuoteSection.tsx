@@ -21,7 +21,7 @@ export default function QuoteSection() {
         <footer className="mt-lg text-caption">{aboutContent.founderName}</footer>
       </blockquote>
       {/* Pulled up one caption line, so its top meets the name's. */}
-      <DiaryGlimpse className="ml-auto mt-md w-1/2 text-caption md:-mt-[1lh] md:w-[13vw]" />
+      <DiaryGlimpse className="ml-auto mt-md w-1/2 text-caption md:-mt-[1lh] md:w-[calc((100%_-_3*var(--space-md))/4*2/3)]" />
     </section>
   );
 }

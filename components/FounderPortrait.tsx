@@ -4,15 +4,17 @@ import { useEffect, useRef } from "react";
 import { aboutContent } from "@/lib/content";
 
 /*
-  Her portrait, small and fixed at the centre of the screen, behind the
-  founder copy. The clipping layer it sits in keeps it to this section, so
+  Her portrait, small and fixed at the centre of the screen behind the
+  founder copy (on wider screens, a still picture to the right of it). The clipping layer it sits in keeps it to this section, so
   it stays put while the section scrolls past and the next one slides up
   over it (see .portrait-clip in globals.css).
 
   As the section scrolls, two things move with it. The picture drifts
-  inside its frame. And it fades: solid as the section comes in, nearly
-  gone by the time the section is centred and the copy lies over it, then
-  solid again as the section leaves.
+  inside its frame. And, on narrow screens where it lies behind the copy,
+  it fades: solid as the section comes in, nearly gone by the time the
+  section is centred and the copy lies over it, then solid again as the
+  section leaves. On wider screens it is a still picture in the section,
+  clear of the copy, and the styles override what is set here.
 
   Pressing her name in the copy (FounderName) sets data-clear on the
   section, which brings the portrait forward, solid and clear, until it is

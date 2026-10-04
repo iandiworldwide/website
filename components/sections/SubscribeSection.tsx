@@ -4,8 +4,8 @@ import { subscribeContent } from "@/lib/content";
 import { getSubstackPosts, type FeedSort } from "@/lib/substack";
 
 /*
-  The invitation on the left with a picture from the diary beside it, the
-  Substack feeds on the right, and a link out. It takes only the height it
+  The invitation on the left, the Substack feeds on the right with a
+  picture from the diary beneath them, and a link out. It takes only the height it
   needs rather than a screen of its own, since three posts and a headline
   would leave most of a screen empty. The
   feeds, Latest and Most read, are read from Substack on the server and
@@ -27,25 +27,22 @@ export default async function SubscribeSection() {
       className="section overflow-clip px-xs md:px-md"
     >
       <div className="grid gap-lg md:grid-cols-2 md:gap-md">
-        <div data-reveal className="md:flex md:items-start md:justify-between md:gap-md">
-          <div className="max-w-[34ch]">
-            <p className="text-caption">{subscribeContent.eyebrow}</p>
-            <h2 id="subscribe-heading" className="mt-sm text-hero-sm">
-              {subscribeContent.headline}
-            </h2>
-            <p className="mt-md">{subscribeContent.lede}</p>
-            <p className="mt-lg">
-              <a
-                href={subscribeContent.ctaLink}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="cta"
-              >
-                {subscribeContent.cta}
-              </a>
-            </p>
-          </div>
-          <DiaryGlimpse className="ml-auto mt-lg w-1/2 md:mr-[8%] md:mt-[calc(var(--space-lg)*2)] md:w-[13vw] md:shrink-0" />
+        <div data-reveal className="max-w-[34ch]">
+          <p className="text-caption">{subscribeContent.eyebrow}</p>
+          <h2 id="subscribe-heading" className="mt-sm text-hero-sm">
+            {subscribeContent.headline}
+          </h2>
+          <p className="mt-md">{subscribeContent.lede}</p>
+          <p className="mt-lg">
+            <a
+              href={subscribeContent.ctaLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="cta"
+            >
+              {subscribeContent.cta}
+            </a>
+          </p>
         </div>
 
         <div data-reveal>
@@ -55,6 +52,9 @@ export default async function SubscribeSection() {
             fallbackHref={subscribeContent.ctaLink}
             fallbackLabel={subscribeContent.cta}
           />
+          {/* The right-hand quarter of the page, two thirds wide: the same
+              place as the diary pictures on the other screens. */}
+          <DiaryGlimpse className="ml-auto mt-lg w-1/2 md:w-[calc((100%_-_var(--space-md))/2*2/3)]" />
         </div>
       </div>
     </section>

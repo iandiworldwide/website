@@ -511,7 +511,7 @@
 /* ------------------------------------------------------------------ */
 
 /* A small portrait fixed at the centre of the screen, behind the founder
-   copy. The layer around it covers the section and clips to it, and a
+   copy (on wider screens, a still picture to its right; see below). The layer around it covers the section and clips to it, and a
    clip-path cuts off even fixed descendants, so the portrait shows only
    while the section does and the next section slides up over it. Above
    the colour field, below the words. Its opacity is set from script as
@@ -538,6 +538,28 @@
   translate: -50% -50%;
   overflow: hidden;
   transition: opacity 0.35s var(--ease);
+}
+
+/* On wider screens it is simply a picture in the section, clear of the
+   copy to the right: in the last of the four columns and two thirds its
+   width, against the right edge, the same place and size as the diary
+   picture on the About screen. It scrolls with the section, solid, with
+   no drift; the styles override what the script sets. */
+@media (min-width: 48rem) {
+  .portrait {
+    position: absolute;
+    opacity: 1 !important;
+    left: auto;
+    right: var(--space-md);
+    width: calc((100% - 5 * var(--space-md)) / 4 * 2 / 3);
+    translate: 0 -50%;
+  }
+
+  .portrait img {
+    top: 0;
+    height: 100%;
+    transform: none !important;
+  }
 }
 
 [data-clear] > .portrait-clip {
