@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import {
   aboutContent,
-  blogPosts,
   contactContent,
   footerContent,
   placements,
@@ -17,7 +16,7 @@ interface PageSeo {
   /** The full browser tab title, used as written. */
   title: string;
   description: string;
-  /** The page's path, e.g. "/blog". Becomes the canonical address. */
+  /** The page's path, e.g. "/placements". Becomes the canonical address. */
   path: string;
 }
 
@@ -115,37 +114,6 @@ export function siteGraph() {
         inLanguage: "en",
       },
     ],
-  };
-}
-
-// "31 August 2026" as written in the CMS, to the date form search engines
-// read. Left out when it cannot be read.
-function isoDate(written: string) {
-  const parsed = new Date(written);
-  return Number.isNaN(parsed.getTime()) ? undefined : parsed.toISOString().slice(0, 10);
-}
-
-/* The Notes page: a blog, listing each post with its Substack address. */
-export function blogGraph({ title, description }: { title: string; description: string }) {
-  return {
-    "@context": "https://schema.org",
-    "@type": "Blog",
-    "@id": `${absoluteUrl("/blog")}#blog`,
-    name: title,
-    description,
-    url: absoluteUrl("/blog"),
-    publisher: { "@id": organizationId },
-    inLanguage: "en",
-    blogPost: blogPosts.map((post) => ({
-      "@type": "BlogPosting",
-      headline: post.title,
-      description: post.excerpt,
-      datePublished: isoDate(post.date),
-      articleSection: post.category,
-      author: post.author ? { "@type": "Person", name: post.author } : { "@id": founderId },
-      publisher: { "@id": organizationId },
-      ...(post.url ? { url: post.url, mainEntityOfPage: post.url } : {}),
-    })),
   };
 }
 

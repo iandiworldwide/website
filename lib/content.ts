@@ -12,7 +12,6 @@ import about from "@/content/about.json";
 import services from "@/content/services.json";
 import placementsData from "@/content/placements.json";
 import diary from "@/content/visual-diary.json";
-import notes from "@/content/notes.json";
 import contact from "@/content/contact.json";
 import notFound from "@/content/not-found.json";
 
@@ -113,25 +112,6 @@ export interface DiaryEntry {
 export const visualDiaryContent = diary.page;
 
 export const diaryEntries = diary.entries as DiaryEntry[];
-
-/* ------------------------------------------------------------------ */
-/* Notes                                                               */
-/* ------------------------------------------------------------------ */
-
-export interface BlogPost {
-  title: string;
-  slug: string;
-  excerpt: string;
-  date: string;
-  category: string;
-  author?: string;
-  /** Optional Substack link. With it, the title becomes a link. */
-  url?: string;
-}
-
-export const blogContent = notes.page;
-
-export const blogPosts = notes.posts as BlogPost[];
 
 /* ------------------------------------------------------------------ */
 /* Contact                                                             */

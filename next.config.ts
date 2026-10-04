@@ -9,6 +9,10 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "substackcdn.com" },
     ],
   },
+  // The Notes page is gone; old links and search results land on the home page.
+  async redirects() {
+    return [{ source: "/blog", destination: "/", permanent: true }];
+  },
 };
 
 export default nextConfig;

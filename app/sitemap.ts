@@ -23,6 +23,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.6,
       images: diaryEntries.flatMap((entry) => (entry.image ? [absoluteUrl(entry.image)] : [])),
     },
-    { url: absoluteUrl("/blog"), lastModified: built, changeFrequency: "weekly", priority: 0.8 },
   ];
 }

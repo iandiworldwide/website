@@ -12,7 +12,7 @@ import SubscribeSection from "@/components/sections/SubscribeSection";
   what we stand for, what the practice is, what we have placed, what clients
   have said, what we do, who is behind it, then how to stay close.
 
-  Placements, Visual Diary, Blog and Contact carry on as their own pages.
+  Placements, Visual Diary and Contact carry on as their own pages.
   The colour field sits behind the first and sixth screens.
 */
 export default function Home() {

@@ -20,7 +20,7 @@ export const siteUrl = configured
     ? `https://${vercel}`
     : "http://localhost:3000";
 
-/** An absolute address for a path on the site, e.g. absoluteUrl("/blog"). */
+/** An absolute address for a path on the site, e.g. absoluteUrl("/placements"). */
 export function absoluteUrl(path = "/") {
   return new URL(path, `${siteUrl}/`).toString().replace(/(?<=.)\/$/, "");
 }

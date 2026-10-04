@@ -256,39 +256,6 @@ content:
               values: [small, medium, large]
 
   # ------------------------------------------------------------------
-  - name: notes
-    label: Notes
-    path: content/notes.json
-    type: file
-    icon: file-text
-    fields:
-      - name: page
-        label: Page wording
-        type: object
-        fields:
-          - { name: metaTitle, label: Browser tab title, type: string }
-          - { name: metaDescription, label: Search engine description, type: text, description: One or two sentences. Shown in Google results. Leave empty to use the sentence beneath the heading. }
-          - { name: title, label: Heading, type: string }
-          - { name: intro, label: Sentence beneath, type: text }
-          - { name: filterLabel, label: Filter label, type: string }
-          - { name: allLabel, label: "\"All\" filter label", type: string }
-          - { name: categories, label: Categories, type: string, list: true }
-          - { name: archiveCta, label: Link to the archive, type: string }
-          - { name: archiveUrl, label: Substack address, type: string }
-      - name: posts
-        label: Posts
-        type: object
-        list: true
-        fields:
-          - { name: title, label: Title, type: string }
-          - { name: slug, label: Slug, type: string, description: A short name with dashes. Must be different from every other post. }
-          - { name: excerpt, label: Summary, type: text }
-          - { name: date, label: Date, type: string, description: Written as you want it shown, e.g. 31 August 2026 }
-          - { name: category, label: Category, type: string }
-          - { name: author, label: Written by, type: string }
-          - { name: url, label: Substack link, type: string, description: Optional. With it, the title becomes a link. }
-
-  # ------------------------------------------------------------------
   - name: not-found
     label: Page not found
     path: content/not-found.json
