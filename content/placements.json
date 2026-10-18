@@ -38,20 +38,12 @@
   ],
   "works": [
     {
-      "image": "/placements/muzae-sesay-neighborhood.jpg",
-      "artist": "Muzae Sesay",
-      "title": "Neighborhood",
-      "year": 2024,
-      "medium": "Oil pastel on canvas",
-      "category": "painting"
-    },
-    {
-      "image": "/placements/ben-tong-although-my-eyes-were-closed.jpg",
-      "artist": "Ben Tong",
-      "title": "Although My Eyes Were Closed",
-      "year": 2025,
-      "medium": "Oil on canvas",
-      "category": "painting"
+      "image": "/placements/unnamed (12)-1.jpg",
+      "artist": "Robert Longo",
+      "title": "Study of Barbados Palm",
+      "year": 2026,
+      "medium": "Ink and charcoal on vellum",
+      "category": "works-on-paper"
     },
     {
       "image": "/placements/thebe-phetogo-lowe-la-leru.jpg",
@@ -62,12 +54,36 @@
       "category": "painting"
     },
     {
+      "image": "/placements/emma-amos-vision.jpg",
+      "artist": "Emma Amos",
+      "title": "Vision",
+      "year": 2010,
+      "medium": "Acrylic on African fabric panel",
+      "category": "mixed-media"
+    },
+    {
+      "image": "/placements/ben-tong-although-my-eyes-were-closed.jpg",
+      "artist": "Ben Tong",
+      "title": "Although My Eyes Were Closed",
+      "year": 2025,
+      "medium": "Oil on canvas",
+      "category": "painting"
+    },
+    {
       "image": "/placements/covey-gong-portrait-of-a-lady.jpg",
       "artist": "Covey Gong",
       "title": "Portrait of a Lady",
       "year": 2023,
       "medium": "Bronze",
       "category": "sculpture"
+    },
+    {
+      "image": "/placements/muzae-sesay-neighborhood.jpg",
+      "artist": "Muzae Sesay",
+      "title": "Neighborhood",
+      "year": 2024,
+      "medium": "Oil pastel on canvas",
+      "category": "painting"
     },
     {
       "image": "/placements/justin-chance-station.jpg",
@@ -107,14 +123,6 @@
       "title": "Untitled",
       "year": 2026,
       "medium": "Matchbox balsa wood and paper on wood",
-      "category": "mixed-media"
-    },
-    {
-      "image": "/placements/emma-amos-vision.jpg",
-      "artist": "Emma Amos",
-      "title": "Vision",
-      "year": 2010,
-      "medium": "Acrylic on African fabric panel",
       "category": "mixed-media"
     },
     {
